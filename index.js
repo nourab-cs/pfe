@@ -3,7 +3,11 @@ const app = express();
 
 
 
-// after installing cors wind to allow our frontend to consume the express app
+const dotenv = require("dotenv")
+dotenv.config()
+
+
+
 const cors = require("cors");
 app.use(cors({ origin: "http://127.0.0.1:5500", credentials: true }));
 
@@ -12,7 +16,7 @@ app.use(express.json());
 
 
 
-const router = require("./routes/demo.route");
+const router = require("./routes/auth.route");
 
 app.use(router);
 
