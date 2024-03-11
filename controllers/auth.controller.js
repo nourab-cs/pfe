@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const Prom = require("../models/promise.model");
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 const sendEmail = async (req, res) => {
   try {
@@ -78,8 +79,47 @@ const register = async (req, res) => {
     res.status(500).json({ message: "error" });
   }
 };
+
+
+
+const login = async (req, res) => {
+  try {
+    require("../database");
+    const isUser = await User.findOne({ email: req.body.email });
+    if (!isUser) {
+      return res.status(400).json({ message: "user not found" });
+    }
+    const match = await bcrypt.compare(req.body.password, isUser.password);
+    if (!match) {
+      return res.status(401).json({ message: "wrong password" });
+    }
+    const exp = Date.now() + 1000 * 60 * 60;
+    const token = jwt.sign(
+      { id: isUser._id, exp, role: isUser.role },
+      process.env.SECRET_KEY
+    );
+    console.log(isUser);
+    res
+      .cookie("Authorization", token)
+      .status(200)
+      .json({
+        user: {
+          email: isUser.email,
+          username: isUser.username,
+          _id: isUser._id,
+          role: isUser.role,
+          avatar: isUser.avatar || null,
+        },
+      });
+ 
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
+};
 module.exports = {
   sendEmail,
   verifyEmail,
   register,
+  login
 };
