@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 const Prom = require("../models/promise.model");
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const sendEmail = async (req, res) => {
   try {
@@ -30,7 +30,7 @@ const sendEmail = async (req, res) => {
       <a href="http://localhost:3000/register?code=${result}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none;">Verify Email</a>
     `
     );
-     await Prom.create({
+    await Prom.create({
       email: req.body.email,
       username: req.body.username,
       code: result,
@@ -72,15 +72,13 @@ const register = async (req, res) => {
       email: req.body.email,
       password: hash,
     });
-     await Prom.deleteMany({ email: req.body.email });
+    await Prom.deleteMany({ email: req.body.email });
     res.status(201).json({ message: "ok" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "error" });
   }
 };
-
-
 
 const login = async (req, res) => {
   try {
@@ -111,7 +109,17 @@ const login = async (req, res) => {
           avatar: isUser.avatar || null,
         },
       });
- 
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    console.log(req)
+    res.clearCookie("Authorization");
+    res.status(200).json({ message: "logged out" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "error" });
@@ -121,5 +129,6 @@ module.exports = {
   sendEmail,
   verifyEmail,
   register,
-  login
+  login,
+  logout
 };

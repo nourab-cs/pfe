@@ -11,5 +11,7 @@ router.post(
 router.post("/register", require("../controllers/auth.controller").register);
 
 router.post("/login", require("../controllers/auth.controller").login);
+router.get("/logout", require("../controllers/auth.controller").logout);
+
 
 module.exports = router;
