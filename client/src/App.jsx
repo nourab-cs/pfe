@@ -9,7 +9,6 @@ function App() {
     <div>
       <Navbar/>
       <div className="flex mt-20" >
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
