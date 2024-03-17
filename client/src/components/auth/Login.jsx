@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { useState, useEffect, useCallback } from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -117,16 +117,13 @@ function Login() {
       <p className="mt-8 text-xs font-light text-center text-gray-700">
         {" "}
         Don't have an account?{" "}
-        <a
-        //   to="/register"
-          onClick={()=>{
-            navigate("/")
-
-          }}
+        <Link
+         to="/register"
+     
           className="font-medium text-purple-600 hover:underline"
         >
           Sign up
-        </a>
+        </Link>
       </p>
     </div>
   );
