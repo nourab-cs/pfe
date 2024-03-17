@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../stores/userStore";
 
 function Login() {
   const navigate = useNavigate();
   const [user,setUser] = useUser((state)=>[state.user,state.setUser])
-  console.log(user,setUser)
+
   const [constants] = useState({
     EMAIL_REGEX:
       /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

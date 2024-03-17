@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useUser } from "../../stores/userStore";
 
 function Navbar() {
+  const [user ,setUser] = useUser((state) => [state.user ,state.setUser]);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -74,15 +77,30 @@ function Navbar() {
         </li>
 
         <li className="lg:ml-12">
-          <button
-            onClick={() => {
-              navigate("/login");
-            }}
-            type="button"
-            className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-          >
-            Login
-          </button>
+          {!user._id ? (
+            <button
+              onClick={() => {
+                navigate("/login");
+              }}
+              type="button"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            >
+              Login
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                import("../../services/aut.services").then(async (module) => {
+                  await module.logout();
+                  setUser({})
+                });
+              }}
+              type="button"
+              className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            >
+              Logout
+            </button>
+          )}
         </li>
       </ul>
     </nav>
