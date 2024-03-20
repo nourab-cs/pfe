@@ -60,8 +60,8 @@ function Email({ iscode, username, email }) {
                   Username
                 </label>
                 <Field
-                  className=" opacity-70 block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  name="username"
+              className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
+              name="username"
                 />
                 {errors.username && touched.username ? (
                   <div>{errors.username}</div>
@@ -77,7 +77,7 @@ function Email({ iscode, username, email }) {
                 </label>
                 <Field
                   disabled={true}
-                  className=" opacity-70 block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   name="usernameholder"
                   value={username}
                 />
@@ -90,12 +90,12 @@ function Email({ iscode, username, email }) {
                   htmlFor="email"
                   className="block text-sm font-semibold text-gray-800"
                 >
-                  Email
+                  Email 
                 </label>
                 <Field
                   disabled={iscode}
                   type="email"
-                  className="block opacity-70 w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   name="email"
                 />
                 {errors.email && touched.email ? (
@@ -114,7 +114,7 @@ function Email({ iscode, username, email }) {
                   value={email}
                   disabled={true}
                   type="email"
-                  className="block opacity-70 w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   name="emailholder"
                 />
               </div>
@@ -129,7 +129,7 @@ function Email({ iscode, username, email }) {
                 className={
                   iscode
                     ? "invisible"
-                    : "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
+                    : "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
                 }
               >
                 Register
