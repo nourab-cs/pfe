@@ -96,7 +96,6 @@ const login = async (req, res) => {
       { id: isUser._id, exp, role: isUser.role },
       process.env.SECRET_KEY
     );
-    console.log(isUser);
     res
       .cookie("Authorization", token)
       .status(200)

@@ -22,9 +22,13 @@ app.use(cookie())
 
 const auth = require("./routes/auth.route");
 const user = require("./routes/user.route");
+const offre = require("./routes/offre.route");
+
 
 app.use(auth);
 app.use(user);
+app.use("/offre",offre);
+
 
 
 // /api route

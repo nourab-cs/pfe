@@ -6,11 +6,13 @@ import Register from "./components/auth/Register";
 import Profile from "./components/user/Profile";
 
 import {User} from "./components/HOC/User"
+import CreateOffre from "./components/offre/CreateOffre";
 
 function App() {
   return (
     <div>
       <Navbar/>
+      <CreateOffre/>  
       <div className="flex mt-20" >
       <Routes>
         <Route path="/" element={<Home />} />
