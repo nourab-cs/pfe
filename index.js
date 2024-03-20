@@ -20,9 +20,12 @@ app.use(cookie())
 
 
 
-const router = require("./routes/auth.route");
+const auth = require("./routes/auth.route");
+const user = require("./routes/user.route");
 
-app.use(router);
+app.use(auth);
+app.use(user);
+
 
 // /api route
 

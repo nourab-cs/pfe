@@ -19,3 +19,19 @@ export const register = async (username,email,password) => {
   export const logout = async () => {
     return await axiosClient.get("/logout" ,{withCredentials:true} );
   };
+
+
+  export async function checkAuth(path) {
+    try {
+      await axiosClient.get(
+        "/" + path,
+  
+        {
+          withCredentials: true,
+        }
+      );
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }

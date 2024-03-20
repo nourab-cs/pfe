@@ -50,14 +50,14 @@ function Navbar() {
             Home
           </Link>
         </li>
-        <li className="lg:ml-12">
-          <a
-            href="#"
+       {user.email &&  <li className="lg:ml-12">
+          <Link
+            to="/profile"
             className="text-indigo-500 text-gray-500 px-4 py-2  hover:text-black"
           >
-            About
-          </a>
-        </li>
+            Profile
+          </Link>
+        </li>}
         <li className="lg:ml-12">
           <a
             href="#"
