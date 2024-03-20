@@ -3,17 +3,11 @@ const express = require("express");
 const router = express.Router();
 
 
-router.post("/create" , async(req,res)=>{
-    try {
-        const Offre = require("../models/offre.model")
+router.post("/create" ,require('../controllers/offre.controller').create)
 
 
-        const newOffre = await Offre.create(req.body)
-        res.status(201).json(newOffre)
-    } catch (error) {
-        res.status(500).json(error)
-    }
-})
+router.get("/all" , require('../controllers/offre.controller').all)
+
 
 
 

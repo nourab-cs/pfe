@@ -7,12 +7,13 @@ import Profile from "./components/user/Profile";
 
 import {User} from "./components/HOC/User"
 import CreateOffre from "./components/offre/CreateOffre";
+import AllOffres from "./components/offre/AllOffres";
 
 function App() {
   return (
     <div>
       <Navbar/>
-      <CreateOffre/>  
+      <AllOffres/>
       <div className="flex mt-20" >
       <Routes>
         <Route path="/" element={<Home />} />
