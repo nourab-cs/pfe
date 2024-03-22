@@ -1,7 +1,8 @@
 function Home() {
   return (
-    <div>Home</div>
-  )
+    <div className="flex">  Specific Item</div> 
+ 
+  ) 
 }
 
 export default Home

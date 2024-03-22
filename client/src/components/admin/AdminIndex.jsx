@@ -4,13 +4,14 @@ import AllUser from "./AllUser";
 
 function AdminIndex() {
   return (
-    <div>
         <Routes>
             <Route path="/dashbord" element={<Admin/>} />
-            <Route path="/all-users" element={<AllUser/>} />
+            <Route path="/all-users" element={
+            
+            
+            <AllUser/>} />
 
         </Routes>
-    </div>
   )
 }
 

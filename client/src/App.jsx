@@ -16,7 +16,6 @@ function App() {
     <div>
       <Navbar />
       {/* <AllOffres/> */}
-      <div className="flex mt-20">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -41,7 +40,6 @@ function App() {
 
           <Route />
         </Routes>
-      </div>
     </div>
   );
 }
