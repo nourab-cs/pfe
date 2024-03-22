@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <div className="flex">  Specific Item</div> 
+    <div className="flex"></div> 
  
   ) 
 }

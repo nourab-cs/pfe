@@ -116,7 +116,6 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    console.log(req)
     res.clearCookie("Authorization");
     res.status(200).json({ message: "logged out" });
   } catch (error) {

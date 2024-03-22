@@ -15,7 +15,7 @@ function App() {
   return (
     <div>
       <Navbar />
-      {/* <AllOffres/> */}
+      <AllOffres/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
