@@ -1,7 +1,21 @@
 const jwt = require("jsonwebtoken");
 
 
-
+ async  function checkAdmin(req, res, next) {
+  try {
+    const token = req.headers.cookie.split("=")[1];
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    if (decoded && decoded["role"] !== "admin") {
+      return res
+        .status(401)
+        .json({ message: "Action reserved for admin only" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+  next();
+}
 
  async function checkAuth(req, res, next) {
     try {
@@ -14,8 +28,7 @@ const jwt = require("jsonwebtoken");
       }
       const token = req.headers.cookie.split("=")[1];
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      console.log(token,"token")
-      console.log(decoded,"decoded")
+     
       if (decoded && decoded.exp < Date.now()) {
         res.clearCookie("Authorization");
         return res
@@ -35,5 +48,5 @@ const jwt = require("jsonwebtoken");
 
 
   module.exports = {
-    checkAuth
+    checkAuth,checkAdmin
   }

@@ -21,6 +21,8 @@ export const register = async (username,email,password) => {
   };
 
 
+
+
   export async function checkAuth(path) {
     try {
       await axiosClient.get(
@@ -35,3 +37,6 @@ export const register = async (username,email,password) => {
       return false;
     }
   }
+
+
+

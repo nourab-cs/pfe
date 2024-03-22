@@ -124,10 +124,13 @@ const logout = async (req, res) => {
     res.status(500).json({ message: "error" });
   }
 };
+
+
+
 module.exports = {
   sendEmail,
   verifyEmail,
   register,
   login,
-  logout
+  logout,
 };
