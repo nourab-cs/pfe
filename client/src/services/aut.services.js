@@ -21,7 +21,10 @@ export const register = async (username,email,password) => {
   };
 
 
-
+  export const google = async () => {
+    return await axiosClient.get("/oauth", {withCredentials:true} );
+  };
+  
 
   export async function checkAuth(path) {
     try {

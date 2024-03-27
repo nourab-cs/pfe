@@ -12,6 +12,7 @@ router.post("/register", require("../controllers/auth.controller").register);
 
 router.post("/login", require("../controllers/auth.controller").login);
 router.get("/logout", require("../controllers/auth.controller").logout);
+router.get("/oauth", require("../controllers/auth.controller").oauth);
 
 
 module.exports = router;

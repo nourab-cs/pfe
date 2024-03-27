@@ -100,6 +100,17 @@ function Login() {
               className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"            >
               Log in
             </button>
+            <button
+              type="button"
+          onClick={()=>{
+            import ("../../services/aut.services").then(module => module.google().then(
+              googleUser => {
+               console.log(googleUser);}
+            ).catch());
+          } } 
+              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"            >
+              google
+            </button>
           </div>
         </Form>
       )}

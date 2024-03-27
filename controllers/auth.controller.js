@@ -124,6 +124,39 @@ const logout = async (req, res) => {
   }
 };
 
+const oauth = async (req, res) => {
+  try {
+    const {google} = require('googleapis');
+console.log(req);
+
+           const oauth2Client = new google.auth.OAuth2(
+     process.env.GOOGLE_ID,
+     process.env.GOOGLE_SECRET,
+     process.env.GOOGLE_REDIRECT
+    );
+    
+  
+    const scopes = [
+      "https://www.googleapis.com/auth/userinfo.profile"
+    ];
+    
+
+
+    const authorizationUrl = oauth2Client.generateAuthUrl({
+      access_type: 'offline',
+
+
+      scope: scopes,
+
+
+      include_granted_scopes: true
+    });
+    res.status(200).json({ authorizationUrl });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
+}
 
 
 module.exports = {
@@ -132,4 +165,5 @@ module.exports = {
   register,
   login,
   logout,
+  oauth,
 };
