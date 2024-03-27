@@ -13,11 +13,11 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
     }
   };
   const getPageNumberClass = (pageNumber) => {
-    return pageNumber === currentPage ? "bg-blue-500 text-white" : "text-gray-500";
+    return pageNumber === currentPage ? "bg-red-500 text-white" : "text-gray-500";
   };
   return (
     <div className="flex justify-between mt-4">
-      <button onClick={handlePrevPage} disabled={currentPage === 1} className="text-blue-600 disabled:text-gray-400">Previous</button>
+      <button onClick={handlePrevPage} disabled={currentPage === 1} className="text-red-600 disabled:text-gray-400">Previous</button>
 
       <div>
         {Array.from({ length: totalPages }, (_, index) => (
@@ -30,7 +30,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
           </button>
         ))}
       </div>
-      <button onClick={handleNextPage} disabled={currentPage === totalPages} className="text-blue-600 disabled:text-gray-400">Next</button>
+      <button onClick={handleNextPage} disabled={currentPage === totalPages} className="text-red-600 disabled:text-gray-400">Next</button>
     </div>
   );
 }

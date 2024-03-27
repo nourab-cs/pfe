@@ -13,9 +13,9 @@ import { Admin } from "./components/HOC/Admin";
 
 function App() {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
-      <AllOffres/>
+      <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -40,6 +40,8 @@ function App() {
 
           <Route />
         </Routes>
+      </div>
+      <footer>footer</footer>
     </div>
   );
 }

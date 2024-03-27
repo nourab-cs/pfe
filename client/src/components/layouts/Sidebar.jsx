@@ -8,21 +8,7 @@ const Sidebar = () => {
   return (
     <aside className="md:w-1/3 lg:w-1/4 px-4">
       <ul className="sidebar">
-        {user.role == "admin" &&   (
-          <>
-            <li>
-              {" "}
-              <Link
-                to="/admin/all-users"
-                className="block px-3 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
-              >
-                All Users <span className="text-red-500">(Admin)</span>
-              </Link>
-            </li>
-
-            <hr />
-          </>
-        )}
+        {/* add more profile features here  */}
 
         <li>
           {" "}

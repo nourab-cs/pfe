@@ -1,6 +1,11 @@
+import AllOffres from "../offre/AllOffres"
+
 function Home() {
   return (
-    <div className="flex"></div> 
+    <div className="flex">
+
+      <AllOffres/>
+    </div> 
  
   ) 
 }
