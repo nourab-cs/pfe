@@ -9,8 +9,10 @@ import { User } from "./components/HOC/User";
 import CreateOffre from "./components/offre/CreateOffre";
 import AllOffres from "./components/offre/AllOffres";
 import AdminIndex from "./components/admin/AdminIndex";
-import { Admin } from "./components/HOC/Admin";
 
+import { Admin } from "./components/HOC/Admin";
+import ResetPassword from "./components/auth/ResetPassword";
+import ForgotPassword from "./components/auth/ForgotPassword";
 function App() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -39,6 +41,9 @@ function App() {
           />
 
           <Route />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset_password/:id/:token" element={<ResetPassword />}/>
+
         </Routes>
       </div>
       <footer>footer</footer>
