@@ -2,37 +2,35 @@ import React from 'react';
 import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
+import {createOfffre} from "../../services/offre.service";
 const CreerOffre = () => {
   const sitesDisponibles = [
     { id: 'site1', nom: 'Site 1' },
     { id: 'site2', nom: 'Site 2' },
     { id: 'site3', nom: 'Site 3' },
   ];
+  const domainesDisponible = [
+    { id: 'domaine1', nom: 'Domaine 1' },
+    { id: 'domaine2', nom: 'Domaine 2' },
+    { id: 'domaine3', nom: 'Domaine 3' },
+  ];
   const validationSchema = Yup.object().shape({
-    lieu: Yup.string().required('Le lieu est requis'),
+     lieu: Yup.string().required('Le lieu est requis'),
     titre: Yup.string().required('Le titre est requis'),
-    description: Yup.string().required('La description est requise'),
-    responsabilites: Yup.string().required('Les responsabilités sont requises'),
-    qualifications: Yup.string().required('Les qualifications sont requises'),
-    dureeStage: Yup.number().required('La durée de stage est requise').positive('La durée de stage doit être positive'),
+     mission: Yup.string().required('La mission est requise'),
+     domaine: Yup.string().required('Le domaine est requis'),
+    profil: Yup.string().required('Le profil est requises'),
+     dureeStage: Yup.number().required('La durée de stage est requise').positive('La durée de stage doit être positive'),
     nombreStagiaires: Yup.number().required('Le nombre de stagiaires est requis').positive('Le nombre de stagiaires doit être positif'),
-    competences: Yup.string().required('Les compétences sont requises'),
-    dateLimite: Yup.date().required('La date limite est requise').min(new Date(), 'La date limite doit être ultérieure à aujourd\'hui'),
+     competences: Yup.string().required('Les compétences sont requises'),
+     dateLimite: Yup.date().required('La date limite est requise').min(new Date(), 'La date limite doit être ultérieure à aujourd\'hui'),
   });
 
-  const handleSubmit = async (values) => {
-    try {
-      const response = await axios.post('http://localhost:5000/offres/creer', values);
-      console.log(response.data);
-      // Ajouter une logique de redirection ou un message de succès ici
-    } catch (err) {
-      console.error(err);
-      // Afficher un message d'erreur à l'utilisateur
-    }
-  };
+
 
   return (
+
+   
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Créer une nouvelle offre</h2>
       <Formik
@@ -40,15 +38,16 @@ const CreerOffre = () => {
           lieu: '', 
           titre: '',
           description: '',
-          responsabilites: '',
-          qualifications: '',
+          profil: '',
           dureeStage: '',
           nombreStagiaires: 0,
+          domaine:'',
+          mission:'',
           competences: '',
           dateLimite: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit}
+        onSubmit={async(values)=>await createOfffre(values)}
       >
         {({ errors, touched }) => (
           <Form>
@@ -65,21 +64,38 @@ const CreerOffre = () => {
               <ErrorMessage name="titre" component="div" className="text-red-600 text-sm" />
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                Description
+              <label htmlFor="mission" className="block text-sm font-medium text-gray-700">
+                Mission
               </label>
               <Field
-                id="description"
-                name="description"
+                id="mission"
+                name="mission"
                 type="text"
                 as="textarea"
                 rows="4"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
-              <ErrorMessage name="description" component="div" className="text-red-600 text-sm" />
+              <ErrorMessage name="mission" component="div" className="text-red-600 text-sm" />
             </div>
             <div className="mb-4">
-              <label htmlFor="responsabilites" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="doamine" className="block text-sm font-medium text-gray-700">
+                Domaine
+              </label>
+              <Field
+                as="select"
+                id="doamine"
+                name="domaine"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="">Choisissez le domaine</option>
+                {domainesDisponible.map(domaine => (
+                  <option key={domaine.id} value={domaine.id}>{domaine.nom}</option>
+                ))}
+              </Field>
+              <ErrorMessage name="lieu" component="div" className="text-red-600 text-sm" />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="profil" className="block text-sm font-medium text-gray-700">
                 Profil
               </label>
               <Field
@@ -90,11 +106,11 @@ const CreerOffre = () => {
                 rows="4"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
-              <ErrorMessage name="responsabilites" component="div" className="text-red-600 text-sm" />
+              <ErrorMessage name="profil" component="div" className="text-red-600 text-sm" />
             </div>
             
-              <div className="mb-4">
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+            <div className="mb-4">
+              <label htmlFor="lieu" className="block text-sm font-medium text-gray-700">
                 Lieu
               </label>
               <Field
@@ -163,6 +179,8 @@ const CreerOffre = () => {
             </div>
             <button
               type="submit"
+              name="submit"
+
               className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
             >
               Créer

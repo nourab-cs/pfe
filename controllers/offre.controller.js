@@ -3,6 +3,7 @@ const Offre = require("../models/offre.model")
 
 const create = async(req,res)=>{
     try {
+        console.log(req.body)
         require("../database");
         const newOffre = await Offre.create(req.body)
         res.status(201).json(newOffre)

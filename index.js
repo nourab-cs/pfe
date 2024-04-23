@@ -18,11 +18,18 @@ const auth = require("./routes/auth.route");
 const user = require("./routes/user.route");
 const offre = require("./routes/offre.route");
 
+const candidature = require("./routes/candidature.route");
+
+
 const admin = require("./routes/admin.routes");
 
 app.use(auth);
 app.use(user);
 app.use("/offre", offre);
+
+app.use("/postuler", candidature);
+
+
 app.use("/admin", require("./middleware").checkAuth , require("./middleware").checkAdmin, admin);
 
 // /api route

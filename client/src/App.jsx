@@ -71,7 +71,7 @@ function App() {
   } />
 
 <Route
-            path="/postuler"
+            path="/postuler/:id"
             element={
               
                 <Postuler />
