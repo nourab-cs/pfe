@@ -4,7 +4,7 @@ function Home() {
   return (
     <div className="flex">
 
-      <AllOffres/>
+   
     </div> 
  
   ) 

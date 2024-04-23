@@ -93,6 +93,7 @@ function Login() {
             />
             {errors.password && touched.password ? <div>{errors.password}</div> : null}
           </div>
+          <Link to="/forgot-password">Forgot Password</Link>
           <div className="mt-6">
             <button
               type="submit"

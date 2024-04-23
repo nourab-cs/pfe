@@ -47,6 +47,16 @@ function Navbar() {
             Home
           </Link>
         </li>
+
+        <li className="lg:ml-12">
+          <Link
+            to="/alloffres"
+            className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
+          >
+           AllOffres
+          </Link>
+        </li>
+
         {user.email && (
           <li className="lg:ml-12">
             <Link
