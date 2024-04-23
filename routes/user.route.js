@@ -8,9 +8,6 @@ const router = express.Router();
 
 
 
-
-
-
 router.get("/private", require("../middleware").checkAuth , require("../controllers/user.controller").private);
 
 

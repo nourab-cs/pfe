@@ -26,7 +26,19 @@ const all =  async(req,res)=>{
     }
 }
 
+const GetOne =  async(req,res)=>{
+    try {
+        require("../database");
+
+        const offre = await Offre.findById(req.query.id)
+        res.status(201).json(offre)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
+
 
 module.exports = {
-    all,create
+    all,create,GetOne,
 }
