@@ -24,17 +24,21 @@ function AllOffres() {
   };
 
   return (
-    <div className="md:container md:mx-auto">
-      {/* Bouton "Ajouter une offre" avec un lien vers CreateOffre */}
-      <Link to="/create-offre" className="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
-        Ajouter une offre
-      </Link>
+    <div className="bg-white py-24 sm:py-32">
+     <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
-      <div className="flex justify-around flex-wrap pt-10">
+      <div className="mx-auto max-w-2xl lg:mx-0">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
+         <p className="mt-2 text-lg leading-8 text-gray-600">
+           Learn how to grow your business with our expert advice.
+         </p>
+       </div>
+      <div className="mx-auto mt-10 grid max-w-2xl  grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+
         {offers.map((offer, index) => { 
           {console.log(offer)}
           
-          return < div key={index} className="pt-10">
+          return < div key={index} className="pt-10 ">
             <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{offer.titre}</h5>
@@ -49,6 +53,8 @@ function AllOffres() {
             </div>
           </div>
         })}
+             </div>
+ 
       </div>
       <Pagination 
         currentPage={currentPage} 
@@ -58,7 +64,6 @@ function AllOffres() {
     </div>  
   );
 }
-
 export default AllOffres;
 
 

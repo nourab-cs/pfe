@@ -12,8 +12,19 @@ const create = async(req,res)=>{
         res.status(500).json(error)
     }
 }
+const   offre_candidates = async(req,res)=>{
+    try {
+        require("../database");
+        const newCandidature = await Candidature.find({offre_id:req.params.id})
+        res.status(201).json(newCandidature)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
 
 
 module.exports = {
     create,
+    offre_candidates
 }

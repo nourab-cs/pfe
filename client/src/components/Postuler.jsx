@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -10,6 +10,22 @@ function CandidatureForm() {
   
   const location = useLocation();
     const id = location.pathname.split("/")[2];
+
+    const [data, setData] = useState("");
+
+    const handleFileInputChange = (event) => {
+      const file = event.target.files[0];
+  
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        setData(reader.result);
+        console.log(reader.result)
+      };
+  
+      reader.readAsDataURL(file);
+    };
+
 
     console.log(id);
 
@@ -273,7 +289,8 @@ function CandidatureForm() {
                   <label htmlFor="cv" className="block text-sm font-medium text-gray-700">
                     CV (PDF)
                   </label>
-                  <Field
+                  <input
+                     onChange={handleFileInputChange}
                     type="file"
                     id="cv"
                     name="cv"

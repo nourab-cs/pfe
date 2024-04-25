@@ -27,6 +27,36 @@ function Admin() {
           </Link>
           
         </li>
+        <li>
+          {" "}
+          <Link
+            to="/admin/offres-list"
+            className="block px-3 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer"
+          >
+            All Offres
+          </Link>
+          
+        </li>
+        <li>
+          {" "}
+          <Link
+            to="/admin/stagiaires-list"
+            className="block px-3 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer"
+          >
+            stagiaires
+          </Link>
+          
+        </li>
+        <li>
+          {" "}
+          <Link
+            to="/admin/candidats-list"
+            className="block px-3 py-2 text-red-800 hover:bg-red-100 hover:text-white-500 rounded-md cursor-pointer"
+          >
+            Candidats
+          </Link>
+          
+        </li>
       </ul>
     </aside>
   );

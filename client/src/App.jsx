@@ -66,7 +66,7 @@ function App() {
               </Admin>
             }
           />
-  <Route path="description/:id" element={
+  <Route path="/description/:id" element={
     <OffreDescription/>
   } />
 

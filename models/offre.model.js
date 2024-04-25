@@ -60,7 +60,7 @@ const schema = new mongoose.Schema({
     required: true,
   },
    mission: {
-     type: String,
+     type: [String],
      required: true,
    },
   competences: {
