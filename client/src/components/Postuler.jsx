@@ -4,6 +4,7 @@ import * as Yup from "yup";
 
 import { useLocation } from 'react-router-dom';
 import {createcandidature} from "../services/candidature.service";
+import { axiosClient } from "../services/axiosClient";
 
 
 function CandidatureForm() {
@@ -20,7 +21,6 @@ function CandidatureForm() {
   
       reader.onload = () => {
         setData(reader.result);
-        console.log(reader.result)
       };
   
       reader.readAsDataURL(file);
@@ -70,11 +70,15 @@ function CandidatureForm() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values)=>{
-          const data  = {
+          values.cv = data
+          const v  = {
+            
             offre_id: id,
             data:values
           }
-          console.log(data)
+          console.log(v)
+                 axiosClient.post("/postuler/create", v ).then(res=>console.log(res)).catch(err=>console.log(err))
+
         }}
       >
         {({ errors,touched }) => (

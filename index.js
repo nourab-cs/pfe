@@ -11,7 +11,7 @@ const cors = require("cors");
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 // setting up the express to send and recive json data
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(cookie());
 
 const auth = require("./routes/auth.route");
