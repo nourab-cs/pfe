@@ -71,6 +71,7 @@ function CandidatureForm() {
         validationSchema={validationSchema}
         onSubmit={(values)=>{
           values.cv = data
+          values.offer_id = id
           const v  = {
             
             offre_id: id,

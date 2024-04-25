@@ -54,13 +54,19 @@ const AllOffres = () => {
         </thead>
         <tbody className="divide-y divide-gray-300">
           {offers.map((offer, index) => (
-            <tr key={index} className="hover:bg-gray-100">
+            <tr  key={index} className="hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-wrap">{offer.titre}</td>
               <td className="px-6 py-4 whitespace-nowrap">{offer.domaine}</td>
               <td className="px-6 py-4 whitespace-nowrap">{offer.dateLimite}</td>
               <td className="px-6 py-4 whitespace-nowrap text-right">
                 <Link
                   to={`/description/${offer._id}`}
+                  className="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                >
+                  Voir détails
+                </Link>
+                <Link
+                  to={`/admin/candidates_per_offre/${offer._id}`}
                   className="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
                 >
                   Voir détails

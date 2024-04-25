@@ -1,13 +1,12 @@
-
 const mongoose = require('mongoose');
 
-const schema = new mongoose.Schema({
-    qualite: {
-        type: String,
-        required: true,
-      },
-    cin: {
-    type: Number,
+const candidatureSchema = new mongoose.Schema({
+  qualite: {
+    type: String,
+    required: true,
+  },
+  cin: {
+    type: String,
     required: true,
   },
   nom: {
@@ -27,13 +26,13 @@ const schema = new mongoose.Schema({
     required: true,
   },
   telephone: {
-    type: Number,
+    type: String,
     required: true,
   },
-   email: {
-     type: String,
-     required: true,
-   },
+  email: {
+    type: String,
+    required: true,
+  },
   region: {
     type: String,
     required: true,
@@ -46,14 +45,20 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-domaine: {
-     type: String,
-     required: true,
-   },
-   offre_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Offre' }
-
+  domaine: {
+    type: String,
+    required: true,
+  },
+  cv: {
+    type: String, // Adding cv field as String
+    required: true,
+  },
+  offre_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Offre'
+  }
 });
 
-const Candidature = mongoose.model('Candidature', schema);
+const Candidature = mongoose.model('Candidature', candidatureSchema);
 
 module.exports = Candidature;
