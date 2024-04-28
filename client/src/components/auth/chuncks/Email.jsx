@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import Password from "./Password";
+import { Typography } from "@material-tailwind/react";
 
 function Email({ iscode, username, email }) {
   const [EMAIL_REGEX] = useState(
@@ -50,18 +51,22 @@ function Email({ iscode, username, email }) {
         }}
       >
         {({ errors, touched }) => (
-          <Form className="mt-6">
-            {!iscode ? (
+          <Form className="mt-6 mx-auto max-w-[24rem] text-left">
+          {!iscode ? (
               <div className="mb-2">
                 <label
                   htmlFor="username"
-                  className="block text-sm font-semibold text-gray-800"
                 >
-                  Username
+                 <Typography
+                variant="small"
+                className="mb-2 block font-medium text-gray-900"
+              >
+                Username
+              </Typography>
                 </label>
                 <Field
-              className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              name="username"
+            className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
+            name="username"
                 />
                 {errors.username && touched.username ? (
                   <div>{errors.username}</div>
@@ -71,13 +76,17 @@ function Email({ iscode, username, email }) {
               <div className="mb-2">
                 <label
                   htmlFor="username"
-                  className="block text-sm font-semibold text-gray-800"
                 >
-                  Username
+                 <Typography
+                variant="small"
+                className="mb-2 block font-medium text-gray-900"
+              >
+                Username
+              </Typography>
                 </label>
                 <Field
                   disabled={true}
-                  className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
                   name="usernameholder"
                   value={username}
                 />
@@ -88,14 +97,19 @@ function Email({ iscode, username, email }) {
               <div className="mb-2">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-semibold text-gray-800"
+                  
                 >
-                  Email 
+                 <Typography
+                variant="small"
+                className="mb-2 block font-medium text-gray-900"
+              >
+                Your Email
+              </Typography>
                 </label>
                 <Field
                   disabled={iscode}
                   type="email"
-                  className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
                   name="email"
                 />
                 {errors.email && touched.email ? (
@@ -129,7 +143,7 @@ function Email({ iscode, username, email }) {
                 className={
                   iscode
                     ? "invisible"
-                    : "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+                    : "w-full px-4 py-2 tracking-wide font-light text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
                 }
               >
                 Register

@@ -11,6 +11,7 @@ const AllOffres = () => {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
 
+
   useEffect(() => {
     getAll()
       .then((res) => {
@@ -56,8 +57,8 @@ const AllOffres = () => {
           {offers.map((offer, index) => (
             <tr  key={index} className="hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-wrap">{offer.titre}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{offer.domaine}</td>
-              <td className="px-6 py-4 whitespace-nowrap">{offer.dateLimite}</td>
+              <td className="px-6 py-4 whitespace-wrap">{offer.domaine}</td>
+              <td className="px-6 py-4 whitespace-wrap">{offer.dateLimite}</td>
               <td className="px-6 py-4 whitespace-nowrap text-right">
                 <Link
                   to={`/description/${offer._id}`}

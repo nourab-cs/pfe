@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import Email from "./chuncks/Email";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Typography } from "@material-tailwind/react";
 
 function Register() {
   const navigate = useNavigate();
@@ -42,11 +43,12 @@ function Register() {
   }, []);
 
   return (
-    <div className="w-full p-6  m-auto rounded-md shadow-xl lg:max-w-xl bg-gradient-to-r from-red-50 via-red-100 to-red-50 duration-500">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign up</h2>
-    </div>
-
+    <section className="grid text-center h-screen items-center p-8">
+      <div>
+      <Typography variant="h3" color="blue-gray" className="mb-2">
+          Sign Up
+        </Typography>
+       
 
       <Email iscode={iscode} email={email} username={username} />
       <p className="mt-8 text-xs font-light text-center text-gray-700">
@@ -60,6 +62,7 @@ function Register() {
         </Link>
       </p>
     </div>
+    </section>
   );
 }
 

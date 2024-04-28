@@ -50,13 +50,17 @@ function Password({ username, email }) {
             <div className="mb-2">
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-gray-800"
               >
-                password
+                 <Typography
+                variant="small"
+                className="mb-2 block font-medium text-gray-900"
+              >
+                Password
+              </Typography>
               </label>
               <Field
                 type="password"
-                className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
                 name="password"
               />
               {errors.password && touched.password ? (
@@ -66,13 +70,16 @@ function Password({ username, email }) {
             <div className="mb-2">
               <label
                 htmlFor="confirm"
-                className="block text-sm font-semibold text-gray-800"
               >
-                confirm
+                  <Typography
+                variant="small"
+                className="mb-2 block font-medium text-gray-900"
+              >Confirm
+              </Typography>
               </label>
               <Field
                 type="password"
-                className="opacity-70 block w-full px-4 py-2 mt-2 text-red-700 bg-white border rounded-md focus:border-red-400 focus:ring-red-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
                 name="confirm"
               />
               {errors.confirm && touched.confirm ? (
