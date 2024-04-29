@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { getAllUsers } from '../../services/admin.services';
+import Pagination from '../layouts/Pagination';
 import {
   Card,
   CardBody,
@@ -9,42 +11,27 @@ import {
 import { BriefcaseIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
-const billingCardData = [
-  {
-    icon: <BriefcaseIcon className="h-6 w-6 text-gray-900" />,
-    title: "Burrito Vikings",
-    detail: "Company",
-    options: {
-      "Contact": "Emma Roberts",
-      "Email Address": "emma@mail.com",
-      "VAT Number": "FRB1235476",
-    },
-  },
-  {
-    icon: <BriefcaseIcon className="h-6 w-6 text-gray-900" />,
-    title: "Stone Tech Zone",
-    detail: "Company",
-    options: {
-      "Contact": "Marcel Glock",
-      "Email Address": "marcel@mail.com",
-      "VAT Number": "FRB1235476",
-    },
-  },
-  {
-    icon: <BriefcaseIcon className="h-6 w-6 text-gray-900" />,
-    title: "Fiber Notion",
-    detail: "Company",
-    options: {
-      "Contact": "Misha Stam",
-      "Email Address": "misha@mail.com",
-      "VAT Number": "FRB1235476",
-    },
-  },
-];
-
 function Billing3() {
+    const [users, setUsers] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const itemsPerPage = 6;
+  
+    useEffect(() => {
+        getAllUsers()
+        .then((res) => {
+          setTotalPages(Math.ceil(res.data.length / itemsPerPage));
+          setUsers(res.data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+        })
+        .catch((err) => console.log(err));
+    }, [currentPage]);
+  
+    const handlePageChange = (page) => {
+      setCurrentPage(page);
+    };
+
   return (
-    <section className=" w-full">
+    <section className="w-full">
       <Card shadow={false}>
         <CardHeader
           floated={false}
@@ -75,25 +62,25 @@ function Billing3() {
           </div>
         </CardHeader>
         <CardBody className="flex flex-col gap-4 p-4">
-          {billingCardData.map(({ icon, title, detail, options }, key) => (
-            <Card
-              key={key}
+        {users.map((user, index) => (         
+               <Card
+               key={index} 
               shadow={false}
               className="rounded-lg border border-gray-300 p-4"
             >
               <div className="mb-4 flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="border border-gray-200 p-2.5 rounded-lg">
-                    {icon}
+                     {user.role}
                   </div>
                   <div>
                     <Typography variant="small" color="blue-gray" className="mb-1 font-bold">
-                      {title}
+                      {user.username}
                     </Typography>
                     <Typography
                       className="text-gray-600 text-xs font-normal"
                     >
-                      {detail}
+                      {user.email}
                     </Typography>
                   </div>
                 </div>
@@ -120,25 +107,6 @@ function Billing3() {
                     </Typography>
                   </Button>
                 </div>
-              </div>
-              <div>
-                {options && (
-                  <div>
-                    {Object.keys(options).map((label) => (
-                      <div key={label} className="flex gap-1">
-                        <Typography className="mb-1 text-xs font-medium text-gray-600">
-                          {label}:
-                        </Typography>
-                        <Typography
-                          className="text-xs font-bold"
-                          color="blue-gray"
-                        >
-                          {options[label]}
-                        </Typography>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             </Card>
           ))}
