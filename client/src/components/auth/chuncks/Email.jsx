@@ -51,22 +51,22 @@ function Email({ iscode, username, email }) {
         }}
       >
         {({ errors, touched }) => (
-          <Form className="mt-6 mx-auto max-w-[24rem] text-left">
-          {!iscode ? (
+          <Form className="mt-6 mx-auto max-w-[24rem] text-center">
+            {!iscode ? (
               <div className="mb-2">
                 <label
                   htmlFor="username"
                 >
-                 <Typography
-                variant="small"
-                className="mb-2 block font-medium text-gray-900"
-              >
-                Username
-              </Typography>
+                  <Typography
+                    variant="small"
+                    className="mb-2 block font-medium text-gray-900"
+                  >
+                    Username
+                  </Typography>
                 </label>
                 <Field
-            className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
-            name="username"
+                  className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
+                  name="username"
                 />
                 {errors.username && touched.username ? (
                   <div>{errors.username}</div>
@@ -77,12 +77,12 @@ function Email({ iscode, username, email }) {
                 <label
                   htmlFor="username"
                 >
-                 <Typography
-                variant="small"
-                className="mb-2 block font-medium text-gray-900"
-              >
-                Username
-              </Typography>
+                  <Typography
+                    variant="small"
+                    className="mb-2 block font-medium text-gray-900"
+                  >
+                    Username
+                  </Typography>
                 </label>
                 <Field
                   disabled={true}
@@ -97,14 +97,14 @@ function Email({ iscode, username, email }) {
               <div className="mb-2">
                 <label
                   htmlFor="email"
-                  
+
                 >
-                 <Typography
-                variant="small"
-                className="mb-2 block font-medium text-gray-900"
-              >
-                Your Email
-              </Typography>
+                  <Typography
+                    variant="small"
+                    className="mb-2 block font-medium text-gray-900"
+                  >
+                    Email
+                  </Typography>
                 </label>
                 <Field
                   disabled={iscode}
@@ -122,7 +122,11 @@ function Email({ iscode, username, email }) {
                   htmlFor="email"
                   className="block text-sm font-semibold text-gray-800"
                 >
-                  Email
+                  <Typography
+                    variant="small"
+                    className="mb-2 block font-medium text-gray-900"
+                  >Email</Typography>
+
                 </label>
                 <Field
                   value={email}
@@ -153,7 +157,7 @@ function Email({ iscode, username, email }) {
         )}
       </Formik>
       {iscode && (
-          <Password email={email} username={username} />
+        <Password email={email} username={username} />
       )}
     </div>
   );

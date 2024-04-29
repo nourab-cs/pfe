@@ -9,14 +9,14 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { BriefcaseIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import jsPDF  from "jspdf";
 
 function Billing3() {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 6;
-  
+
     useEffect(() => {
         getAllUsers()
         .then((res) => {
@@ -28,6 +28,18 @@ function Billing3() {
   
     const handlePageChange = (page) => {
       setCurrentPage(page);
+    };
+
+    const generatePDF = (user) => {
+        try {
+            const doc = new jsPDF();
+            doc.text(`Nom: ${user.username}`, 10, 10);
+            doc.text(`Email: ${user.email}`, 10, 20);
+            // Ajoutez d'autres informations pertinentes pour l'attestation
+            doc.save(`${user.username}_attestation.pdf`);
+        } catch (error) {
+            console.error('Erreur lors de la génération du PDF :', error);
+        }
     };
 
   return (
@@ -55,9 +67,9 @@ function Billing3() {
               variant="outlined"
               color="gray"
               className="flex justify-center gap-3 md:max-w-fit w-full ml-auto"
+              onClick={() => console.log('Ajouter une nouvelle carte')}
             >
-              <PlusIcon strokeWidth={3} className="h-4 w-4" />
-              add new card
+              Ajouter une nouvelle carte
             </Button>
           </div>
         </CardHeader>
@@ -89,11 +101,9 @@ function Billing3() {
                     size="sm"
                     variant="text"
                     className="flex items-center gap-2"
+                    onClick={() => generatePDF(user)}
                   >
-                    <PencilIcon className="h-4 w-4 text-gray-600" />
-                    <Typography className="font-semibold text-xs text-gray-600 md:block hidden">
-                      Edit
-                    </Typography>
+                    Générer PDF
                   </Button>
                   <Button
                     size="sm"
@@ -103,7 +113,7 @@ function Billing3() {
                   >
                     <TrashIcon className="h-4 w-4 text-red-500" />
                     <Typography className="font-semibold text-xs text-red-500 md:block hidden">
-                      delete
+                      Supprimer
                     </Typography>
                   </Button>
                 </div>

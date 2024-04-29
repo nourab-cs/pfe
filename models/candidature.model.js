@@ -56,6 +56,11 @@ const candidatureSchema = new mongoose.Schema({
   offre_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Offre'
+  },
+  is_accepted : {
+    type: Boolean,
+    required: true ,
+
   }
 });
 

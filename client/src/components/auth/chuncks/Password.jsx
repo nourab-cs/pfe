@@ -2,8 +2,10 @@ import { Formik, Form, Field } from "formik";
 import { useState, useCallback } from "react";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-
+import { Typography } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 function Password({ username, email }) {
+  const navigate = useNavigate()
   const [PASSWORD_REGEX] = useState(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/
   );
@@ -26,7 +28,9 @@ function Password({ username, email }) {
       const { register } = await import("../../../services/aut.services");
       const res = await register(username, email, password);
       console.log(res);
+      
       toast.success(`Welcome${""}`);
+      navigate("/login")
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -43,10 +47,11 @@ function Password({ username, email }) {
         validationSchema={passwordSchema}
         onSubmit={async (values) => {
           await handleRegister(username, email, values.password);
+          
         }}
       >
         {({ errors, touched }) => (
-          <Form className="mt-6">
+          <Form className="mt-6 mx-auto max-w-[24rem] text-center">
             <div className="mb-2">
               <label
                 htmlFor="password"

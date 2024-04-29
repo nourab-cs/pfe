@@ -24,7 +24,7 @@ const assignRole = async (req, res) => {
 const allUsers = async (req, res) => {
   try {
     require("../database");
-    const users = await User.find({ role: { $in: ["user"] } });
+    const users = await User.find({ role: { $in: ["user","recruter"] } });
     let data = users.map((el) => {
       return {
         username: el.username,

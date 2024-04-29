@@ -35,9 +35,8 @@ function Navbar() {
       </div>
 
       <ul
-        className={`${
-          isMenuOpen ? "block" : "hidden"
-        } absolute top-0 left-0 bg-gray-100 w-full mt-16 lg:mt-0 lg:relative lg:flex lg:flex-row lg:items-center lg:w-auto`}
+        className={`${isMenuOpen ? "block" : "hidden"
+          } absolute top-0 left-0 bg-gray-100 w-full mt-16 lg:mt-0 lg:relative lg:flex lg:flex-row lg:items-center lg:w-auto`}
       >
         <li className="lg:ml-12">
           <Link
@@ -47,16 +46,16 @@ function Navbar() {
             Home
           </Link>
         </li>
-
-        <li className="lg:ml-12">
-          <Link
-            to="/alloffres"
-            className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
-          >
-           AllOffres
-          </Link>
-        </li>
-
+        {user._id &&
+          <li className="lg:ml-12">
+            <Link
+              to="/alloffres"
+              className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
+            >
+              AllOffres
+            </Link>
+          </li>
+        }
         {user.email && (
           <li className="lg:ml-12">
             <Link
@@ -67,7 +66,7 @@ function Navbar() {
             </Link>
           </li>
         )}
-        {user.role == "admin" && (
+        {(user.role == "admin" || user.role == "recruter") && (
           <li className="lg:ml-12">
             <Link
               to="/admin/dashbord"
