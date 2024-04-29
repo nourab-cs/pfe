@@ -124,11 +124,31 @@ const logout = async (req, res) => {
   }
 };
 
+
+const code = async (req, res) => {
+  try {
+    const {google} = require('googleapis');
+    const oauth2Client = new google.auth.OAuth2(
+process.env.GOOGLE_ID,
+process.env.GOOGLE_SECRET,
+process.env.GOOGLE_REDIRECT
+);
+
+
+const token = await oauth2Client.getToken(req.query.code)
+
+console.log(token)
+    res.status(200).json({ message: " code" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
+};
+
+
 const oauth = async (req, res) => {
   try {
     const {google} = require('googleapis');
-console.log(req);
-
            const oauth2Client = new google.auth.OAuth2(
      process.env.GOOGLE_ID,
      process.env.GOOGLE_SECRET,
@@ -144,12 +164,13 @@ console.log(req);
 
     const authorizationUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
+      
 
 
       scope: scopes,
 
 
-      include_granted_scopes: true
+      include_granted_scopes: false
     });
     res.status(200).json({ authorizationUrl });
   } catch (error) {
@@ -166,4 +187,5 @@ module.exports = {
   login,
   logout,
   oauth,
+  code
 };
