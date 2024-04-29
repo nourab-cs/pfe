@@ -139,6 +139,7 @@ function Login() {
                     import("../../services/aut.services").then(module => module.google().then(
                       googleUser => {
                         console.log(googleUser);
+                        window.location.href = googleUser.data.authorizationUrl
                       }
                     ).catch());
                   }}

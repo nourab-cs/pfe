@@ -4,6 +4,7 @@ import Login from "./components/auth/Login";
 import Navbar from "./components/layouts/Navbar";
 import Register from "./components/auth/Register";
 import Profile from "./components/user/Profile";
+import { Public } from "./components/HOC/Public";
 
 import { User } from "./components/HOC/User";
 import CreateOffre from "./components/offre/CreateOffre";
@@ -12,33 +13,51 @@ import AdminIndex from "./components/admin/AdminIndex";
 import { Admin } from "./components/HOC/Admin";
 
 import ForgotPassword from "./components/auth/ForgotPassword";
-import ResetPassword  from "./components/auth/ResetPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 import ApplicationForm from "./components/ApplicationForm";
 import ApplicantInformation from "./components/ApplicantInformation";
 import Postuler from "./components/Postuler";
 import OffreDescription from "./components/offre/OffreDescription";
-
+import Auth from "./components/auth/Auth";
 
 function App() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-   
-
       <Navbar />
-
-
-      
 
       <div className="flex-grow">
         <Routes>
-
-
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/login"
+            element={
+              <Public>
+                <Login />
+              </Public>
+            }
+          />
+          <Route
+            path="/auth"
+            element={
+              <Public>
+                <Auth />
+              </Public>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={
+              <Public>
+                <Register />
+              </Public>
+            }
+          />
           <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-<Route path="/reset_password/:id/:token" element={<ResetPassword />}></Route>
+          <Route
+            path="/reset_password/:id/:token"
+            element={<ResetPassword />}
+          ></Route>
 
           <Route
             path="/profile"
@@ -49,7 +68,7 @@ function App() {
             }
           />
 
-            <Route
+          <Route
             path="/alloffres"
             element={
               <User>
@@ -58,7 +77,7 @@ function App() {
             }
           />
 
-<Route
+          <Route
             path="/create-offre"
             element={
               <Admin>
@@ -66,18 +85,9 @@ function App() {
               </Admin>
             }
           />
-  <Route path="/description/:id" element={
-    <OffreDescription/>
-  } />
+          <Route path="/description/:id" element={<OffreDescription />} />
 
-<Route
-            path="/postuler/:id"
-            element={
-              
-                <Postuler />
-             
-            }
-          />
+          <Route path="/postuler/:id" element={<Postuler />} />
 
           <Route
             path="/admin/*"
@@ -90,9 +100,8 @@ function App() {
 
           <Route />
         </Routes>
-         </div>
+      </div>
 
-     
       <footer>footer</footer>
     </div>
   );
