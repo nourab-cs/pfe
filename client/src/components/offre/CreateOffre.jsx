@@ -1,9 +1,11 @@
-import React from 'react';
-import axios from 'axios';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import {createOfffre} from "../../services/offre.service";
+import { createOfffre } from "../../services/offre.service";
+import { useNavigate } from 'react-router-dom';
+
+import toast from 'react-hot-toast';
 const CreerOffre = () => {
+  const navigate = useNavigate()
   const sitesDisponibles = [
     { id: 'site1', nom: 'Site 1' },
     { id: 'site2', nom: 'Site 2' },
@@ -15,39 +17,51 @@ const CreerOffre = () => {
     { id: 'domaine3', nom: 'Domaine 3' },
   ];
   const validationSchema = Yup.object().shape({
-     lieu: Yup.string().required('Le lieu est requis'),
+    lieu: Yup.string().required('Le lieu est requis'),
     titre: Yup.string().required('Le titre est requis'),
-     mission: Yup.string().required('La mission est requise'),
-     domaine: Yup.string().required('Le domaine est requis'),
+    mission: Yup.string().required('La mission est requise'),
+    domaine: Yup.string().required('Le domaine est requis'),
     profil: Yup.string().required('Le profil est requises'),
-     dureeStage: Yup.number().required('La durée de stage est requise').positive('La durée de stage doit être positive'),
+    dureeStage: Yup.number().required('La durée de stage est requise').positive('La durée de stage doit être positive'),
     nombreStagiaires: Yup.number().required('Le nombre de stagiaires est requis').positive('Le nombre de stagiaires doit être positif'),
-     competences: Yup.string().required('Les compétences sont requises'),
-     dateLimite: Yup.date().required('La date limite est requise').min(new Date(), 'La date limite doit être ultérieure à aujourd\'hui'),
+    competences: Yup.string().required('Les compétences sont requises'),
+    dateLimite: Yup.date().required('La date limite est requise').min(new Date(), 'La date limite doit être ultérieure à aujourd\'hui'),
   });
 
 
 
   return (
 
-   
+
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Créer une nouvelle offre</h2>
       <Formik
         initialValues={{
-          lieu: '', 
+          lieu: '',
           titre: '',
           description: '',
           profil: '',
           dureeStage: '',
           nombreStagiaires: 0,
-          domaine:'',
-          mission:'',
+          domaine: '',
+          mission: '',
           competences: '',
           dateLimite: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={async(values)=>await createOfffre(values)}
+        onSubmit={async (values) => {
+
+
+          createOfffre(values).then(res => {
+            toast.success("Offre created")
+            navigate("/alloffres")
+          }).catch(error => {
+            console.log(error);
+            toast.error("Error")
+          })
+
+
+        }}
       >
         {({ errors, touched }) => (
           <Form>
@@ -108,7 +122,7 @@ const CreerOffre = () => {
               />
               <ErrorMessage name="profil" component="div" className="text-red-600 text-sm" />
             </div>
-            
+
             <div className="mb-4">
               <label htmlFor="lieu" className="block text-sm font-medium text-gray-700">
                 Lieu
@@ -127,8 +141,8 @@ const CreerOffre = () => {
               <ErrorMessage name="lieu" component="div" className="text-red-600 text-sm" />
             </div>
             <div className="mb-4">
-             
-            <label htmlFor="dureeStage" className="block text-sm font-medium text-gray-700">
+
+              <label htmlFor="dureeStage" className="block text-sm font-medium text-gray-700">
                 Durée de stage (en mois)
               </label>
               <Field
