@@ -54,9 +54,7 @@ const verifyEmail = async (req, res) => {
     //   return res.status(400).json({ message: "user already exist" });
     // }
 
-    res
-      .status(200)
-      .json(prom);
+    res.status(200).json(prom);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -124,61 +122,73 @@ const logout = async (req, res) => {
   }
 };
 
-
 const code = async (req, res) => {
   try {
-    const {google} = require('googleapis');
+    const { google } = require("googleapis");
     const oauth2Client = new google.auth.OAuth2(
-process.env.GOOGLE_ID,
-process.env.GOOGLE_SECRET,
-process.env.GOOGLE_REDIRECT
-);
+      process.env.GOOGLE_ID,
+      process.env.GOOGLE_SECRET,
+      process.env.GOOGLE_REDIRECT
+    );
 
+    const token = await oauth2Client.getToken(req.query.code);
+    const data = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+      headers: {
+        Authorization: `Bearer ${token.tokens.access_token}`,
+      },
+    });
+    const userData = await data.json();
+    require("../database");
+    const isUser = await User.findOne({ email: userData.email });
+    if (!isUser) {
+      await User.create({
+        username: userData.given_name,
+        email: userData.email,
+      });
+    }
+    const exp = Date.now() + 1000 * 60 * 60;
+    const access_token = jwt.sign(
+      { id: isUser._id, exp, role: isUser.role },
+      process.env.SECRET_KEY
+    );
+    res
+      .cookie("Authorization", access_token)
+      .status(200)
+      .json(userData)
 
-const token = await oauth2Client.getToken(req.query.code)
-
-console.log(token)
-    res.status(200).json({ message: " code" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "error" });
   }
 };
 
-
 const oauth = async (req, res) => {
   try {
-    const {google} = require('googleapis');
-           const oauth2Client = new google.auth.OAuth2(
-     process.env.GOOGLE_ID,
-     process.env.GOOGLE_SECRET,
-     process.env.GOOGLE_REDIRECT
+    const { google } = require("googleapis");
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_ID,
+      process.env.GOOGLE_SECRET,
+      process.env.GOOGLE_REDIRECT
     );
-    
-  
-    const scopes = [
-      "https://www.googleapis.com/auth/userinfo.profile"
-    ];
-    
 
+    const scopes = [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email",
+    ];
 
     const authorizationUrl = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      
-
+      access_type: "offline",
 
       scope: scopes,
 
-
-      include_granted_scopes: false
+      include_granted_scopes: false,
     });
     res.status(200).json({ authorizationUrl });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "error" });
   }
-}
-
+};
 
 module.exports = {
   sendEmail,
@@ -187,5 +197,5 @@ module.exports = {
   login,
   logout,
   oauth,
-  code
+  code,
 };
