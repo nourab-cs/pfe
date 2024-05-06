@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../services/axiosClient";
+import { useUser } from "../../stores/userStore";
 
 const Auth = function () {
+  const [setUser] = useUser((state) => [state.setUser]);
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location.search.split("=")[1]);
@@ -12,8 +14,9 @@ const Auth = function () {
       .get(`/code?code=${location.search.split("=")[1]}`, {
         withCredentials: true,
       })
-      .then((res) => {
-        if (res.status == 200) navigate("/");
+      .then(async (res) => {
+        setUser(res.data);
+        navigate("/")
       })
       .catch((err) => console.log(err));
   }, []);

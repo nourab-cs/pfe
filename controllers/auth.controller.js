@@ -154,8 +154,14 @@ const code = async (req, res) => {
     res
       .cookie("Authorization", access_token)
       .status(200)
-      .json(userData)
-
+      .json(
+        {
+          username: isUser.username,
+          email: isUser.email,
+          role: isUser.role,
+          _id: isUser._id,
+        } 
+      );
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "error" });
