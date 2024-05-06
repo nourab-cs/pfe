@@ -59,7 +59,7 @@ const candidatureSchema = new mongoose.Schema({
   },
   is_accepted : {
     type: Boolean,
-    required: true ,
+    required: false ,
 
   }
 });

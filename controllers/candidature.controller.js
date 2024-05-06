@@ -35,7 +35,7 @@ const create = async (req, res) => {
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
         req.body.data.cv,
-        { folder: "cvs", resource_type: "raw" },
+        { folder: "cvs", resource_type: "auto" },
         function (error, result) {
           if (error) {
             console.log(error);

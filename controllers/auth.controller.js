@@ -139,9 +139,9 @@ const code = async (req, res) => {
     });
     const userData = await data.json();
     require("../database");
-    const isUser = await User.findOne({ email: userData.email });
+    let isUser = await User.findOne({ email: userData.email });
     if (!isUser) {
-      await User.create({
+     isUser= await User.create({
         username: userData.given_name,
         email: userData.email,
       });
