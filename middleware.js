@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
   try {
     const token = req.headers.cookie.split("=")[1];
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(decoded)
     if (decoded && decoded["role"] !== "admin" ) {
       if (decoded && decoded["role"] !== "recruter" ) {
       return res

@@ -19,6 +19,7 @@ import ApplicantInformation from "./components/ApplicantInformation";
 import Postuler from "./components/Postuler";
 import OffreDescription from "./components/offre/OffreDescription";
 import Auth from "./components/auth/Auth";
+import Footer from "./components/layouts/Footer";
 
 function App() {
   return (
@@ -101,10 +102,8 @@ function App() {
           <Route />
         </Routes>
       </div>
-      <a href="https://res.cloudinary.com/ddwwjhmtj/image/upload/v1714054084/cvs/fejanbeohfaxng6dlosl.pdf">test</a>
-      <footer>footer</footer>
+      <Footer />
     </div>
-   
   );
 }
 
