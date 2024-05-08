@@ -89,7 +89,7 @@ function App() {
           />
           <Route path="/description/:id" element={<OffreDescription />} />
 
-          <Route path="/postuler/:id" element={<Postuler />} />
+          <Route path="/postuler/:id/:offre" element={<Postuler />} />
 
           <Route
             path="/admin/*"

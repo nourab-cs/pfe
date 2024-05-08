@@ -61,6 +61,9 @@ const candidatureSchema = new mongoose.Schema({
     type: Boolean,
     required: false ,
 
+  },
+  quiz_score:{
+    type: Number,
   }
 });
 

@@ -16,12 +16,11 @@ const Quiz = () => {
   const [isLastq, setIsLastq] = useState(false);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  console.log(id);
-
-
 
   useEffect(() => {
-    axiosClient.get("/offre/get-quiz?id="+id).then(res=>setQuestions(res.data.questions))
+    axiosClient
+      .get("/offre/get-quiz?id=" + id)
+      .then((res) => setQuestions(res.data.questions));
     if (quizStarted) {
       const interval = setInterval(() => {
         setTimer((prevTimer) => {
@@ -48,6 +47,9 @@ const Quiz = () => {
   const handleNextQuestion = () => {
     if (currentQuestion + 2 === questions.length) {
       setIsLastq(true);
+      // setTimeout(() => {
+      //   axiosClient.put("/postuler/score/"+)
+      // }, 10000);
     }
     setCurrentQuestion((prevQuestion) => prevQuestion + 1);
     setTimer(10);

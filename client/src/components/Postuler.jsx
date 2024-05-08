@@ -11,7 +11,9 @@ import toast from "react-hot-toast";
 function CandidatureForm() {
   const location = useLocation();
   const navigate = useNavigate();
-  const id = location.pathname.split("/")[2];
+  console.log(location.pathname.split("/")[2]);
+  const offre_id = location.pathname.split("/")[3];
+  const quiz_id = location.pathname.split("/")[2];
 
   const [data, setData] = useState("");
 
@@ -27,7 +29,6 @@ function CandidatureForm() {
     reader.readAsDataURL(file);
   };
 
-  console.log(id);
 
   const validationSchema = Yup.object().shape({
     qualite: Yup.string().required("Ce champ est requis"),
@@ -74,16 +75,17 @@ function CandidatureForm() {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             values.cv = data;
-            values.offer_id = id;
+            values.offer_id = offre_id;
             const v = {
-              offre_id: id,
+              offre_id: offre_id,
               data: values,
             };
             axiosClient
               .post("/postuler/create", v)
               .then((res) => {
+                console.log(res);
                 toast.success("Offre created");
-                navigate("/quiz/" + id);
+                navigate("/quiz/" + quiz_id);
               })
               .catch((error) => {
                 console.log(error);

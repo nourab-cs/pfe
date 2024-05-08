@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { axiosClient } from '../../services/axiosClient';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { axiosClient } from "../../services/axiosClient";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const OffreDescription = () => {
   const location = useLocation();
-  const id = location.pathname.split('/')[2];
+  const id = location.pathname.split("/")[2];
   const [offer, setOffer] = useState({});
 
   useEffect(() => {
@@ -29,23 +29,29 @@ const OffreDescription = () => {
         <strong>Durée de stage (en mois) :</strong> {offer?.dureeStage}
       </p>
       <p className="mb-2">
-        <strong>Nombre de stagiaires demandés :</strong> {offer?.nombreStagiaires}
+        <strong>Nombre de stagiaires demandés :</strong>{" "}
+        {offer?.nombreStagiaires}
       </p>
       <p className="mb-4">
-        <strong>Date limite de soumission de candidature :</strong> {offer?.dateLimite}
+        <strong>Date limite de soumission de candidature :</strong>{" "}
+        {offer?.dateLimite}
       </p>
       <h3 className="text-lg font-bold mb-2">Profil :</h3>
       <p className="mb-4">{offer?.profil}</p>
       <h3 className="text-lg font-bold mb-2">Description :</h3>
       <ul className="list-disc ml-8 mb-4">
-        {offer?.mission && offer?.mission.map((point, index) => <li key={index}>{point}</li>)}
+        {offer?.mission &&
+          offer?.mission.map((point, index) => <li key={index}>{point}</li>)}
       </ul>
       <h3 className="text-lg font-bold mb-2">Compétences requises :</h3>
       <ul className="list-disc ml-8 mb-4">
-        {offer?.competences && offer?.competences.map((competence, index) => <li key={index}>{competence}</li>)}
+        {offer?.competences &&
+          offer?.competences.map((competence, index) => (
+            <li key={index}>{competence}</li>
+          ))}
       </ul>
       <Link
-        to={`/postuler/${offer?._id}`}
+        to={`/postuler/${offer?.quiz_id}/${offer._id}`}
         className="inline-block px-4   py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300"
       >
         Postuler

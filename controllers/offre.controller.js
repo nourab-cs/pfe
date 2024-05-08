@@ -53,10 +53,8 @@ const addQuiz =  async(req,res)=>{
 const getQuizOffre =  async(req,res)=>{
     try {
         require("../database");
-        const offre = await Offre.findById(req.query.id)
-        console.log(offre)
         const Quiz = require("../models/quiz.model")
-        const quiz  = await Quiz.findById(offre.quiz_id)
+        const quiz = await Quiz.findById(req.query.id)
         res.status(201).json(quiz)
     } catch (error) {
         console.log(error);

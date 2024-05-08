@@ -64,9 +64,20 @@ const offre_candidates = async (req, res) => {
     res.status(500).json(error)
   }
 }
+const score = async (req, res) => {
+  try {
+    require("../database");
+    const newCandidature = await Candidature.findByIdAndUpdate(req.params.id ,{ score:req.body.score  })
+    res.status(201).json(newCandidature)
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+  }
+}
+
 
 
 module.exports = {
   create,
-  offre_candidates
+  offre_candidates,score
 }
