@@ -39,7 +39,32 @@ const GetOne =  async(req,res)=>{
     }
 }
 
-
+const addQuiz =  async(req,res)=>{
+    try {
+        require("../database");
+        const offre = await Offre.findByIdAndUpdate(req.query.id , {quiz_id : req.params.quiz_id},{new:true})
+        console.log(offre);
+        res.status(201).json(offre)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
+const getQuizOffre =  async(req,res)=>{
+    try {
+        require("../database");
+        const offre = await Offre.findById(req.query.id)
+        console.log(offre)
+        const Quiz = require("../models/quiz.model")
+        const quiz  = await Quiz.findById(offre.quiz_id)
+        res.status(201).json(quiz)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
 module.exports = {
     all,create,GetOne,
+    addQuiz,
+    getQuizOffre
 }

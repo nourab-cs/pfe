@@ -20,6 +20,7 @@ import Postuler from "./components/Postuler";
 import OffreDescription from "./components/offre/OffreDescription";
 import Auth from "./components/auth/Auth";
 import Footer from "./components/layouts/Footer";
+import Quiz from "./components/Quiz/Quiz";
 
 function App() {
   return (
@@ -100,6 +101,8 @@ function App() {
           />
 
           <Route />
+          <Route path="/quiz/:offre" element={<Quiz />} />
+
         </Routes>
       </div>
       <Footer />

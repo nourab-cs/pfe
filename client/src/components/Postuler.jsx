@@ -2,16 +2,15 @@ import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { createcandidature } from "../services/candidature.service";
 import { axiosClient } from "../services/axiosClient";
 import { useNavigate } from "react-router-dom";
 
 import toast from "react-hot-toast";
 function CandidatureForm() {
-
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const id = location.pathname.split("/")[2];
 
   const [data, setData] = useState("");
@@ -28,7 +27,6 @@ function CandidatureForm() {
     reader.readAsDataURL(file);
   };
 
-
   console.log(id);
 
   const validationSchema = Yup.object().shape({
@@ -36,7 +34,11 @@ function CandidatureForm() {
     cin: Yup.number()
       .typeError("Le CIN doit être un nombre")
       .required("Ce champ est requis")
-      .test("len", "Le CIN doit avoir exactement 8 chiffres", val => val && val.toString().length === 8),
+      .test(
+        "len",
+        "Le CIN doit avoir exactement 8 chiffres",
+        (val) => val && val.toString().length === 8
+      ),
     nom: Yup.string().required("Ce champ est requis"),
     prénom: Yup.string().required("Ce champ est requis"),
     datedenaissance: Yup.date().required("Ce champ est requis"),
@@ -49,13 +51,13 @@ function CandidatureForm() {
     domaine: Yup.string().required("Ce champ est requis"),
   });
   return (
-    <div className="bg-no-repeat bg-contain bg-fixed  p-6 rounded-lg shadow-lg" style={{ backgroundImage: `url('images/diversite.jpg')` }}>
-
+    <div
+      className="bg-no-repeat bg-contain bg-fixed  p-6 rounded-lg shadow-lg"
+      style={{ backgroundImage: `url('images/diversite.jpg')` }}
+    >
       <div className="max-w-2xl mx-auto mt-6 p-9 bg-white rounded-lg shadow-lg overflow-y-auto">
         <Formik
-
           initialValues={{
-
             qualite: "",
             cin: "",
             nom: "",
@@ -68,34 +70,39 @@ function CandidatureForm() {
             diplome: "",
             universite: "",
             domaine: "",
-
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            values.cv = data
-            values.offer_id = id
+            values.cv = data;
+            values.offer_id = id;
             const v = {
-
               offre_id: id,
-              data: values
-            }
-            axiosClient.post("/postuler/create", v).then(res => {
-              toast.success("Offre created")
-              navigate("/alloffres")
-            }).catch(error => {
-              console.log(error);
-              toast.error("Error")
-            })
-
+              data: values,
+            };
+            axiosClient
+              .post("/postuler/create", v)
+              .then((res) => {
+                toast.success("Offre created");
+                navigate("/quiz/" + id);
+              })
+              .catch((error) => {
+                console.log(error);
+                toast.error("Error");
+              });
           }}
         >
           {({ errors, touched }) => (
             <Form encType="multipart/form-data">
               <section className="mb-8">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">Section 1: Information du candidat</h3>
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 1: Information du candidat
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="qualite" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="qualite"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Qualité
                     </label>
                     <Field
@@ -114,7 +121,10 @@ function CandidatureForm() {
                     ) : null}
                   </div>
                   <div>
-                    <label htmlFor="cin" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="cin"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       CIN
                     </label>
                     <Field
@@ -122,19 +132,15 @@ function CandidatureForm() {
                       id="cin"
                       name="cin"
                       className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-
                     />
-                    {errors.cin && touched.cin ? (
-                      <div>{errors.cin}</div>
-                    ) : null}
-
-
-
-
+                    {errors.cin && touched.cin ? <div>{errors.cin}</div> : null}
                   </div>
                   {/* Ajout des champs nom et prenom */}
                   <div>
-                    <label htmlFor="nom" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="nom"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Nom
                     </label>
                     <Field
@@ -143,12 +149,13 @@ function CandidatureForm() {
                       name="nom"
                       className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
-                    {errors.nom && touched.nom ? (
-                      <div>{errors.nom}</div>
-                    ) : null}
+                    {errors.nom && touched.nom ? <div>{errors.nom}</div> : null}
                   </div>
                   <div>
-                    <label htmlFor="prenom" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="prenom"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Prénom
                     </label>
                     <Field
@@ -164,7 +171,10 @@ function CandidatureForm() {
                   {/* Fin ajout des champs nom et prenom */}
 
                   <div>
-                    <label htmlFor="datedenaissance" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="datedenaissance"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Date de naissance
                     </label>
                     <Field
@@ -178,7 +188,10 @@ function CandidatureForm() {
                     ) : null}
                   </div>
                   <div>
-                    <label htmlFor="sexe" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="sexe"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Sexe
                     </label>
                     <Field
@@ -199,10 +212,15 @@ function CandidatureForm() {
               </section>
 
               <section className="mb-8">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">Section 2: Contact</h3>
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 2: Contact
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="telephone" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="telephone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Téléphone personnel
                     </label>
                     <Field
@@ -216,7 +234,10 @@ function CandidatureForm() {
                     ) : null}
                   </div>
                   <div>
-                    <label htmlFor="region" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="region"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Région/Gouvernorat
                     </label>
                     <Field
@@ -230,7 +251,10 @@ function CandidatureForm() {
                     ) : null}
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Email
                     </label>
                     <Field
@@ -247,10 +271,15 @@ function CandidatureForm() {
               </section>
 
               <section className="mb-8">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">Section 3: Formation</h3>
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 3: Formation
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="diplome" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="diplome"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Diplôme
                     </label>
                     <Field
@@ -264,7 +293,10 @@ function CandidatureForm() {
                     ) : null}
                   </div>
                   <div>
-                    <label htmlFor="universite" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="universite"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Université
                     </label>
                     <Field
@@ -278,7 +310,10 @@ function CandidatureForm() {
                     ) : null}
                   </div>
                   <div>
-                    <label htmlFor="domaine" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="domaine"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Domaine
                     </label>
                     <Field
@@ -295,10 +330,15 @@ function CandidatureForm() {
               </section>
 
               <section className="mb-8">
-                <h3 className="text-xl font-semibold text-gray-700 mb-4">Section 4: Pièces jointes</h3>
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 4: Pièces jointes
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="cv" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="cv"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       CV (PDF)
                     </label>
                     <input
@@ -328,7 +368,6 @@ function CandidatureForm() {
         </Formik>
       </div>
     </div>
-
   );
 }
 

@@ -6,7 +6,6 @@ import OffresList from "./OffresList";
 import StagiaireList from "./StagiaireList";
 import Candidats from "./Candidats";
 import CandidatePerOffre from "../offre/CandidatePerOffre";
-import Quiz from "../Quiz/Quiz";
 import QuizList from "../Quiz/QuizList";
 function AdminIndex() {
   return (
@@ -14,12 +13,11 @@ function AdminIndex() {
       <Route path="/dashbord" element={<Admin />} />
       <Route path="/all-users" element={<AllUser />} />
       <Route path="/create-offre" element={<CreateOffre />} />
-      <Route path="/all-quizes" element={<QuizList />} />
+      <Route path="/all-quizes/:id" element={<QuizList />} />
       <Route path="/offres-list" element={<OffresList />} />
       <Route path="/stagiaires-list" element={<StagiaireList />} />
       <Route path="/candidats-list" element={<Candidats />} />
       <Route path="/candidates_per_offre/:id" element={<CandidatePerOffre />} />
-      <Route path="/quiz" element={<Quiz />} />
     </Routes>
   );
 }

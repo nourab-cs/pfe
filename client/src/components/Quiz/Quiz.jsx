@@ -1,21 +1,27 @@
 // App.js
 
 import { useState, useEffect } from "react";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import qBank from "./data";
 import Questions from "./Questions";
 import Score from "./Score";
+import { axiosClient } from "../../services/axiosClient";
+import { useLocation } from "react-router-dom";
 
 const Quiz = () => {
-  const [questions, setQuestions] = useState(qBank);
+  const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   // set time for each question
   const [timer, setTimer] = useState(5);
   const [quizStarted, setQuizStarted] = useState(false);
   const [isLastq, setIsLastq] = useState(false);
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  console.log(id);
+
+
 
   useEffect(() => {
+    axiosClient.get("/offre/get-quiz?id="+id).then(res=>setQuestions(res.data.questions))
     if (quizStarted) {
       const interval = setInterval(() => {
         setTimer((prevTimer) => {

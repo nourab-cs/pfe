@@ -53,8 +53,9 @@ const CreerOffre = () => {
 
 
           createOfffre(values).then(res => {
+            console.log(res.data);
             toast.success("Offre created")
-            navigate("/alloffres")
+            navigate("/admin/all-quizes/"+res.data._id)
           }).catch(error => {
             console.log(error);
             toast.error("Error")

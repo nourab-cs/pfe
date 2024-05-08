@@ -12,7 +12,7 @@
 //     tech:{
 //         type:[String],
 //         required:true
-//     }, 
+//     },
 //         duration :{
 //         type:Number,
 //             required:true
@@ -26,13 +26,9 @@
 
 //     const Offre = mongoose.model("Offre", schema);
 
-
 // module.exports = Offre
 
-
-
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   titre: {
@@ -59,20 +55,24 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-   mission: {
-     type: [String],
-     required: true,
-   },
+  mission: {
+    type: [String],
+    required: true,
+  },
   competences: {
     type: [String],
     required: true,
   },
-domaine: {
-     type: String,
-     required: true,
-   },
+  domaine: {
+    type: String,
+    required: true,
+  },
+  quiz_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Quiz",
+  },
 });
 
-const Offre = mongoose.model('Offre', schema);
+const Offre = mongoose.model("Offre", schema);
 
 module.exports = Offre;
