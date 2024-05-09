@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Questions from "./Questions";
 import { axiosClient } from "../../services/axiosClient";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, redirect } from "react-router-dom";
 import Loader from "../layouts/Loader";
 import Modal from "../layouts/GlobalModal";
 const Quiz = () => {
@@ -20,11 +20,8 @@ const Quiz = () => {
   const id = location.pathname.split("/")[2];
 
   useEffect(() => {
-    const isDone = localStorage.getItem("quiz-done");
-    if (isDone) {
-      window.location.pathname = "/";
-      localStorage.removeItem("quiz-done");
-    }
+    if (localStorage?.getItem("quiz-done"))
+      window.location.href = "http://localhost:5173";
     axiosClient
       .get("/offre/get-quiz?id=" + id)
       .then((res) => setQuestions(res.data.questions));
@@ -33,10 +30,10 @@ const Quiz = () => {
   useEffect(() => {
     if (isLastq) {
       setLoading(true);
+      localStorage.setItem("quiz-done", true);
       setTimeout(() => {
         const final = (100 / questions.length) * score;
         const cand_id = localStorage.getItem("cand_id");
-        localStorage.setItem("quiz-done", true);
         axiosClient
           .put("/postuler/score/" + cand_id, { score: final })
           .then((res) => {
@@ -87,7 +84,7 @@ const Quiz = () => {
   };
 
   return (
-    <div className="card container mt-2 mx-auto max-w-xl flex justify-center items-center">
+    <div className="card container mt-2 mx-auto max-w-xl flex justify-center items-center full-screen-container">
       {!quizStarted ? (
         <div>
           {validated == null && (

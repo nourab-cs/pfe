@@ -83,8 +83,24 @@ const score = async (req, res) => {
 }
 
 
+const all = async (req, res) => {
+  try {
+    require("../database");
+   
+    const Candidatures = await Candidature.find()
+    res.status(201).json({ Candidatures })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+  }
+}
+
+
+
+
+
 
 module.exports = {
   create,
-  offre_candidates, score
+  offre_candidates, score,all
 }

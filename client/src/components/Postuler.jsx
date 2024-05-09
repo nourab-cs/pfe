@@ -85,6 +85,7 @@ function CandidatureForm() {
                 console.log(res);
                 localStorage.setItem("cand_id", res.data._id);
                 toast.success("Offre created");
+                localStorage.removeItem("quiz-done")
                 navigate("/quiz/" + quiz_id);
               })
               .catch((error) => {

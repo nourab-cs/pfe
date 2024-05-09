@@ -9,5 +9,8 @@ router.get("/candidate-per-offre/:id" ,require('../controllers/candidature.contr
 router.put("/score/:id" ,require('../controllers/candidature.controller').score)
 
 
+router.get("/all" ,require('../controllers/candidature.controller').all)
+
+
 
 module.exports = router;
