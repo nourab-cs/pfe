@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getAll } from '../../services/offre.service';
 import Pagination from '../layouts/Pagination';
-import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+import { Link, Button } from "@nextui-org/react";
 const AllOffres = () => {
   
   const [offers, setOffers] = useState([]);
@@ -35,48 +35,58 @@ const AllOffres = () => {
         </p>
       </div>
       <div className="ml-auto">
-        <Link
-          to="/create-offre"
-          className="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
-        >
-          Ajouter une offre
-        </Link>
+       
+        <Button
+      href="/create-offre"
+      as={Link}
+      color="primary"
+      
+      variant="solid"
+    >
+Ajouter une offre
+    </Button>
       </div>
     </div>
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse table-auto mt-6">
-        <thead>
-          <tr>
-            <th className="px-6 py-3 text-left font-medium text-black">Titre</th>
-            <th className="px-6 py-3 text-left font-medium text-black">Domaine</th>
-            <th className="px-6 py-3 text-left font-medium text-black">Date Limite</th>
-            <th className="px-6 py-3 text-left font-medium text-black"></th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-300">
+    <Table aria-label="Example static collection table">
+    <TableHeader>
+        <TableColumn>Titre</TableColumn>
+        <TableColumn>Domaine</TableColumn>
+        <TableColumn>Date limite</TableColumn>
+        <TableColumn></TableColumn>
+
+    </TableHeader>
+      <TableBody>        
           {offers.map((offer, index) => (
-            <tr  key={index} className="hover:bg-gray-100">
-              <td className="px-6 py-4 whitespace-wrap">{offer.titre}</td>
-              <td className="px-6 py-4 whitespace-wrap">{offer.domaine}</td>
-              <td className="px-6 py-4 whitespace-wrap">{offer.dateLimite}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-right">
-                <Link
-                  to={`/description/${offer._id}`}
-                  className="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                >
-                  Voir détails
-                </Link>
-                <Link
-                  to={`/admin/candidates_per_offre/${offer._id}`}
-                  className="inline-block px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                >
-                  Voir détails
-                </Link>
-              </td>
-            </tr>
+           <TableRow key={index} >
+              <TableCell>{offer.titre}</TableCell>
+              <TableCell>{offer.domaine}</TableCell>
+              <TableCell>{offer.dateLimite}</TableCell>
+              <TableCell>
+               
+                <Button
+      href={`/description/${offer._id}`}
+      as={Link}
+      color="primary"
+      variant="solid"
+    >
+ Voir détails
+     </Button>
+     <Button
+      href={`/admin/candidates_per_offre/${offer._id}`}
+      as={Link}
+      color="primary"
+      variant="solid"
+    >
+      Button Link
+    </Button>
+               
+
+                </TableCell>
+                              </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+    </Table>
     </div>
     <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
   </div>
