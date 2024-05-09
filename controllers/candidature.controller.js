@@ -67,8 +67,15 @@ const offre_candidates = async (req, res) => {
 const score = async (req, res) => {
   try {
     require("../database");
-    const newCandidature = await Candidature.findByIdAndUpdate(req.params.id ,{ score:req.body.score  })
-    res.status(201).json(newCandidature)
+    console.log(req.body)
+    if (req.body.score < 50) {
+      await Candidature.findByIdAndDelete(req.params.id)
+
+      return res.status(200).json({ message: "Failed" })
+
+    }
+    const newCandidature = await Candidature.findByIdAndUpdate(req.params.id, { quiz_score: req.body.score }, { new: true })
+    res.status(201).json({ newCandidature, message: "succeded" })
   } catch (error) {
     console.log(error);
     res.status(500).json(error)
@@ -79,5 +86,5 @@ const score = async (req, res) => {
 
 module.exports = {
   create,
-  offre_candidates,score
+  offre_candidates, score
 }

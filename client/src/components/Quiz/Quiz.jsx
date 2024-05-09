@@ -2,25 +2,55 @@
 
 import { useState, useEffect } from "react";
 import Questions from "./Questions";
-import Score from "./Score";
 import { axiosClient } from "../../services/axiosClient";
-import { useLocation } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import Loader from "../layouts/Loader";
+import Modal from "../layouts/GlobalModal";
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   // set time for each question
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(10);
   const [quizStarted, setQuizStarted] = useState(false);
   const [isLastq, setIsLastq] = useState(false);
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
+  const [validated, setValidated] = useState(null);
   const id = location.pathname.split("/")[2];
 
   useEffect(() => {
+    const isDone = localStorage.getItem("quiz-done");
+    if (isDone) {
+      window.location.pathname = "/";
+      localStorage.removeItem("quiz-done");
+    }
     axiosClient
       .get("/offre/get-quiz?id=" + id)
       .then((res) => setQuestions(res.data.questions));
+  }, []);
+
+  useEffect(() => {
+    if (isLastq) {
+      setLoading(true);
+      setTimeout(() => {
+        const final = (100 / questions.length) * score;
+        const cand_id = localStorage.getItem("cand_id");
+        localStorage.setItem("quiz-done", true);
+        axiosClient
+          .put("/postuler/score/" + cand_id, { score: final })
+          .then((res) => {
+            if (res.data?.message == "succeded") {
+              setValidated(true);
+            } else setValidated(false);
+          })
+          .catch((err) => console.log(err));
+        setLoading(false);
+      }, 3000);
+    }
+  }, [isLastq]);
+
+  useEffect(() => {
     if (quizStarted) {
       const interval = setInterval(() => {
         setTimer((prevTimer) => {
@@ -45,11 +75,8 @@ const Quiz = () => {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestion + 2 === questions.length) {
+    if (currentQuestion + 1 === questions.length) {
       setIsLastq(true);
-      // setTimeout(() => {
-      //   axiosClient.put("/postuler/score/"+)
-      // }, 10000);
     }
     setCurrentQuestion((prevQuestion) => prevQuestion + 1);
     setTimer(10);
@@ -63,15 +90,17 @@ const Quiz = () => {
     <div className="card container mt-2 mx-auto max-w-xl flex justify-center items-center">
       {!quizStarted ? (
         <div>
-          <div className="card-body">
-            <h2 className="text-2xl font-bold">Start Test</h2>
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={startQuiz}
-            >
-              Start Test
-            </button>
-          </div>
+          {validated == null && (
+            <div className="card-body">
+              <h2 className="text-2xl font-bold">Start Test</h2>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={startQuiz}
+              >
+                Start Test
+              </button>
+            </div>
+          )}
         </div>
       ) : currentQuestion < questions.length ? (
         <Questions
@@ -82,15 +111,10 @@ const Quiz = () => {
           timer={timer}
           isLastq={isLastq}
         />
+      ) : loading ? (
+        <Loader />
       ) : (
-        <Score
-          score={score}
-          setScore={setScore}
-          setCurrentQuestion={setCurrentQuestion}
-          setQuizStarted={setQuizStarted}
-          setIsLastq={setIsLastq}
-          setTimer={setTimer}
-        />
+        <Modal result={validated} />
       )}
     </div>
   );

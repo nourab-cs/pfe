@@ -1,9 +1,9 @@
-import React from "react";
+import { Spinner } from "@nextui-org/spinner";
 
 const Loader = () => {
   return (
     <div className="loading">
-      <div></div>
+      <Spinner size="xl" />
     </div>
   );
 };

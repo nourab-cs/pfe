@@ -29,7 +29,6 @@ function CandidatureForm() {
     reader.readAsDataURL(file);
   };
 
-
   const validationSchema = Yup.object().shape({
     qualite: Yup.string().required("Ce champ est requis"),
     cin: Yup.number()
@@ -84,6 +83,7 @@ function CandidatureForm() {
               .post("/postuler/create", v)
               .then((res) => {
                 console.log(res);
+                localStorage.setItem("cand_id", res.data._id);
                 toast.success("Offre created");
                 navigate("/quiz/" + quiz_id);
               })
