@@ -53,6 +53,16 @@ function Admin() {
           >
             Candidats
           </Link>
+          
+        </li>
+        <li>
+          <Link
+            to="/admin/allcandidatures"
+            className="block px-3 py-2 text-gray-800 hover:bg-gray-200 rounded-md transition-colors duration-300"
+          >
+All Candidatures 
+          </Link>
+          
         </li>
       </ul>
     </aside>

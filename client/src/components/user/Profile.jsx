@@ -1,275 +1,396 @@
-// import { useState } from "react";
-// import { useUser } from "../../stores/userStore";
-
-// import Sidebar from "../layouts/Sidebar";
-
-// function Profile() {
-//   const [data, setData] = useState("");
-//   const [user, setUser] = useUser((state) => [state.user, state.setUser]);
-//   const [upDate, setUpDate] = useState(false);
-//   const [upload, setUpload] = useState(false);
-
-
-
-
-//   return (
-//     <div>
-//       <section className="py-10">
-//         <div className="container max-w-screen-xl mx-auto px-4">
-//           <div className="flex flex-col md:flex-row -mx-4">
-//             <Sidebar />
-//             <main className="md:w-2/3 lg:w-3/4 px-4">
-//               <figure className="flex items-start sm:items-center">
-//                 <div className="relative">
-//                   <img
-//                     className="w-16 h-16 rounded-full mr-4"
-//                     src={
-//                       user?.avatar?.url ||
-//                        "/avatar.jpg"
-//                     }
-//                     alt={"user name"}
-//                   />
-//                 </div>
-
-//                 <figcaption>
-//                   {/* <h5 className="font-semibold text-lg">Ghulam</h5> */}
-//                   <p>
-//                     <b>Email:</b> {user?.email}
-//                   </p>
-//                 </figcaption>
-//               </figure>
-
-
-//               {/* <UserAddresses /> */}
-
-//               <hr className="my-4" />
-//             </main>
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// }
-
-// export default Profile;
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { useState } from "react";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { axiosClient } from "../../services/axiosClient";
+import toast from "react-hot-toast";
+import { createprofil } from "../../services/profil.service";
 import { useUser } from "../../stores/userStore";
 
-function Profile () {
+function Profile() {
   const [data, setData] = useState("");
-  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
   const [upDate, setUpDate] = useState(false);
+  const [iSupDate, setIsUpDate] = useState(false);
+  const [user]=useUser((state)=>[state.user])
   const [upload, setUpload] = useState(false);
-  
+
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setData(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+  const handleUpdate = () => {
+
+    
+  };
   
 
+  const validationSchema = Yup.object().shape({
+    qualite: Yup.string().required("Ce champ est requis"),
+    cin: Yup.number()
+      .typeError("Le CIN doit être un nombre")
+      .required("Ce champ est requis")
+      .test(
+        "len",
+        "Le CIN doit avoir exactement 8 chiffres",
+        (val) => val && val.toString().length === 8
+      ),
+    nom: Yup.string().required("Ce champ est requis"),
+    prénom: Yup.string().required("Ce champ est requis"),
+    datedenaissance: Yup.date().required("Ce champ est requis"),
+    sexe: Yup.string().required("Ce champ est requis"),
+    telephone: Yup.string().required("Ce champ est requis"),
+    region: Yup.string().required("Ce champ est requis"),
+    email: Yup.string().email("Email invalide").required("Ce champ est requis"),
+    diplome: Yup.string().required("Ce champ est requis"),
+    universite: Yup.string().required("Ce champ est requis"),
+    domaine: Yup.string().required("Ce champ est requis"),
+  });
   return (
-    <form className="max-w-lg mx-auto mt-10">
-      <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            This information will be displayed publicly so be careful what you share.
-          </p>
-
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div className="col-span-full">
-              <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">
-                Photo
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                <UserCircleIcon className="h-12 w-12 text-gray-300" aria-hidden="true" 
+    <div className="bg-no-repeat bg-contain bg-fixed  p-6 rounded-lg shadow-lg">
+      <div className="max-w-2xl mx-auto mt-6 p-9 bg-white rounded-lg shadow-lg overflow-y-auto">
+        <Formik
+          initialValues={{
+            qualite: "",
+            cin: "",
+            nom: "",
+            prénom: "",
+           
+            datedenaissance: "",
+            sexe: "",
+            telephone: "",
+            region: "",
+            email: "",
+            diplome: "",
+            universite: "",
+            domaine: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            values.cv = data;
+            values.username= user.username
+            const v = {
+              data: values,
+              search :user.email
+            };
+            axiosClient
+              .post("/user/create", v)
+              .then((res) => {
                 
-                src={
-                    user?.avatar?.url ||
-                        "/avatar.jpg"
-                                  }
-                               alt={"user name"}
-                />
-                <button
-                  type="button"
-                  className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
-                </button>
-              </div>
-            </div>
-
-            <div className="sm:col-span-4">
-              <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                Username
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    autoComplete="username"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    Value={user?.username}
+                toast.success("ok");
+              })
+              .catch((error) => {
+                console.log(error);
+                toast.error("Error");
+              });
+          }}
+        >
+          {({ errors, touched }) => (
+            <Form encType="multipart/form-data">
+              <section className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 1: Information du candidat
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="qualite"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Qualité
+                    </label>
+                    <Field
+                      disabled={iSupDate}
+                      as="select"
+                      id="qualite"
+                      name="qualite"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                      <option value="">Choisir une option</option>
+                      <option value="mademoiselle">Mademoiselle</option>
+                      <option value="madame">Madame</option>
+                      <option value="monsieur">Monsieur</option>
+                    </Field>
+                    {errors.qualite && touched.qualite ? (
+                      <div>{errors.qualite}</div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="cin"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      CIN
+                    </label>
+                    <Field
+                      disabled={iSupDate}
+                      type="numbers "
+                      id="cin"
+                      name="cin"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
+                    {errors.cin && touched.cin ? <div>{errors.cin}</div> : null}
+                  </div>
+                  {/* Ajout des champs nom et prenom */}
+                  <div>
+                    <label
+                      htmlFor="nom"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Nom
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="text"
+                      id="nom"
+                      name="nom"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.nom && touched.nom ? <div>{errors.nom}</div> : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="prenom"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Prénom
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="text"
+                      id="prénom"
+                      name="prénom"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.prénom && touched.prénom ? (
+                      <div>{errors.prénom}</div>
+                    ) : null}
+                  </div>
+                  {/* Fin ajout des champs nom et prenom */}
+
+                  <div>
+                    <label
+                      htmlFor="datedenaissance"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Date de naissance
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="date"
+                      id="datedenaissance"
+                      name="datedenaissance"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.datedenaissance && touched.datedenaissance ? (
+                      <div>{errors.datedenaissance}</div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="sexe"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Sexe
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      as="select"
+                      id="sexe"
+                      name="sexe"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                      {errors.sexe && touched.sexe ? (
+                        <div>{errors.sexe}</div>
+                      ) : null}
+                      <option value="">Choisir une option</option>
+                      <option value="masculin">Masculin</option>
+                      <option value="féminin">Féminin</option>
+                    </Field>
+                  </div>
                 </div>
-              </div>
-              <div className="sm:col-span-4">
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  Value={user?.email}
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-           
-            </div>
+              </section>
 
-            <div className="col-span-full">
-              <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                About
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={''}
-                />
-              </div>
-              <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
-            </div>
+              <section className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 2: Contact
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="telephone"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Téléphone personnel
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
 
-           
-            
-          </div>
-        </div>
-        </div>
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
-          Supprimer votre compte
-        </button>
-        <button
+                      type="tel"
+                      id="telephone"
+                      name="telephone"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.telephone && touched.telephone ? (
+                      <div>{errors.telephone}</div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="region"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Région/Gouvernorat
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="text"
+                      id="region"
+                      name="region"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.region && touched.region ? (
+                      <div>{errors.region}</div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Email
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="email"
+                      id="email"
+                      name="email"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.email && touched.email ? (
+                      <div>{errors.email}</div>
+                    ) : null}
+                  </div>
+                </div>
+              </section>
+
+              <section className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 3: Formation
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="diplome"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Diplôme
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="text"
+                      id="diplome"
+                      name="diplome"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.diplome && touched.diplome ? (
+                      <div>{errors.diplome}</div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="universite"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Université
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="text"
+                      id="universite"
+                      name="universite"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.universite && touched.universite ? (
+                      <div>{errors.universite}</div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="domaine"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Domaine
+                    </label>
+                    <Field
+                                          disabled={iSupDate}
+
+                      type="text"
+                      id="domaine"
+                      name="domaine"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                    {errors.domaine && touched.domaine ? (
+                      <div>{errors.domaine}</div>
+                    ) : null}
+                  </div>
+                </div>
+              </section>
+
+              <section className="mb-8">
+                <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                  Section 4: Pièces jointes
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="cv"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      CV (PDF)
+                    </label>
+                    <input
+                      required={true}
+                      onChange={handleFileInputChange}
+                      type="file"
+                      id="cv"
+                      name="cv"
+                      accept=".pdf"
+                      className="mt-1 px-3 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+              </section>
+
+              <div className="mt-6">
+              <button
           type="submit"
+          onClick={handleUpdate}
+
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Mettre a jour 
         </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
-    </form>
+    </div>
   );
 }
+
 export default Profile;
-  
-        {/* <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            We'll always let you know about important changes, but you pick what else you want to hear about.
-          </p>
-
-          <div className="mt-10 space-y-10">
-            <fieldset>
-              <legend className="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
-              <div className="mt-6 space-y-6">
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="comments"
-                      name="comments"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="comments" className="font-medium text-gray-900">
-                      Comments
-                    </label>
-                    <p className="text-gray-500">Get notified when someones posts a comment on a posting.</p>
-                  </div>
-                </div>
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="candidates"
-                      name="candidates"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="candidates" className="font-medium text-gray-900">
-                      Candidates
-                    </label>
-                    <p className="text-gray-500">Get notified after submitting your application.</p>
-                  </div>
-                </div>
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="offers"
-                      name="offers"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="offers" className="font-medium text-gray-900">
-                      Offers
-                    </label>
-                    <p className="text-gray-500">Get notified when a candidate accepts or rejects an offer.</p>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
-              <p className="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
-              <div className="mt-6 space-y-6">
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="push-everything"
-                    name="push-notifications"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="push-everything" className="block text-sm font-medium leading-6 text-gray-900">
-                    Everything
-                  </label>
-                </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="push-email"
-                    name="push-notifications"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="push-email" className="block text-sm font-medium leading-6 text-gray-900">
-                    Same as email
-                  </label>
-                </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="push-nothing"
-                    name="push-notifications"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label htmlFor="push-nothing" className="block text-sm font-medium leading-6 text-gray-900">
-                    No push notifications
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-      </div> */}
-
-    
-
-

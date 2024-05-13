@@ -33,6 +33,8 @@ const quiz = require("./routes/quiz.routes")
 
 app.use("/quiz", quiz)
 app.use("/postuler", candidature);
+app.use("/user", require("./routes/user.route"));
+
 
 
 app.use("/admin", require("./middleware").checkAuth, require("./middleware").checkAdmin, admin);

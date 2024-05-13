@@ -15,6 +15,17 @@ export  async function  createcandidature(candidature) {
     }
 
 }
+export  async function  getall(candidature) {
+    try {
+        return await axiosClient.get("/postuler/all" ,{
+            withCredentials:true
+        })
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
 
+}
 
 

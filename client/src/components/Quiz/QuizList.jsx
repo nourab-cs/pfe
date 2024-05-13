@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { axiosClient } from "../../services/axiosClient";
 import QuizForm from "./CreateQuiz";
 import Pagination from "../layouts/Pagination";
 import { getAll } from '../../services/quiz.services';
 import { useLocation } from "react-router-dom";
-
-  
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react";
 
 function QuizList() {
   const [quizes, setQuizes] = useState([]);
   const [show, setShow] = useState(false);
-const location = useLocation()
-  useEffect(() => {
+  const location = useLocation();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 6;
+  const [searchTerm, setSearchTerm] = useState('');
 
+  useEffect(() => {
     axiosClient
       .get("/quiz/all")
       .then((res) => {
@@ -22,10 +25,6 @@ const location = useLocation()
         console.log(e);
       });
   }, []);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 2;
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     getAll()
@@ -39,31 +38,49 @@ const location = useLocation()
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
   return (
     <div>
-      <button
+      <Button
         onClick={() => {
           setShow(!show);
         }}
+        ghost={!show}
       >
         {show ? "Cancel" : "Add new Quiz"}
-      </button>
+      </Button>
       {show ? (
         <QuizForm />
       ) : (
-        <div>
-          {quizes.map((e, i) => {
-            return <div onClick={()=>{
-              console.log(e);
-               axiosClient.put(`/offre/add-quiz/${e._id}?id=${location.pathname.split("/")[3]}`)
-            }} key={i}>{e.name}</div>;
-          })}
-        </div>
+        <Table aria-label="Example table with dynamic content">
+          <TableHeader>
+            <TableColumn>Name</TableColumn>
+            <TableColumn></TableColumn>
+          </TableHeader>
+          <TableBody>
+            {quizes.map((quiz, index) => (
+              <TableRow key={index}>
+                <TableCell>{quiz.name}</TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => {
+                      console.log(quiz);
+                      axiosClient.put(`/offre/add-quiz/${quiz._id}?id=${location.pathname.split("/")[3]}`)
+                    }}
+                    ghost
+                  >
+                    Add
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
-       <Pagination 
-        currentPage={currentPage} 
-        totalPages={totalPages} 
-        onPageChange={handlePageChange} 
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );

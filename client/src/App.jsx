@@ -105,7 +105,6 @@ function App() {
           <Route path="/quiz/:offre" element={<Quiz />} />
         </Routes>
       </div>
-      <AllCandidatures /> 
       <Footer />
     </div>
   );
