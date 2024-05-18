@@ -30,7 +30,6 @@ const create = async (req, res) => {
       offre_id: req.body.data.offer_id
 
     }
-    console.log(candidature);
 
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
@@ -86,7 +85,7 @@ const score = async (req, res) => {
 const all = async (req, res) => {
   try {
     require("../database");
-   
+
     const Candidatures = await Candidature.find()
     res.status(201).json({ Candidatures })
   } catch (error) {
@@ -96,11 +95,37 @@ const all = async (req, res) => {
 }
 
 
+const setCandidature = async (req, res) => {
+  try {
+    require("../database");
+      
+      const candidature = await Candidature.findByIdAndUpdate(req.body.id, { is_accepted: req.body.Status, interview: req.body.date }, { new: true })
+      return res.status(201).json({ candidature })
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error)
+  }
+}
+
+
+
+const GetCandiaturePerUser =  async(req,res)=>{
+  try {
+      require("../database");
+      const data = await Candidature.find({email:req.body.email})
+      res.status(201).json(data)
+  } catch (error) {
+      console.log(error);
+      res.status(500).json(error)
+  }
+}
+
 
 
 
 
 module.exports = {
   create,
-  offre_candidates, score,all
+  offre_candidates, score, all, setCandidature,GetCandiaturePerUser
 }

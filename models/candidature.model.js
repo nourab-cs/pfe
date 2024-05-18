@@ -58,13 +58,15 @@ const candidatureSchema = new mongoose.Schema({
     ref: 'Offre'
   },
   is_accepted : {
-    type: Boolean,
+    type: String,
     required: false ,
+    default : ""
 
   },
   quiz_score:{
     type: Number,
-  }
+  },
+  interview : Date
 });
 
 const Candidature = mongoose.model('Candidature', candidatureSchema);

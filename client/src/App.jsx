@@ -71,14 +71,7 @@ function App() {
             }
           />
 
-          <Route
-            path="/alloffres"
-            element={
-              <User>
-                <AllOffres />
-              </User>
-            }
-          />
+          <Route path="/alloffres" element={<AllOffres />} />
 
           <Route
             path="/create-offre"
@@ -90,7 +83,14 @@ function App() {
           />
           <Route path="/description/:id" element={<OffreDescription />} />
 
-          <Route path="/postuler/:id/:offre" element={<Postuler />} />
+          <Route
+            path="/postuler/:id/:offre"
+            element={
+              <User>
+                <Postuler />
+              </User>
+            }
+          />
 
           <Route
             path="/admin/*"

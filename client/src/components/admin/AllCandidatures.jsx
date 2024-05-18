@@ -1,28 +1,67 @@
-import React, { useState, useEffect } from "react"; 
-import { getall } from '../../services/candidature.service';
-import Pagination from '../layouts/Pagination';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip } from "@nextui-org/react";
+import React, { useState, useEffect } from "react";
+import { getall } from "../../services/candidature.service";
+import Pagination from "../layouts/Pagination";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  User,
+  Chip,
+  Tooltip,
+  Button,
+} from "@nextui-org/react";
 import { EditIcon, DeleteIcon, EyeIcon } from "./Icons";
+import { axiosClient } from "../../services/axiosClient";
+import Modal from "../layouts/Modal-next";
 
 function AllCandidatures() {
   const [candidates, setCandidates] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [openModal, setOpen] = useState(false);
+  const [date, setDate] = useState(Date.now());
+  const [id, setId] = useState("");
+  const [refetch, re] = useState(true);
+
   const itemsPerPage = 6;
+
+  const setCandidature = async (id, Status, date) => {
+    try {
+      const result = axiosClient.post(
+        "/postuler/set-candidature",
+        {
+          id,
+          Status,
+          date,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getall()
       .then((res) => {
         console.log(res.data);
         setTotalPages(Math.ceil(res.data.Candidatures.length / itemsPerPage));
-        setCandidates(res.data.Candidatures.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+        setCandidates(
+          res.data.Candidatures.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage
+          )
+        );
       })
       .catch((err) => console.log(err));
-  }, [currentPage]);
+  }, [refetch, currentPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-  }
+  };
 
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
@@ -68,7 +107,8 @@ function AllCandidatures() {
         <div>
           <h1 className="text-3xl mt-2">Toutes les offres</h1>
           <p className="text-gray-600 mt-2">
-            Une liste de toutes les offres d'emploi disponibles sur notre plateforme.
+            Une liste de toutes les offres d'emploi disponibles sur notre
+            plateforme.
           </p>
         </div>
         <div className="ml-auto"></div>
@@ -77,17 +117,57 @@ function AllCandidatures() {
         <Table aria-label="Example static collection table">
           <TableHeader>
             <TableColumn>Name</TableColumn>
+            <TableColumn>Status</TableColumn>*
           </TableHeader>
           <TableBody>
-            {candidates.map((candidate, index) => (
+            {candidates?.map((candidate, index) => (
               <TableRow key={index}>
                 <TableCell>{candidate.nom}</TableCell>
+                <TableCell>
+                  {!candidate.is_accepted  ? (
+                    <>
+                      {" "}
+                      <button
+                        onClick={() => {
+                          setId(candidate._id);
+                          setOpen(true);
+                        }}
+                      >
+                        accept
+                      </button>
+                      <Button
+                        onClick={() => {
+                          setCandidature(candidate._id, "no");
+                          re(!refetch)
+                        }}
+                      >
+                        rject
+                      </Button>
+                    </>
+                  ) : (
+                    candidate.is_accepted
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      <Modal
+        re={re}
+        refetch={refetch}
+        id={id}
+        setCandidature={setCandidature}
+        setDate={setDate}
+        open={openModal}
+        set={setOpen}
+        date={date}
+      />
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

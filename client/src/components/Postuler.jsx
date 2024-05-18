@@ -80,12 +80,12 @@ function CandidatureForm() {
               data: values,
             };
             axiosClient
-              .post("/postuler/create", v)
+              .post("/postuler/create", v, { withCredentials: true })
               .then((res) => {
                 console.log(res);
                 localStorage.setItem("cand_id", res.data._id);
                 toast.success("Offre created");
-                localStorage.removeItem("quiz-done")
+                localStorage.removeItem("quiz-done");
                 navigate("/quiz/" + quiz_id);
               })
               .catch((error) => {

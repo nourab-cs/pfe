@@ -1,6 +1,7 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { useState } from "react";
 import { useUser } from "../../stores/userStore";
+import UserCanditature from './UserCanditature';
 
 function Profile () {
   const [data, setData] = useState("");
@@ -11,7 +12,7 @@ function Profile () {
   
 
   return (
-    <form className="max-w-lg mx-auto mt-10">
+   <><UserCanditature/> <form className="max-w-lg mx-auto mt-10">
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
@@ -108,7 +109,7 @@ function Profile () {
           Mettre a jour 
         </button>
       </div>
-    </form>
+    </form></>
   );
 }
 export default Profile;

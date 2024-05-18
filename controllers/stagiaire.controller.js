@@ -40,6 +40,8 @@ const GetOne =  async(req,res)=>{
 }
 
 
+
+
 module.exports = {
     all,create,GetOne,
 }

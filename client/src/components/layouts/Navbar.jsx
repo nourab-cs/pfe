@@ -35,8 +35,9 @@ function Navbar() {
       </div>
 
       <ul
-        className={`${isMenuOpen ? "block" : "hidden"
-          } absolute top-0 left-0 bg-gray-100 w-full mt-16 lg:mt-0 lg:relative lg:flex lg:flex-row lg:items-center lg:w-auto`}
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } absolute top-0 left-0 bg-gray-100 w-full mt-16 lg:mt-0 lg:relative lg:flex lg:flex-row lg:items-center lg:w-auto`}
       >
         <li className="lg:ml-12">
           <Link
@@ -46,7 +47,7 @@ function Navbar() {
             Home
           </Link>
         </li>
-        {user._id &&
+        {user?.role != "admin" && (
           <li className="lg:ml-12">
             <Link
               to="/alloffres"
@@ -55,7 +56,8 @@ function Navbar() {
               AllOffres
             </Link>
           </li>
-        }
+        )}
+
         {user.email && (
           <li className="lg:ml-12">
             <Link

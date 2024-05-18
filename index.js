@@ -32,7 +32,7 @@ app.use("/offre", offre);
 const quiz = require("./routes/quiz.routes")
 
 app.use("/quiz", quiz)
-app.use("/postuler", candidature);
+app.use("/postuler", require("./middleware").checkAuth, candidature);
 app.use("/user", require("./routes/user.route"));
 
 

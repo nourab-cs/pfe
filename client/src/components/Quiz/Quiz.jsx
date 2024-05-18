@@ -35,7 +35,7 @@ const Quiz = () => {
         const final = (100 / questions.length) * score;
         const cand_id = localStorage.getItem("cand_id");
         axiosClient
-          .put("/postuler/score/" + cand_id, { score: final })
+          .put("/postuler/score/" + cand_id, { score: final },{withCredentials:true})
           .then((res) => {
             if (res.data?.message == "succeded") {
               setValidated(true);
