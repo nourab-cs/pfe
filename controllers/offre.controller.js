@@ -60,8 +60,21 @@ const getQuizOffre =  async(req,res)=>{
         res.status(500).json(error)
     }
 }
+
+
+const deleteOffre =  async(req,res)=>{
+    try {
+        require("../database");
+      const deleted = await Offre.findByIdAndDelete(req.params.id)
+        res.status(201).json(deleted)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
+deleteOffre
 module.exports = {
     all,create,GetOne,
     addQuiz,
-    getQuizOffre
+    getQuizOffre,deleteOffre
 }
