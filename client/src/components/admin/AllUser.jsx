@@ -25,6 +25,7 @@ function AllUser() {
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Users List</h1>
         <div className="grid grid-cols-1 gap-6">
           {users.map((user,i) => (
+            
             <div
               key={user.email}
               className="bg-white shadow-md rounded-md overflow-hidden flex items-center justify-between px-4 py-3"
@@ -55,7 +56,7 @@ function AllUser() {
                   View
                 </button>
               </div>
-              {showModal && <Modal setOpenModal={setShowModal} user={users[i]} />} {/* Assuming users[0] for testing */}
+              {showModal && <Modal setOpenModal={setShowModal} user={user} />} {/* Assuming users[0] for testing */}
 
             </div>
           ))}

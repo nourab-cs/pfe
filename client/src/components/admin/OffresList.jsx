@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAll } from "../../services/offre.service";
 import Pagination from "../layouts/Pagination";
-import { useLocation } from "react-router-dom";
 import {
   Table,
   TableHeader,
@@ -66,7 +65,7 @@ const AllOffres = () => {
             <TableColumn></TableColumn>
           </TableHeader>
           <TableBody>
-            {offers.map((offer, index) => (
+            {offers.reverse().map((offer, index) => (
               <TableRow key={index}>
                 <TableCell>{offer.titre}</TableCell>
                 <TableCell>{offer.domaine}</TableCell>

@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Modal = ({result}) => {
+  // get your props 
     const navigate = useNavigate()
+    console.log(result);
   const [showModal, setShowModal] = useState(true);
 
   const toggleModal = () => {
