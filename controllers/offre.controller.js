@@ -18,7 +18,6 @@ const create = async(req,res)=>{
 const all =  async(req,res)=>{
     try {
         require("../database");
-
         const all = await Offre.find()
         res.status(201).json(all)
     } catch (error) {

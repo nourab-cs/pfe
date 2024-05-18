@@ -23,7 +23,7 @@ const candidature = require("./routes/candidature.route");
 
 const admin = require("./routes/admin.routes");
 
-app.use(auth);
+app.use(auth)
 app.use(user);
 app.use("/offre", offre);
 

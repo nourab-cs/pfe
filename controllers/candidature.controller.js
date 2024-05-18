@@ -13,7 +13,7 @@ const create = async (req, res) => {
       api_secret: process.env.CLOUD_SECRET,
       secure: true,
     });
-    let candidtature = {
+    let candidature = {
 
       qualite: req.body.data.qualite,
       cin: req.body.data.cin,
@@ -30,7 +30,7 @@ const create = async (req, res) => {
       offre_id: req.body.data.offer_id
 
     }
-    console.log(candidtature);
+    console.log(candidature);
 
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload(
@@ -42,12 +42,12 @@ const create = async (req, res) => {
             reject(error);
           }
           console.log(result)
-          candidtature.cv = result.secure_url
+          candidature.cv = result.secure_url
           resolve(result);
         }
       );
     });
-    const newCandidature = await Candidature.create(candidtature)
+    const newCandidature = await Candidature.create(candidature)
     res.status(201).json(newCandidature)
   } catch (error) {
     console.log(error);
