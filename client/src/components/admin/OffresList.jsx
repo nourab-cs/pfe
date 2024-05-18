@@ -95,7 +95,7 @@ const AllOffres = () => {
                     color="primary"
                     variant="solid"
                   >
-                    Button Link
+                    Supprimer
                   </Button>
                 </TableCell>
               </TableRow>

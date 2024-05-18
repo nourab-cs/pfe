@@ -72,7 +72,7 @@ const deleteOffre =  async(req,res)=>{
         res.status(500).json(error)
     }
 }
-deleteOffre
+
 module.exports = {
     all,create,GetOne,
     addQuiz,
