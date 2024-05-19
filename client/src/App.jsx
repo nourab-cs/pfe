@@ -21,7 +21,7 @@ import OffreDescription from "./components/offre/OffreDescription";
 import Auth from "./components/auth/Auth";
 import Footer from "./components/layouts/Footer";
 import Quiz from "./components/Quiz/Quiz";
-import AllCandidatures from "./components/admin/AllCandidatures";
+import UserCanditature from "./components/user/UserCanditature";
 
 function App() {
   return (
@@ -81,14 +81,22 @@ function App() {
               </Admin>
             }
           />
-         
-          <Route path="/description/:id" element={<OffreDescription />} />
+          
+         <Route path="/description/:id" element={<OffreDescription />} />
 
           <Route
             path="/postuler/:id/:offre"
             element={
               <User>
                 <Postuler />
+              </User>
+            }
+          />
+           <Route
+            path="/mescandidatures"
+            element={
+              <User>
+                <UserCanditature />
               </User>
             }
           />

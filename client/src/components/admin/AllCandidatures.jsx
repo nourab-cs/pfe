@@ -117,12 +117,15 @@ function AllCandidatures() {
         <Table aria-label="Example static collection table">
           <TableHeader>
             <TableColumn>Name</TableColumn>
-            <TableColumn>Status</TableColumn>*
+            <TableColumn>Offre Correspondnate</TableColumn>
+            <TableColumn>Status</TableColumn>
           </TableHeader>
           <TableBody>
             {candidates?.map((candidate, index) => (
               <TableRow key={index}>
                 <TableCell>{candidate.nom}</TableCell>
+                <TableCell></TableCell>
+
                 <TableCell>
                   {!candidate.is_accepted  ? (
                     <>
