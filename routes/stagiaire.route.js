@@ -15,5 +15,7 @@ router.get("/get-one" , require('../controllers/stagiaire.controller').GetOne)
 
 router.delete("/delete/:id" , require('../controllers/stagiaire.controller').deleteStagiaire)
 
+router.put("/update/:id", require('../controllers/stagiaire.controller').updateStagiaire);
+
 
 module.exports = router;

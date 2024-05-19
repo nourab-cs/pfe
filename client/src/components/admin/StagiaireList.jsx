@@ -6,37 +6,37 @@ import {
   CardBody,
   CardHeader,
   Typography,
- 
 } from "@material-tailwind/react";
 import { Link, Button } from "@nextui-org/react";
-
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import jsPDF from "jspdf";
 import toast from 'react-hot-toast';
 import { axiosClient } from "../../services/axiosClient";
+import StagiaireModal from "../layouts/Modal"; 
 
 function Billing3() {
     const [stagiaires, setStagiaires] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 6;
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedStagiaire, setSelectedStagiaire] = useState(null);
 
     useEffect(() => {
-      getAll()
-        .then((res) => {
-          
-          setTotalPages(Math.ceil(res.data.length / itemsPerPage));
-          setStagiaires(res.data.slice(
-              (currentPage - 1) * itemsPerPage,
-              currentPage * itemsPerPage
-            )
-          );
-        })
-        .catch((err) => console.log(err));
+        getAll()
+            .then((res) => {
+                setTotalPages(Math.ceil(res.data.length / itemsPerPage));
+                setStagiaires(res.data.slice(
+                    (currentPage - 1) * itemsPerPage,
+                    currentPage * itemsPerPage
+                ));
+            })
+            .catch((err) => console.log(err));
     }, [currentPage]);
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };  
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };  
 
     const generatePDF = (stagiaire) => {
         try {
@@ -57,14 +57,19 @@ function Billing3() {
 
     const handleDelete = (id) => {
         axiosClient.delete(`/stagiaire/delete/${id}`)
-          .then(() => {
-              toast.success("Stagiaire supprimé avec succès");
-              setStagiaires(stagiaires.filter(stagiaire => stagiaire._id !== id));
-          })
-          .catch(err => {
-              console.error('Erreur lors de la suppression du stagiaire', err);
-              toast.error("Erreur lors de la suppression du stagiaire");
-          });
+            .then(() => {
+                toast.success("Stagiaire supprimé avec succès");
+                setStagiaires(stagiaires.filter(stagiaire => stagiaire._id !== id));
+            })
+            .catch(err => {
+                console.error('Erreur lors de la suppression du stagiaire', err);
+                toast.error("Erreur lors de la suppression du stagiaire");
+            });
+    };
+
+    const handleEdit = (stagiaire) => {
+        setSelectedStagiaire(stagiaire);
+        setIsModalOpen(true);
     };
 
     return (
@@ -87,14 +92,14 @@ function Billing3() {
                         </Typography>
                     </div>
                     <div className="w-full">
-                    <Button
-            href="/admin/create-stagiaire"
-            as={Link}
-            color="primary"
-            variant="solid"
-          >
-            Ajouter une offre
-          </Button>
+                        <Button
+                            href="/admin/create-stagiaire"
+                            as={Link}
+                            color="primary"
+                            variant="solid"
+                        >
+                            Ajouter une offre
+                        </Button>
                     </div>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4 p-4">
@@ -132,6 +137,15 @@ function Billing3() {
                                     <Button
                                         size="sm"
                                         variant="text"
+                                        className="flex items-center gap-2"
+                                        onClick={() => handleEdit(stagiaire)}
+                                    >
+                                        <PencilIcon className="h-4 w-4 text-blue-500" />
+                                        Modifier
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="text"
                                         color="red"
                                         className="flex items-center gap-2"
                                         onClick={() => handleDelete(stagiaire._id)}
@@ -150,6 +164,12 @@ function Billing3() {
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
             />
+            {isModalOpen && (
+                <StagiaireModal
+                    setOpenModal={setIsModalOpen}
+                    stagiaire={selectedStagiaire}
+                />
+            )}
         </section>
     );
 }

@@ -27,6 +27,14 @@ export  async function  ajouterStagiaire(stagiaire) {
     }
 
 }
-
+export async function updateStagiaire(id, stagiaire) {
+    try {
+        return await axiosClient.put(`/stagiaire/update/${id}`, stagiaire, {
+            withCredentials: true
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
