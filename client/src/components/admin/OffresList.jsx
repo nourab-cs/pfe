@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAll } from "../../services/offre.service";
 import Pagination from "../layouts/Pagination";
+import toast from "react-hot-toast";
 import {
   Table,
   TableHeader,
@@ -36,6 +37,17 @@ const AllOffres = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  const handleDelete = (id) => {
+    axiosClient.delete(`/offre/delete/${id}`)
+        .then(() => {
+            toast.success("Stagiaire supprimé avec succès");
+            setOffers(offers.filter(offer => offer._id !== id));
+        })
+        .catch(err => {
+            console.error('Erreur lors de la suppression du stagiaire', err);
+            toast.error("Erreur lors de la suppression du stagiaire");
+        });
+};
   const handleEdit = (offer) => {
     setSelectedOffre(offer);
     setIsModalOpen(true);
@@ -85,13 +97,14 @@ const AllOffres = () => {
                     Voir détails
                   </Button>
                   <Button
-                    href={`/admin/candidates_per_offre/${offer._id}`}
-                    as={Link}
-                    color="primary"
-                    variant="solid"
-                  >
-                    Button Link
-                  </Button>
+                                        size="sm"
+                                        variant="text"
+                                        color="red"
+                                        className="flex items-center gap-2"
+                                        onClick={() => handleDelete(offer._id)}
+                                    >
+                                        Supprimer
+                                    </Button>
                   <Button
                                         size="sm"
                                         variant="text"
@@ -100,16 +113,7 @@ const AllOffres = () => {
                                     >
                                         Modifier
                                     </Button>
-                  <Button
-                    onClick={()=>{
-                      axiosClient.delete(`/offre/delete/${offer._id}`)
-                    }}
-                    as={Link}
-                    color="primary"
-                    variant="solid"
-                  >
-                    Supprimer
-                  </Button>
+                  
                 </TableCell>
               </TableRow>
             ))}

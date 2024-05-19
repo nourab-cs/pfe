@@ -21,7 +21,7 @@ const QuizForm = () => {
         question: Yup.string().required("Question is required"),
         options: Yup.array()
           .of(Yup.string().required("Option is required"))
-          .min(4, "At least four options are required"),
+          .min(3, "At least four options are required"),
         answer: Yup.string().required("Answer is required"),
       })
     ),

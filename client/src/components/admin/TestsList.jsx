@@ -1,3 +1,4 @@
+// TestsList.js
 import React, { useEffect, useState } from "react";
 import { axiosClient } from "../../services/axiosClient";
 import QuizForm from "../Quiz/CreateQuiz";
@@ -6,7 +7,8 @@ import { getAll } from '../../services/quiz.services';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { Link, Button } from "@nextui-org/react";
-import toast from 'react-hot-toast'; // Assuming you're using react-hot-toast for notifications
+import toast from 'react-hot-toast';
+import UpdateQuizModal from "../Quiz/UpdateQuizModal";
 
 function TestsList() {
   const [quizzes, setQuizzes] = useState([]);
@@ -16,6 +18,8 @@ function TestsList() {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
 
   useEffect(() => {
     axiosClient
@@ -54,6 +58,11 @@ function TestsList() {
       });
   };
 
+  const handleEdit = (quiz) => {
+    setSelectedQuiz(quiz);
+    setIsModalOpen(true);
+  };
+
   return (
     <div>
       <Button
@@ -73,10 +82,18 @@ function TestsList() {
             <TableColumn>Action</TableColumn>
           </TableHeader>
           <TableBody>
-            {quizzes.map((quiz) => (
+            {quizzes.reverse().map((quiz) => (
               <TableRow key={quiz._id}>
                 <TableCell>{quiz.name}</TableCell>
                 <TableCell>
+                  <Button
+                    size="sm"
+                    variant="text"
+                    className="flex items-center gap-2"
+                    onClick={() => handleEdit(quiz)}
+                  >
+                    Modifier
+                  </Button>
                   <Button
                     onClick={() => handleDelete(quiz._id)}
                     color="primary"
@@ -95,6 +112,12 @@ function TestsList() {
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
+      {isModalOpen && (
+        <UpdateQuizModal
+          setOpenModal={setIsModalOpen}
+          quiz={selectedQuiz}
+        />
+      )}
     </div>
   );
 }
