@@ -40,5 +40,27 @@ const deleteQuiz =  async(req,res)=>{
     }
 }
 
+const updateQuestions = async (req, res) => {
+    try {
+        require("../database");
+        const { quizId } = req.params;
+        const { questions } = req.body;
+        
+        const updatedQuiz = await Quiz.findByIdAndUpdate(
+            quizId,
+            { questions },
+            { new: true }
+        );
 
-module.exports = { create, all, deleteQuiz }
+        if (!updatedQuiz) {
+            return res.status(404).json({ message: "Quiz not found" });
+        }
+
+        res.status(200).json(updatedQuiz);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+module.exports = { create, all, deleteQuiz ,updateQuestions }

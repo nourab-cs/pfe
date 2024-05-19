@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Modal = ({result}) => {
-  // get your props 
-    const navigate = useNavigate()
-    console.log(result);
+const Modal = ({ score }) => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(true);
 
   const toggleModal = () => {
@@ -13,9 +11,6 @@ const Modal = ({result}) => {
 
   return (
     <>
-  
-
-      {/* Main modal */}
       {showModal && (
         <div
           id="default-modal"
@@ -28,9 +23,7 @@ const Modal = ({result}) => {
             className="relative p-4 w-full max-w-2xl max-h-full"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal content */}
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              {/* Modal header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Terms of Service
@@ -59,31 +52,22 @@ const Modal = ({result}) => {
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              {/* Modal body */}
               <div className="p-4 md:p-5 space-y-4">
                 <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Mauris feugiat quam quis tincidunt dictum. Integer ut risus ac
-                  tellus feugiat efficitur.
-                </p>
-                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                  Sed eget metus ac mi ultricies eleifend. Duis vel odio nec
-                  risus commodo consectetur ac at elit. Nullam vulputate quam
-                  sed ex tincidunt, ac blandit est fermentum.
+                  Votre score est : 
                 </p>
               </div>
-              {/* Modal footer */}
               <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button
                   data-modal-hide="default-modal"
                   type="button"
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  onClick={()=>{
-                    toggleModal()
-                    navigate("/")
+                  onClick={() => {
+                    toggleModal();
+                    navigate("/");
                   }}
                 >
-                  Save{" "}
+                  Save
                 </button>
               </div>
             </div>
