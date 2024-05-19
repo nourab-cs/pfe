@@ -72,9 +72,23 @@ const deleteOffre =  async(req,res)=>{
         res.status(500).json(error)
     }
 }
+const updateOffre =  async(req,res)=>{
+    try {
+        require("../database");
+      const offre = await Offre.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      if (!offre) {
+        return res.status(404).json({ message: "Offre introuvable" });
+    }
+    const updated = await Offre.findById(req.params.id);
+        res.status(201).json(updated)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
+    }
+}
 
 module.exports = {
     all,create,GetOne,
     addQuiz,
-    getQuizOffre,deleteOffre
+    getQuizOffre,deleteOffre,updateOffre
 }

@@ -49,10 +49,10 @@ function Admin() {
         </li>
         <li>
           <Link
-            to="/admin/candidats-list"
+            to="/admin/tests-list"
             className="block px-3 py-2 text-gray-800 hover:bg-gray-200 rounded-md transition-colors duration-300"
           >
-            Candidats
+           tests List
           </Link>
           
         </li>

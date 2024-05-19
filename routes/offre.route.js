@@ -11,6 +11,7 @@ router.get("/get-one" , require('../controllers/offre.controller').GetOne)
 router.put("/add-quiz/:quiz_id" , require('../controllers/offre.controller').addQuiz)
 router.get("/get-quiz" , require('../controllers/offre.controller').getQuizOffre)
 router.delete("/delete/:id" , require('../controllers/offre.controller').deleteOffre)
+router.put("/update/:id", require('../controllers/offre.controller').updateOffre);
 
 
 
