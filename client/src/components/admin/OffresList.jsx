@@ -13,7 +13,9 @@ import {
 import { Link, Button } from "@nextui-org/react";
 import { axiosClient } from "../../services/axiosClient";
 import UpdateOffreModal  from "../offre/UpdateOffreModal";
+import { useOffre } from "../../stores/offreStore";
 const AllOffres = () => {
+  const [setOffre] = useOffre((state)=>[state.setOffre])
   const [offers, setOffers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -23,6 +25,7 @@ const AllOffres = () => {
   useEffect(() => {
     getAll()
       .then((res) => {
+        setOffre(res.data)
         setTotalPages(Math.ceil(res.data.length / itemsPerPage));
         setOffers(
           res.data.slice(
@@ -95,6 +98,14 @@ const AllOffres = () => {
                     variant="solid"
                   >
                     Voir détails
+                  </Button>
+                  <Button
+                    href={`/admin/candidates_per_offre/${offer._id}`}
+                    as={Link}
+                    color="primary"
+                    variant="solid"
+                  >
+                    Button Link
                   </Button>
                   <Button
                                         size="sm"

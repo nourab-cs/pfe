@@ -16,9 +16,12 @@ import {
 import { EditIcon, DeleteIcon, EyeIcon } from "./Icons";
 import { axiosClient } from "../../services/axiosClient";
 import Modal from "../layouts/Modal-next";
+import { Link } from "@nextui-org/react";
+import {useOffre} from "../../stores/offreStore"
 
 function AllCandidatures() {
   const [candidates, setCandidates] = useState([]);
+  const [Offre] = useOffre((state) => [state.Offre]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [openModal, setOpen] = useState(false);
@@ -117,42 +120,57 @@ function AllCandidatures() {
         <Table aria-label="Example static collection table">
           <TableHeader>
             <TableColumn>Name</TableColumn>
-            <TableColumn>Offre Correspondnate</TableColumn>
+            <TableColumn>Offre Correspondante</TableColumn>
             <TableColumn>Status</TableColumn>
+            <TableColumn></TableColumn>
           </TableHeader>
           <TableBody>
-            {candidates?.map((candidate, index) => (
-              <TableRow key={index}>
-                <TableCell>{candidate.nom}</TableCell>
-                <TableCell></TableCell>
+            {candidates?.map((candidate, index) => {
+              const OffreName = Offre.find((e)=>e._id == candidate.offre_id)
+              console.log(OffreName);
+              return (
+                <TableRow key={index}>
+                  <TableCell>{candidate.nom}</TableCell>
+                  <TableCell>{OffreName?.titre}</TableCell>
 
-                <TableCell>
-                  {!candidate.is_accepted  ? (
-                    <>
-                      {" "}
-                      <button
-                        onClick={() => {
-                          setId(candidate._id);
-                          setOpen(true);
-                        }}
-                      >
-                        accept
-                      </button>
-                      <Button
-                        onClick={() => {
-                          setCandidature(candidate._id, "no");
-                          re(!refetch)
-                        }}
-                      >
-                        rject
-                      </Button>
-                    </>
-                  ) : (
-                    candidate.is_accepted
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>
+                    {!candidate.is_accepted ? (
+                      <>
+                        {" "}
+                        <button
+                          onClick={() => {
+                            setId(candidate._id);
+                            setOpen(true);
+                          }}
+                        >
+                          accept
+                        </button>
+                        <Button
+                          onClick={() => {
+                            setCandidature(candidate._id, "no");
+                            re(!refetch);
+                          }}
+                        >
+                          rject
+                        </Button>
+                      </>
+                    ) : (
+                      candidate.is_accepted
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      href={`/candidature/${candidate._id}`}
+                      as={Link}
+                      color="primary"
+                      variant="solid"
+                    >
+                      Voir détails
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

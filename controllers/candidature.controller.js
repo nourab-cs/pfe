@@ -121,11 +121,21 @@ const GetCandiaturePerUser =  async(req,res)=>{
   }
 }
 
+const GetOne =  async(req,res)=>{
+  try {
+      require("../database");
 
+      const candidature = await Candidature.findById(req.params.id)
+      res.status(201).json(candidature)
+  } catch (error) {
+      console.log(error);
+      res.status(500).json(error)
+  }
+}
 
 
 
 module.exports = {
   create,
-  offre_candidates, score, all, setCandidature,GetCandiaturePerUser
+  offre_candidates, score, all, setCandidature,GetCandiaturePerUser,GetOne
 }

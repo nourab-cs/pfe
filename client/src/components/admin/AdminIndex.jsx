@@ -8,6 +8,7 @@ import CandidatePerOffre from "../offre/CandidatePerOffre";
 import AllCandidatures from "./AllCandidatures";
 import AjouterStagiaire from "../AjouterStagiaire";
 import TestsList from "./TestsList";
+import QuizList from "../Quiz/QuizList"
 function AdminIndex() {
   return (
     <Routes>
@@ -20,6 +21,7 @@ function AdminIndex() {
       <Route path="/allcandidatures" element={<AllCandidatures />} />
       <Route path="/create-stagiaire" element={<AjouterStagiaire />} />
       <Route path="/tests-list" element={<TestsList/>} />
+      <Route path="/all_quizes/:id" element={<QuizList/>} />
 
 
     </Routes>
