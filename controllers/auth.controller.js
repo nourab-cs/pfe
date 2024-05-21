@@ -146,6 +146,7 @@ const code = async (req, res) => {
         email: userData.email,
       });
     }
+    console.log(isUser);
     const exp = Date.now() + 1000 * 60 * 60;
     const access_token = jwt.sign(
       { id: isUser._id, exp, role: isUser.role },
@@ -160,6 +161,8 @@ const code = async (req, res) => {
           email: isUser.email,
           role: isUser.role,
           _id: isUser._id,
+          avatar: isUser.avatar  || null,
+
         } 
       );
   } catch (error) {
