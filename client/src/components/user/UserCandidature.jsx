@@ -36,9 +36,10 @@ function UserCandidature() {
           <tbody>
             {data.map((candidature) => (
               <tr key={candidature._id}>
-                <td className="py-2">{candidature.titreOffre}</td>
-                <td className="py-2">{candidature.statut}</td>
-                <td className="py-2">{candidature.dateEntretien ? new Date(candidature.dateEntretien).toLocaleDateString() : "Non planifiée"}</td>
+                {candidature._id}
+                <td className="py-2">{candidature.titre}</td>
+                <td className="py-2">{candidature.is_accepted}</td>
+                <td className="py-2">{candidature.interview ? new Date(candidature.dateEntretien).toLocaleDateString() : "Non planifiée"}</td>
               </tr>
             ))}
           </tbody>

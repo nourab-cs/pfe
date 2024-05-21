@@ -35,19 +35,21 @@ const create = async (req, res) => {
       cloudinary.uploader.upload(
         req.body.data.cv,
         { folder: "cvs", resource_type: "auto" },
-        function (error, result) {
+        async function (error, result) {
           if (error) {
             console.log(error);
             reject(error);
+            return res.status(500).json({ error: error })
+
           }
           console.log(result)
           candidature.cv = result.secure_url
           resolve(result);
+          const newCandidature = await Candidature.create(candidature)
+          return res.status(201).json(newCandidature)
         }
       );
     });
-    const newCandidature = await Candidature.create(candidature)
-    res.status(201).json(newCandidature)
   } catch (error) {
     console.log(error);
     res.status(500).json(error)
@@ -98,10 +100,10 @@ const all = async (req, res) => {
 const setCandidature = async (req, res) => {
   try {
     require("../database");
-      
-      const candidature = await Candidature.findByIdAndUpdate(req.body.id, { is_accepted: req.body.Status, interview: req.body.date }, { new: true })
-      return res.status(201).json({ candidature })
-    
+
+    const candidature = await Candidature.findByIdAndUpdate(req.body.id, { is_accepted: req.body.Status, interview: req.body.date }, { new: true })
+    return res.status(201).json({ candidature })
+
   } catch (error) {
     console.log(error);
     res.status(500).json(error)
@@ -110,26 +112,27 @@ const setCandidature = async (req, res) => {
 
 
 
-const GetCandiaturePerUser =  async(req,res)=>{
+const GetCandiaturePerUser = async (req, res) => {
   try {
-      require("../database");
-      const data = await Candidature.find({email:req.body.email})
-      res.status(201).json(data)
+    require("../database");
+    const data = await Candidature.find({ email: req.body.email })
+    console.log(data);
+    res.status(201).json(data)
   } catch (error) {
-      console.log(error);
-      res.status(500).json(error)
+    console.log(error);
+    res.status(500).json(error)
   }
 }
 
-const GetOne =  async(req,res)=>{
+const GetOne = async (req, res) => {
   try {
-      require("../database");
+    require("../database");
 
-      const candidature = await Candidature.findById(req.params.id)
-      res.status(201).json(candidature)
+    const candidature = await Candidature.findById(req.params.id)
+    res.status(201).json(candidature)
   } catch (error) {
-      console.log(error);
-      res.status(500).json(error)
+    console.log(error);
+    res.status(500).json(error)
   }
 }
 
@@ -137,5 +140,5 @@ const GetOne =  async(req,res)=>{
 
 module.exports = {
   create,
-  offre_candidates, score, all, setCandidature,GetCandiaturePerUser,GetOne
+  offre_candidates, score, all, setCandidature, GetCandiaturePerUser, GetOne
 }
