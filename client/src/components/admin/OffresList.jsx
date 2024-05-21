@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAll } from "../../services/offre.service";
 import Pagination from "../layouts/Pagination";
+import toast from "react-hot-toast";
 import {
   Table,
   TableHeader,
@@ -11,12 +12,14 @@ import {
 } from "@nextui-org/react";
 import { Link, Button } from "@nextui-org/react";
 import { axiosClient } from "../../services/axiosClient";
+import UpdateOffreModal  from "../offre/UpdateOffreModal";
 const AllOffres = () => {
   const [offers, setOffers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOffre, setSelectedOffre] = useState(null);
   useEffect(() => {
     getAll()
       .then((res) => {
@@ -34,7 +37,21 @@ const AllOffres = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+  const handleDelete = (id) => {
+    axiosClient.delete(`/offre/delete/${id}`)
+        .then(() => {
+            toast.success("Stagiaire supprimé avec succès");
+            setOffers(offers.filter(offer => offer._id !== id));
+        })
+        .catch(err => {
+            console.error('Erreur lors de la suppression du stagiaire', err);
+            toast.error("Erreur lors de la suppression du stagiaire");
+        });
+};
+  const handleEdit = (offer) => {
+    setSelectedOffre(offer);
+    setIsModalOpen(true);
+};
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-4">
@@ -80,23 +97,23 @@ const AllOffres = () => {
                     Voir détails
                   </Button>
                   <Button
-                    href={`/admin/candidates_per_offre/${offer._id}`}
-                    as={Link}
-                    color="primary"
-                    variant="solid"
-                  >
-                    Button Link
-                  </Button>
+                                        size="sm"
+                                        variant="text"
+                                        color="red"
+                                        className="flex items-center gap-2"
+                                        onClick={() => handleDelete(offer._id)}
+                                    >
+                                        Supprimer
+                                    </Button>
                   <Button
-                    onClick={()=>{
-                      axiosClient.delete(`/offre/delete/${offer._id}`)
-                    }}
-                    as={Link}
-                    color="primary"
-                    variant="solid"
-                  >
-                    Button Link
-                  </Button>
+                                        size="sm"
+                                        variant="text"
+                                        className="flex items-center gap-2"
+                                        onClick={() => handleEdit(offer)}
+                                    >
+                                        Modifier
+                                    </Button>
+                  
                 </TableCell>
               </TableRow>
             ))}
@@ -108,6 +125,12 @@ const AllOffres = () => {
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
+      {isModalOpen && (
+                <UpdateOffreModal
+                    setOpenModal={setIsModalOpen}
+                    offer={selectedOffre}
+                />
+            )}
     </div>
   );
 };

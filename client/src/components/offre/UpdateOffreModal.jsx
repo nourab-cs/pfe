@@ -1,22 +1,23 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { updateStagiaire } from "../../services/stagiaire.service";
+import { updateOffre } from "../../services/offre.service";
 import toast from 'react-hot-toast';
 
 const validationSchema = Yup.object().shape({
-    nom: Yup.string().required("Le nom est requis"),
-    prenom: Yup.string().required("Le prénom est requis"),
-    specialite: Yup.string().required("La spécialité est requise"),
-    email: Yup.string().email("Email invalide").required("L'email est requis"),
-    telephone: Yup.string().required("Le téléphone est requis"),
-    universite: Yup.string().required("L'université est requise"),
-    dateDebut: Yup.date().required("La date de début est requise"),
-    dateFin: Yup.date().required("La date de fin est requise")
+    titre: Yup.string().required("Le titre est requis"),
+    lieu: Yup.string().required("Le lieu est requis"),
+    dureeStage: Yup.number().required("La durée du stage est requise"),
+    nombreStagiaires: Yup.number().required("Le nombre de stagiaires est requis"),
+    dateLimite: Yup.date().required("La date limite est requise"),
+    profil: Yup.string().required("Le profil est requis"),
+    mission: Yup.array().of(Yup.string().required("La mission est requise")),
+    competences: Yup.array().of(Yup.string().required("La compétence est requise")),
+    domaine: Yup.string().required("Le domaine est requis")
 });
 
-export default function StagiaireModal({ setOpenModal, stagiaire }) {
+ function UpdateOffreModal({ setOpenModal, offer }) {
     return (
-        <>
+        
             <div className="fixed inset-0 z-10 overflow-y-auto">
                 <div
                     className="fixed inset-0 w-full h-full bg-black opacity-40"
@@ -27,25 +28,26 @@ export default function StagiaireModal({ setOpenModal, stagiaire }) {
                         <div>
                             <Formik
                                 initialValues={{
-                                    nom: stagiaire?.nom || '',
-                                    prenom: stagiaire?.prenom || '',
-                                    specialite: stagiaire?.specialite || '',
-                                    email: stagiaire?.email || '',
-                                    telephone: stagiaire?.telephone || '',
-                                    universite: stagiaire?.universite || '',
-                                    dateDebut: stagiaire?.dateDebut ? new Date(stagiaire.dateDebut).toISOString().split('T')[0] : '',
-                                    dateFin: stagiaire?.dateFin ? new Date(stagiaire.dateFin).toISOString().split('T')[0] : ''
+                                    titre: offer?.titre || '',
+                                    lieu: offer?.lieu || '',
+                                    dureeStage: offer?.dureeStage || '',
+                                    nombreStagiaires: offer?.nombreStagiaires || '',
+                                    dateLimite: offer?.dateLimite ? new Date(offer.dateLimite).toISOString().split('T')[0] : '',
+                                    profil: offer?.profil || '',
+                                    mission: offer?.mission || [''],
+                                    competences: offer?.competences || [''],
+                                    domaine: offer?.domaine || ''
                                 }}
                                 validationSchema={validationSchema}
                                 onSubmit={(values, { setSubmitting }) => {
-                                    updateStagiaire(stagiaire._id, values)
+                                    updateOffre(offer._id, values)
                                         .then(() => {
-                                            toast.success("Stagiaire mis à jour avec succès");
+                                            toast.success("Offre mise à jour avec succès");
                                             setOpenModal(false);
                                         })
                                         .catch((err) => {
                                             console.log(err);
-                                            toast.error("Erreur lors de la mise à jour du stagiaire");
+                                            toast.error("Erreur lors de la mise à jour de l'offre");
                                         })
                                         .finally(() => setSubmitting(false));
                                 }}
@@ -54,130 +56,148 @@ export default function StagiaireModal({ setOpenModal, stagiaire }) {
                                     <Form className="mt-6">
                                         <div className="mb-2">
                                             <label
-                                                htmlFor="nom"
+                                                htmlFor="titre"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
-                                                Nom
+                                                Titre
                                             </label>
                                             <Field
                                                 type="text"
                                                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="nom"
+                                                name="titre"
                                             />
-                                            {errors.nom && touched.nom ? (
-                                                <div className="text-red-500 text-sm">{errors.nom}</div>
+                                            {errors.titre && touched.titre ? (
+                                                <div className="text-red-500 text-sm">{errors.titre}</div>
                                             ) : null}
                                         </div>
                                         <div className="mb-2">
                                             <label
-                                                htmlFor="prenom"
+                                                htmlFor="lieu"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
-                                                Prénom
+                                                Lieu
                                             </label>
                                             <Field
                                                 type="text"
                                                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="prenom"
+                                                name="lieu"
                                             />
-                                            {errors.prenom && touched.prenom ? (
-                                                <div className="text-red-500 text-sm">{errors.prenom}</div>
+                                            {errors.lieu && touched.lieu ? (
+                                                <div className="text-red-500 text-sm">{errors.lieu}</div>
                                             ) : null}
                                         </div>
                                         <div className="mb-2">
                                             <label
-                                                htmlFor="specialite"
+                                                htmlFor="dureeStage"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
-                                                Spécialité
+                                                Durée du stage (en mois)
                                             </label>
                                             <Field
-                                                type="text"
+                                                type="number"
                                                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="specialite"
+                                                name="dureeStage"
                                             />
-                                            {errors.specialite && touched.specialite ? (
-                                                <div className="text-red-500 text-sm">{errors.specialite}</div>
+                                            {errors.dureeStage && touched.dureeStage ? (
+                                                <div className="text-red-500 text-sm">{errors.dureeStage}</div>
                                             ) : null}
                                         </div>
                                         <div className="mb-2">
                                             <label
-                                                htmlFor="email"
+                                                htmlFor="nombreStagiaires"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
-                                                Email
+                                                Nombre de stagiaires
                                             </label>
                                             <Field
-                                                type="email"
+                                                type="number"
                                                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="email"
+                                                name="nombreStagiaires"
                                             />
-                                            {errors.email && touched.email ? (
-                                                <div className="text-red-500 text-sm">{errors.email}</div>
+                                            {errors.nombreStagiaires && touched.nombreStagiaires ? (
+                                                <div className="text-red-500 text-sm">{errors.nombreStagiaires}</div>
                                             ) : null}
                                         </div>
                                         <div className="mb-2">
                                             <label
-                                                htmlFor="telephone"
+                                                htmlFor="dateLimite"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
-                                                Téléphone
-                                            </label>
-                                            <Field
-                                                type="text"
-                                                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="telephone"
-                                            />
-                                            {errors.telephone && touched.telephone ? (
-                                                <div className="text-red-500 text-sm">{errors.telephone}</div>
-                                            ) : null}
-                                        </div>
-                                        <div className="mb-2">
-                                            <label
-                                                htmlFor="universite"
-                                                className="block text-sm font-semibold text-gray-800"
-                                            >
-                                                Université
-                                            </label>
-                                            <Field
-                                                type="text"
-                                                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="universite"
-                                            />
-                                            {errors.universite && touched.universite ? (
-                                                <div className="text-red-500 text-sm">{errors.universite}</div>
-                                            ) : null}
-                                        </div>
-                                        <div className="mb-2">
-                                            <label
-                                                htmlFor="dateDebut"
-                                                className="block text-sm font-semibold text-gray-800"
-                                            >
-                                                Date de début
+                                                Date limite
                                             </label>
                                             <Field
                                                 type="date"
                                                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="dateDebut"
+                                                name="dateLimite"
                                             />
-                                            {errors.dateDebut && touched.dateDebut ? (
-                                                <div className="text-red-500 text-sm">{errors.dateDebut}</div>
+                                            {errors.dateLimite && touched.dateLimite ? (
+                                                <div className="text-red-500 text-sm">{errors.dateLimite}</div>
                                             ) : null}
                                         </div>
                                         <div className="mb-2">
                                             <label
-                                                htmlFor="dateFin"
+                                                htmlFor="profil"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
-                                                Date de fin
+                                                Profil
                                             </label>
                                             <Field
-                                                type="date"
+                                                type="text"
                                                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                                name="dateFin"
+                                                name="profil"
                                             />
-                                            {errors.dateFin && touched.dateFin ? (
-                                                <div className="text-red-500 text-sm">{errors.dateFin}</div>
+                                            {errors.profil && touched.profil ? (
+                                                <div className="text-red-500 text-sm">{errors.profil}</div>
+                                            ) : null}
+                                        </div>
+                                        <div className="mb-2">
+                                            <label
+                                                htmlFor="mission"
+                                                className="block text-sm font-semibold text-gray-800"
+                                            >
+                                                Mission
+                                            </label>
+                                            <Field
+                                                as="textarea"
+                                                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                name="mission"
+                                                rows="3"
+                                            />
+                                            {errors.mission && touched.mission ? (
+                                                <div className="text-red-500 text-sm">{errors.mission}</div>
+                                            ) : null}
+                                        </div>
+                                        <div className="mb-2">
+                                            <label
+                                                htmlFor="competences"
+                                                className="block text-sm font-semibold text-gray-800"
+                                            >
+                                                Compétences
+                                            </label>
+                                            <Field
+                                                as="textarea"
+                                                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                name="competences"
+                                                rows="3"
+                                            />
+                                            {errors.competences && touched.competences ? (
+                                                <div className="text-red-500 text-sm">{errors.competences}</div>
+                                            ) : null}
+                                        </div>
+                                        <div className="mb-2">
+                                            <label
+                                                htmlFor="domaine"
+                                                className="block text-sm font-semibold text-gray-800"
+                                            >
+                                                Domaine
+                                            </label>
+                                            <Field
+                                                type="text"
+                                                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                                name="domaine"
+                                            />
+                                            {errors.domaine && touched.domaine ? (
+                                                <div className="text-red-500 text-sm">{errors.domaine}</div>
                                             ) : null}
                                         </div>
                                         <div className="mt-6">
@@ -195,6 +215,7 @@ export default function StagiaireModal({ setOpenModal, stagiaire }) {
                     </div>
                 </div>
             </div>
-        </>
+       
     );
 }
+export default UpdateOffreModal;

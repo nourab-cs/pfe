@@ -20,10 +20,11 @@ const offre = require("./routes/offre.route");
 
 const candidature = require("./routes/candidature.route");
 
+const stagiaire = require("./routes/stagiaire.route");
 
 const admin = require("./routes/admin.routes");
-
-app.use(auth)
+app.use("/stagiaire",stagiaire);
+app.use(auth);
 app.use(user);
 app.use("/offre", offre);
 

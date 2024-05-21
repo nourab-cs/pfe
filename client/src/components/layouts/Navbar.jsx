@@ -68,6 +68,17 @@ function Navbar() {
             </Link>
           </li>
         )}
+        {(user.role == "user" ) && (
+       
+          <li className="lg:ml-12">
+            <Link
+              to="/mescandidatures"
+              className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
+            >
+              mes candidatures
+            </Link>
+          </li>
+        )}
         {(user.role == "admin" || user.role == "recruter") && (
           <li className="lg:ml-12">
             <Link

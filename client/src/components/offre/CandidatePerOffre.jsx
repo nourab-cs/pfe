@@ -24,7 +24,21 @@ function CandidatePerOffre() {
   if (data.length === 0) {
     return <div>Loading...</div>;
   }
-
+  const setCandidature = async (id, Status, date) => {
+    try {
+      const result = axiosClient.post(
+        "/postuler/set-candidature",
+        {
+          id,
+          Status,
+          date,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="bg-white shadow-md rounded-md p-6">
       {data.map((candidate, index) => (
@@ -69,16 +83,29 @@ function CandidatePerOffre() {
                 View CV
               </a>
               <div>
-                <button onClick={() => handleStatusChange(index, "Accepted")} className="bg-green-500 text-white font-bold py-2 px-4 rounded mr-2">
-                  Accept
-                </button>
-                <button onClick={() => handleStatusChange(index, "Rejected")} className="bg-red-500 text-white font-bold py-2 px-4 rounded mr-2">
-                  Reject
-                </button>
-                <button onClick={() => handleStatusChange(index, "Under Review")} className="bg-yellow-500 text-white font-bold py-2 px-4 rounded">
-                  Under Review
-                </button>
-                <p>Status: {candidate.status}</p>
+              {!candidate.is_accepted  ? (
+                    <>
+                      {" "}
+                      <button
+                        onClick={() => {
+                          setId(candidate._id);
+                          setOpen(true);
+                        }}
+                      >
+                        accept
+                      </button>
+                      <Button
+                        onClick={() => {
+                          setCandidature(candidate._id, "no");
+                          re(!refetch)
+                        }}
+                      >
+                        rject
+                      </Button>
+                    </>
+                  ) : (
+                    candidate.is_accepted
+                  )}
               </div>
             </div>
           </div>

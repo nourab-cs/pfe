@@ -30,3 +30,12 @@ export  async function  getAll(offre) {
     }
 
 }
+export async function updateOffre(id, offre) {
+    try {
+        return await axiosClient.put(`/offre/update/${id}`, offre, {
+            withCredentials: true
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
