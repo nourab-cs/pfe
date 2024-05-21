@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 import { axiosClient } from "../../services/axiosClient";
 import QuizForm from "./CreateQuiz";
 import Pagination from "../layouts/Pagination";
-import { getAll } from '../../services/quiz.services';
+import { getAll } from "../../services/quiz.services";
 import { useLocation } from "react-router-dom";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+} from "@nextui-org/react";
 
 function QuizList() {
   const [quizes, setQuizes] = useState([]);
@@ -13,12 +21,14 @@ function QuizList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
+  console.log("quizez");
   useEffect(() => {
     axiosClient
       .get("/quiz/all")
       .then((res) => {
+        console.log(res, "here");
         setQuizes(res?.data);
       })
       .catch((e) => {
@@ -29,8 +39,14 @@ function QuizList() {
   useEffect(() => {
     getAll()
       .then((res) => {
+        console.log(res);
         setTotalPages(Math.ceil(res.data.length / itemsPerPage));
-        setQuizes(res.data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+        setQuizes(
+          res.data.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage
+          )
+        );
       })
       .catch((err) => console.log(err));
   }, [currentPage]);
@@ -58,22 +74,28 @@ function QuizList() {
             <TableColumn></TableColumn>
           </TableHeader>
           <TableBody>
-            {quizes.map((quiz, index) => (
-              <TableRow key={index}>
-                <TableCell>{quiz.name}</TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => {
-                      console.log(quiz);
-                      axiosClient.put(`/offre/add-quiz/${quiz._id}?id=${location.pathname.split("/")[3]}`)
-                    }}
-                    ghost
-                  >
-                    Add
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {quizes.map((quiz, index) => {
+              return (
+                <TableRow key={index}>
+                  <TableCell>{quiz.name}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        console.log(quiz);
+                        axiosClient.put(
+                          `/offre/add-quiz/${quiz._id}?id=${
+                            location.pathname.split("/")[3]
+                          }`
+                        );
+                      }}
+                      ghost
+                    >
+                      Add
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       )}

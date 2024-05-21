@@ -1,7 +1,6 @@
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useUser } from "../../stores/userStore";
-import UserCanditature from "./UserCanditature";
 
 function Profile() {
   const [data, setData] = useState("");

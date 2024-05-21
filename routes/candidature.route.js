@@ -15,6 +15,7 @@ router.post("/set-candidature" ,require('../controllers/candidature.controller')
 
 router.post("/get-candidates-by-email" ,require('../controllers/candidature.controller').GetCandiaturePerUser)
 
+router.get("/get-one/:id" , require('../controllers/candidature.controller').GetOne)
 
 
 

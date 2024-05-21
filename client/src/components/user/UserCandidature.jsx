@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { axiosClient } from "../../services/axiosClient";
 import { useUser } from "../../stores/userStore";
 
-function UserCanditature() {
+function UserCandidature() {
   const [data, setData] = useState([]);
   const [user] = useUser((state) => [state.user, state.setUser]);
 
@@ -50,4 +50,4 @@ function UserCanditature() {
   );
 }
 
-export default UserCanditature;
+export default UserCandidature;

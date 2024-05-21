@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { axiosClient } from "../../services/axiosClient";
+import { Button } from "@nextui-org/button";
+import Modal from "../layouts/Modal-next";
 
 function CandidatePerOffre() {
   const [data, setData] = useState([]);
+  const [id, setId] = useState("");
+  const [date, setDate] = useState(Date.now());
+  const [refetch, re] = useState(true);
+  const [openModal, setOpen] = useState(false);
+
   const location = useLocation();
+
+  
 
   useEffect(() => {
     axiosClient
-      .get(`/postuler/candidate-per-offre/${location.pathname.split("/")[3]}`)
+      .get(`/postuler/candidate-per-offre/${location.pathname.split("/")[3]}`,{withCredentials:true})
       .then((res) => setData(res.data.map(candidate => ({ ...candidate, status: "Pending" }))))
       .catch((error) => console.error("Error fetching data:", error));
   }, [location.pathname]);
@@ -109,6 +118,16 @@ function CandidatePerOffre() {
               </div>
             </div>
           </div>
+          <Modal
+        re={re}
+        refetch={refetch}
+        id={id}
+        setCandidature={setCandidature}
+        setDate={setDate}
+        open={openModal}
+        set={setOpen}
+        date={date}
+      />
         </div>
       ))}
     </div>
