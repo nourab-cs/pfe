@@ -8,7 +8,9 @@ import { axiosClient } from "../services/axiosClient";
 import { useNavigate } from "react-router-dom";
 
 import toast from "react-hot-toast";
+import { useUser } from "../stores/userStore";
 function CandidatureForm() {
+  const [user] = useUser((state)=>[state.user])
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location.pathname.split("/")[2]);
@@ -66,7 +68,7 @@ function CandidatureForm() {
             sexe: "",
             telephone: "",
             region: "",
-            email: "",
+            email: user?.email,
             diplome: "",
             universite: "",
             domaine: "",
@@ -261,6 +263,7 @@ function CandidatureForm() {
                       Email
                     </label>
                     <Field
+                    disabled
                       type="email"
                       id="email"
                       name="email"

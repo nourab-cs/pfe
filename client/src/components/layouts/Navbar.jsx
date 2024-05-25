@@ -44,7 +44,7 @@ function Navbar() {
             to="/"
             className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
           >
-            Home
+            Accueil
           </Link>
         </li>
         {user?.role != "admin" && (
@@ -53,7 +53,7 @@ function Navbar() {
               to="/alloffres"
               className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
             >
-              AllOffres
+              Offres de stages 
             </Link>
           </li>
         )}
@@ -75,7 +75,7 @@ function Navbar() {
               to="/mescandidatures"
               className="text-red-500 text-gray-500 px-4 py-2  hover:text-black"
             >
-              mes candidatures
+              Mes candidatures
             </Link>
           </li>
         )}
@@ -115,7 +115,7 @@ function Navbar() {
               type="button"
               className=" text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
             >
-              Log in
+              connexion
             </button>
           ) : (
             <button
@@ -128,7 +128,7 @@ function Navbar() {
               type="button"
               className="text-white bg-red-500  hover:bg-red-700 focus:ring-4 focus:ring-red-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-800 dark:text-white dark:border-red-600 dark:hover:bg-red-700 dark:hover:border-red-600 dark:focus:ring-red-700"
             >
-              Logout
+              déconnexion
             </button>
           )}
         </li>

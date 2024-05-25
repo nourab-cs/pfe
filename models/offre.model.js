@@ -38,10 +38,10 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  quiz_id: {
+  quizzes_id: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Quiz",
-  },
+  }],
 });
 
 const Offre = mongoose.model("Offre", schema);

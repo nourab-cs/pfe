@@ -7,6 +7,7 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+
 } from "@nextui-org/react";
 import Picker from "./DatePicker";
 import { axiosClient } from "../../services/axiosClient";
@@ -50,7 +51,7 @@ export default function ModalNext({
 
 
 
-                    setCandidature(id, "yes", date);
+                    setCandidature(id, "acceptée", date);
 
                     set(false);
                     re(!refetch)

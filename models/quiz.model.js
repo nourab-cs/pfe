@@ -27,7 +27,11 @@ const quizSchema = new mongoose.Schema({
         type: Date,
         default: Date.now // Automatically set to current date and time when a new quiz is created
     },
-    questions: [questionSchema] // Array of embedded documents
+    questions: [questionSchema], // Array of embedded documents
+    offres_id:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Offre",
+      }],
 });
 
 // Create a model based on the schema

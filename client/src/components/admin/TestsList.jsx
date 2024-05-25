@@ -4,11 +4,12 @@ import { axiosClient } from "../../services/axiosClient";
 import QuizForm from "../Quiz/CreateQuiz";
 import Pagination from "../layouts/Pagination";
 import { getAll } from '../../services/quiz.services';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,Tooltip ,useDisclosure} from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { Link, Button } from "@nextui-org/react";
 import toast from 'react-hot-toast';
 import UpdateQuizModal from "../Quiz/UpdateQuizModal";
+import {  EditIcon, DeleteIcon } from "../layouts/icons";
 
 function TestsList() {
   const [quizzes, setQuizzes] = useState([]);
@@ -18,8 +19,8 @@ function TestsList() {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     axiosClient
@@ -60,33 +61,52 @@ function TestsList() {
 
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
-    setIsModalOpen(true);
-  };
+    onOpen();  };
 
   return (
-    <div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h1 className="text-3xl mt-2">Tous les tests</h1>
+          <p className="text-gray-600 mt-2">
+            Une liste de tous les tests disponibles sur notre
+            plateforme.
+          </p>
+        </div>
+        <div className="ml-auto">
       <Button
+      color="primary"
         onClick={() => {
           setShow(!show);
         }}
         ghost={!show}
       >
-        {show ? "Cancel" : "Add new Quiz"}
+        {show ? "Annuler" : "Ajouter un nouveau test"}
       </Button>
+      </div>
+      </div>
       {show ? (
         <QuizForm />
       ) : (
-        <Table aria-label="Example table with dynamic content">
+        <div className="overflow-x-auto">
+        <Table aria-label="Example static collection table">
           <TableHeader>
-            <TableColumn>Name</TableColumn>
-            <TableColumn>Action</TableColumn>
+            <TableColumn>Nom</TableColumn>
+
+            <TableColumn>Questions</TableColumn>
+
+           <TableColumn>Actions</TableColumn>
+
+
           </TableHeader>
           <TableBody>
             {quizzes.reverse().map((quiz) => (
               <TableRow key={quiz._id}>
                 <TableCell>{quiz.name}</TableCell>
+                <TableCell>{quiz.questions.length}</TableCell> 
+
                 <TableCell>
-                  <Button
+                  {/* <Button
                     size="sm"
                     variant="text"
                     className="flex items-center gap-2"
@@ -98,26 +118,48 @@ function TestsList() {
                     onClick={() => handleDelete(quiz._id)}
                     color="primary"
                     variant="solid"
+                    
                   >
                     Supprimer
-                  </Button> 
+                  </Button>  */}
+                  <div className="flex items-center gap-2">
+                    
+                    <Tooltip content="Modifier">
+                      <span
+                        className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                        onClick={() => handleEdit(quiz)}                      >
+                        <EditIcon />
+                      </span>
+                    </Tooltip>
+                    <Tooltip color="danger" content="Supprimer">
+                      <span
+                        className="text-lg text-danger cursor-pointer active:opacity-50"
+                        onClick={() => handleDelete(quiz._id)}
+                        >
+                        <DeleteIcon />
+                      </span>
+                    </Tooltip>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        </div>
       )}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
-      {isModalOpen && (
-        <UpdateQuizModal
-          setOpenModal={setIsModalOpen}
-          quiz={selectedQuiz}
-        />
-      )}
+      
+  <UpdateQuizModal
+isOpen={isOpen}
+onOpenChange={onOpenChange} 
+  quiz={selectedQuiz}
+  />
+
+
     </div>
   );
 }

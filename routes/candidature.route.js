@@ -17,6 +17,8 @@ router.post("/get-candidates-by-email" ,require('../controllers/candidature.cont
 
 router.get("/get-one/:id" , require('../controllers/candidature.controller').GetOne)
 
+router.delete("/delete/:id" , require('../controllers/candidature.controller').deleteCandidature)
+
 
 
 

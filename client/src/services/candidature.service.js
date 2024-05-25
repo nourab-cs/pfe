@@ -29,3 +29,16 @@ export  async function  getall(candidature) {
 }
 
 
+export  async function  deleteCandidature(id) {
+    try {
+        return await axiosClient.delete(`/postuler/delete/${id}` ,{
+            withCredentials:true
+        })
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+}
+

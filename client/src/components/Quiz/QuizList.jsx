@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   Button,
+  Checkbox,
 } from "@nextui-org/react";
 
 function QuizList() {
@@ -21,14 +22,12 @@ function QuizList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedQuizzes, setSelectedQuizzes] = useState([]);
 
-  console.log("quizez");
   useEffect(() => {
     axiosClient
       .get("/quiz/all")
       .then((res) => {
-        console.log(res, "here");
         setQuizes(res?.data);
       })
       .catch((e) => {
@@ -39,7 +38,6 @@ function QuizList() {
   useEffect(() => {
     getAll()
       .then((res) => {
-        console.log(res);
         setTotalPages(Math.ceil(res.data.length / itemsPerPage));
         setQuizes(
           res.data.slice(
@@ -55,6 +53,27 @@ function QuizList() {
     setCurrentPage(page);
   };
 
+  const handleCheckboxChange = (quizId) => {
+    setSelectedQuizzes((prevSelected) =>
+      prevSelected.includes(quizId)
+        ? prevSelected.filter((id) => id !== quizId)
+        : [...prevSelected, quizId]
+    );
+  };
+
+  const handleAddQuizzesToOffre = async () => {
+    const offreId = location.pathname.split("/")[3]; // Assuming offre_id is in the URL
+    try {
+      const response = await axiosClient.put(
+        `/offre/add-quiz/${offreId}`,
+        { quiz_ids: selectedQuizzes }
+      );
+      console.log('Quizzes added to offer:', response.data);
+    } catch (error) {
+      console.error('Error adding quizzes to offer:', error);
+    }
+  };
+
   return (
     <div>
       <Button
@@ -68,36 +87,33 @@ function QuizList() {
       {show ? (
         <QuizForm />
       ) : (
-        <Table aria-label="Example table with dynamic content">
-          <TableHeader>
-            <TableColumn>Name</TableColumn>
-            <TableColumn></TableColumn>
-          </TableHeader>
-          <TableBody>
-            {quizes.map((quiz, index) => {
-              return (
+        <>
+          <Table aria-label="Example table with dynamic content">
+            <TableHeader>
+              <TableColumn>Select</TableColumn>
+              <TableColumn>Name</TableColumn>
+            </TableHeader>
+            <TableBody>
+              {quizes.map((quiz, index) => (
                 <TableRow key={index}>
-                  <TableCell>{quiz.name}</TableCell>
                   <TableCell>
-                    <Button
-                      onClick={() => {
-                        console.log(quiz);
-                        axiosClient.put(
-                          `/offre/add-quiz/${quiz._id}?id=${
-                            location.pathname.split("/")[3]
-                          }`
-                        );
-                      }}
-                      ghost
-                    >
-                      Add
-                    </Button>
+                    <Checkbox
+                      isSelected={selectedQuizzes.includes(quiz._id)}
+                      onChange={() => handleCheckboxChange(quiz._id)}
+                    />
                   </TableCell>
+                  <TableCell>{quiz.name}</TableCell>
                 </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+              ))}
+            </TableBody>
+          </Table>
+          <Button
+            onClick={handleAddQuizzesToOffre}
+            disabled={selectedQuizzes.length === 0}
+          >
+            Add Selected Quizzes to Offer
+          </Button>
+        </>
       )}
       <Pagination
         currentPage={currentPage}

@@ -2,13 +2,17 @@ import { useEffect, useState } from 'react';
 import { getAll } from '../../services/stagiaire.service';
 import Pagination from "../layouts/Pagination";
 import {
-  Card,
-  CardBody,
-  CardHeader,
-  Typography,
-} from "@material-tailwind/react";
-import { Link, Button } from "@nextui-org/react";
-import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Tooltip,
+  Button,
+  Link
+} from "@nextui-org/react";
+import { PlusIcon, EditIcon, DeleteIcon, EyeIcon } from "../layouts/icons";
 import jsPDF from "jspdf";
 import toast from 'react-hot-toast';
 import { axiosClient } from "../../services/axiosClient";
@@ -72,106 +76,114 @@ function Billing3() {
         setIsModalOpen(true);
     };
 
+    // Fonction pour déterminer le statut du stage
+    const getStatut = (dateDebut, dateFin) => {
+      const now = new Date();
+      const debut = new Date(dateDebut);
+      const fin = new Date(dateFin);
+
+      if (debut > now) {
+        return "À venir";
+      } else if (fin < now) {
+        return "Terminé";
+      } else {
+        return "En cours";
+      }
+    };
+
     return (
-        <section className="w-full">
-            <Card shadow={false}>
-                <CardHeader
-                    floated={false}
-                    shadow={false}
-                    className="rounded-none flex gap-2 flex-col md:flex-row items-start justify-between"
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h1 className="text-3xl mt-2">Informations sur les stagiaires</h1>
+              <p className="text-gray-600 mt-2">
+              Afficher et mettre à jour les détails des stagiaires rapidement et facilement.
+              </p>
+            </div>
+            <div className="ml-auto">
+              <Button
+                color="primary"
+                endContent={<PlusIcon />}
+                href="/admin/create-stagiaire"
+                as={Link}
                 >
-                    <div className="w-full mb-2">
-                        <Typography className="font-bold" color="blue-gray">
-                            Informations sur les stagiaires
-                        </Typography>
-                        <Typography
-                            className="mt-1 font-normal text-gray-600"
-                            variant="small"
-                        >
-                            Afficher et mettre à jour les détails des stagiaires rapidement et facilement.
-                        </Typography>
+                Ajouter un stagiaire
+              </Button>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <Table aria-label="Example static collection table">
+              <TableHeader>
+                <TableColumn>Stagiaire</TableColumn>
+                <TableColumn>Téléphone</TableColumn>
+                <TableColumn>Université</TableColumn>
+                <TableColumn>Spécialité</TableColumn>
+                <TableColumn>Date de début</TableColumn>
+                <TableColumn>Date de fin</TableColumn>
+                <TableColumn>Stage</TableColumn>
+                <TableColumn>Actions</TableColumn>
+              </TableHeader>
+              <TableBody>
+                {stagiaires.reverse().map((stagiaire, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                    <div>
+                      <p>{`${stagiaire.nom} ${stagiaire.prénom}`}</p>
+                      <p className="text-gray-600">{stagiaire.email}</p>
                     </div>
-                    <div className="w-full">
-                        <Button
-                            href="/admin/create-stagiaire"
-                            as={Link}
-                            color="primary"
-                            variant="solid"
-                        >
-                            Ajouter une offre
-                        </Button>
-                    </div>
-                </CardHeader>
-                <CardBody className="flex flex-col gap-4 p-4">
-                    {stagiaires.reverse().map((stagiaire, index) => (
-                        <Card
-                            key={index}
-                            shadow={false}
-                            className="rounded-lg border border-gray-300 p-4"
-                        >
-                            <div className="mb-4 flex items-start justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="border border-gray-200 p-2.5 rounded-lg">
-                                        {stagiaire.nom}
-                                    </div>
-                                    <div>
-                                        <Typography variant="small" color="blue-gray" className="mb-1 font-bold">
-                                            {stagiaire.prenom}
-                                        </Typography>
-                                        <Typography
-                                            className="text-gray-600 text-xs font-normal"
-                                        >
-                                            {stagiaire.specialite}
-                                        </Typography>
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <Button
-                                        size="sm"
-                                        variant="text"
-                                        className="flex items-center gap-2"
-                                        onClick={() => generatePDF(stagiaire)}
-                                    >
-                                        Générer PDF
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        variant="text"
-                                        className="flex items-center gap-2"
-                                        onClick={() => handleEdit(stagiaire)}
-                                    >
-                                        <PencilIcon className="h-4 w-4 text-blue-500" />
-                                        Modifier
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        variant="text"
-                                        color="red"
-                                        className="flex items-center gap-2"
-                                        onClick={() => handleDelete(stagiaire._id)}
-                                    >
-                                        <TrashIcon className="h-4 w-4 text-red-500" />
-                                        Supprimer
-                                    </Button>
-                                </div>
-                            </div>
-                        </Card>
-                    ))}
-                </CardBody>
-            </Card>
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
+                  </TableCell>
+                    <TableCell>{stagiaire.telephone}</TableCell>
+                    <TableCell>{stagiaire.universite}</TableCell>
+                    <TableCell>{stagiaire.specialite}</TableCell>
+                    <TableCell>{new Date(stagiaire.dateDebut).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(stagiaire.dateFin).toLocaleDateString()}</TableCell>
+                    <TableCell>{getStatut(stagiaire.dateDebut, stagiaire.dateFin)}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Tooltip content="Attestation de stage">
+                          <span
+                            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                            onClick={() => generatePDF(stagiaire)}
+                          >
+                            <EyeIcon />
+                          </span>
+                        </Tooltip>
+                        <Tooltip content="Modifier">
+                          <span
+                            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                            onClick={() => handleEdit(stagiaire)}
+                          >
+                            <EditIcon />
+                          </span>
+                        </Tooltip>
+                        <Tooltip color="danger" content="Supprimer">
+                          <span
+                            className="text-lg text-danger cursor-pointer active:opacity-50"
+                            onClick={() => handleDelete(stagiaire._id)}
+                          >
+                            <DeleteIcon />
+                          </span>
+                        </Tooltip>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+          {isModalOpen && (
+            <StagiaireModal
+              setOpenModal={setIsModalOpen}
+              stagiaire={selectedStagiaire}
             />
-            {isModalOpen && (
-                <StagiaireModal
-                    setOpenModal={setIsModalOpen}
-                    stagiaire={selectedStagiaire}
-                />
-            )}
-        </section>
-    );
+          )}
+        </div>
+      );
 }
 
 export default Billing3;

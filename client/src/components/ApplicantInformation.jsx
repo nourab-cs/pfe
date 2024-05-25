@@ -2,12 +2,16 @@ import { PaperClipIcon } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
 import { axiosClient } from "../services/axiosClient";
 import { useLocation } from "react-router-dom";
+import {useOffre} from "../stores/offreStore"
 
 function ApplicantInformation() {
-  const [candidate, setCandidates] = useState({});
+  const [candidate, setCandidates] = useState([]);
+  const [Offre] = useOffre((state) => [state.Offre]);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  console.log(candidate);
+
+  const OffreName = Offre.find((e)=>e._id == candidate.offre_id)
+
   useEffect(() => {
     axiosClient
       .get(`/postuler/get-one/${id}`, { withCredentials: true })
@@ -34,19 +38,11 @@ function ApplicantInformation() {
             <dl className="divide-y divide-gray-100">
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium leading-6 text-gray-900">
-                  {candidate?.nom}
+                  Nom Prénom
                 </dt>
 
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  Margot Foster
-                </dd>
-              </div>
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">
-                  Application for
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  Backend Developer
+                {candidate?.nom}  {candidate?.prénom}
                 </dd>
               </div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -54,20 +50,25 @@ function ApplicantInformation() {
                   Email address
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  margotfoster@example.com
+                {candidate?.email}
                 </dd>
               </div>
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-medium leading-6 text-gray-900">
+                  Application for
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                {OffreName?.titre}
+                </dd>
+              </div>
+             
 
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium leading-6 text-gray-900">
-                  About
+                  Quiz Score
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
-                  incididunt cillum culpa consequat. Excepteur qui ipsum aliquip
-                  consequat sint. Sit id mollit nulla mollit nostrud in ea
-                  officia proident. Irure nostrud pariatur mollit ad adipisicing
-                  reprehenderit deserunt qui eu.
+                {candidate?.quiz_score}
                 </dd>
               </div>
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -87,47 +88,21 @@ function ApplicantInformation() {
                         />
                         <div className="ml-4 flex min-w-0 flex-1 gap-2">
                           <span className="truncate font-medium">
-                            resume_back_end_developer.pdf
+                          {candidate?.cv}
                           </span>
-                          <span className="flex-shrink-0 text-gray-400">
-                            2.4mb
-                          </span>
+                          
                         </div>
                       </div>
                       <div className="ml-4 flex-shrink-0">
                         <a
-                          href="#"
+                          href={candidate.cv}
                           className="font-medium text-indigo-600 hover:text-indigo-500"
                         >
                           Download
                         </a>
                       </div>
                     </li>
-                    <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                      <div className="flex w-0 flex-1 items-center">
-                        <PaperClipIcon
-                          className="h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                          <span className="truncate font-medium">
-                            coverletter_back_end_developer.pdf
-                          </span>
-                          <span className="flex-shrink-0 text-gray-400">
-                            4.5mb
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="ml-4 flex-shrink-0">
-                        <a
-                          href="#"
-                          className="font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                          Download
-                        </a>
-                      </div>
-                    </li>
+                   
                   </ul>
                 </dd>
               </div>

@@ -1,5 +1,6 @@
 const Offre = require("../models/offre.model")
 
+const Candidature=require("../models/candidature.model")
 
 const create = async(req,res)=>{
     try {
@@ -37,18 +38,34 @@ const GetOne =  async(req,res)=>{
         res.status(500).json(error)
     }
 }
+/// changé
 
-const addQuiz =  async(req,res)=>{
+const addQuiz = async (req, res) => {
     try {
-        require("../database");
-        const offre = await Offre.findByIdAndUpdate(req.query.id , {quiz_id : req.params.quiz_id},{new:true})
+        const { offre_id } = req.params; // Utilisation de req.params.offre_id pour récupérer l'ID de l'offre depuis l'URL
+        console.log(offre_id);
+        const { quiz_ids } = req.body; // Tableau d'IDs de quiz à ajouter
+console.log(quiz_ids);
+        // Vérifier si l'offre existe
+        const offre = await Offre.findById(offre_id);
         console.log(offre);
-        res.status(201).json(offre)
+        if (!offre) {
+            return res.status(404).json({ message: "Offre non trouvée" });
+        }
+
+        // Ajouter les nouveaux quiz à l'offre
+        offre.quizzes_id.push(...quiz_ids); // Modification ici pour utiliser le champ quizzes_id
+        const updatedOffre = await offre.save();
+
+        console.log( updatedOffre);
+
+        res.status(201).json(updatedOffre);
     } catch (error) {
-        console.log(error);
-        res.status(500).json(error)
+        console.error("Error adding quizzes to offer:", error);
+        res.status(500).json({ error: "Erreur lors de l'ajout des quiz à l'offre" });
     }
 }
+
 const getQuizOffre =  async(req,res)=>{
     try {
         require("../database");
@@ -60,18 +77,57 @@ const getQuizOffre =  async(req,res)=>{
         res.status(500).json(error)
     }
 }
+/// changé
+// const getQuizOffre = async (req, res) => {
+//     try {
+//         require("../database");
+//         const Offre = require("../models/offre.model");
+
+//         // Récupérer l'ID de l'offre à partir des paramètres de requête
+//         const offreId = req.query.id;
+
+//         // Rechercher l'offre par son ID
+//         const offre = await Offre.findById(offreId).populate('quizzes_id');
+
+//         // Vérifier si l'offre existe
+//         if (!offre) {
+//             return res.status(404).json({ message: "Offre non trouvée" });
+//         }
+
+//         // Extraire les quizzes associés à l'offre
+//         const quizzes = offre.quizzes_id;
+
+//         res.status(200).json({ quizzes });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json(error);
+//     }
+// }
 
 
-const deleteOffre =  async(req,res)=>{
+
+
+// suppression d'une offre et de tous les candidatures qui lui a associé
+const deleteOffre = async (req, res) => {
     try {
-        require("../database");
-      const deleted = await Offre.findByIdAndDelete(req.params.id)
-        res.status(201).json(deleted)
+      // Recherche de l'offre à supprimer
+      const offre = await Offre.findById(req.params.id);
+      if (!offre) {
+        return res.status(404).json({ message: "Offre non trouvée" });
+      }
+  
+      // Recherche et suppression des candidatures associées à cette offre
+      await Candidature.deleteMany({ offre_id: req.params.id });
+  
+      // Suppression de l'offre
+      const deleted = await Offre.findByIdAndDelete(req.params.id);
+      res.status(201).json(deleted);
     } catch (error) {
-        console.log(error);
-        res.status(500).json(error)
+      console.log(error);
+      res.status(500).json(error);
     }
-}
+  };
+  
 const updateOffre =  async(req,res)=>{
     try {
         require("../database");

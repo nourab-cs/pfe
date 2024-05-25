@@ -65,6 +65,8 @@ const candidatureSchema = new mongoose.Schema({
   },
   quiz_score:{
     type: Number,
+    default: -1
+
   },
   interview : Date
 });
