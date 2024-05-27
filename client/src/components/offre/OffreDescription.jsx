@@ -12,15 +12,15 @@ const OffreDescription = () => {
 
   useEffect(() => {
     axiosClient
-      .get(`/offre/get-offre-quizzes?id=${id}`)
+      .get(`/offre/get-one?id=${id}`)
       .then((res) => {
         setOffer(res.data);
+        console.log(offer);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Sujet : {offer?.titre}</h2>
@@ -54,7 +54,7 @@ const OffreDescription = () => {
       </ul>
       {(user.role == "user" ) && (
       <Link
-        to={`/postuler/${offer?.quiz_id}/${offer._id}`}
+        to={`/postuler/${offer?._id}`}
         className="inline-block px-4   py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300"
       >
         Postuler

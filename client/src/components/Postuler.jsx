@@ -13,10 +13,8 @@ function CandidatureForm() {
   const [user] = useUser((state)=>[state.user])
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location.pathname.split("/")[2]);
-  const offre_id = location.pathname.split("/")[3];
-  const quiz_id = location.pathname.split("/")[2];
-  
+  const offre_id = location.pathname.split("/")[2];
+
 
   const [data, setData] = useState("");
 
@@ -89,7 +87,7 @@ function CandidatureForm() {
                 localStorage.setItem("cand_id", res.data._id);
                 toast.success("Offre created");
                 localStorage.removeItem("quiz-done");
-                navigate("/quiz/" + quiz_id);
+                navigate("/quiz/" + offre_id);
               })
               .catch((error) => {
                 console.log(error);

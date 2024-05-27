@@ -11,21 +11,21 @@ const create = async (req, res) => {
       api_secret: process.env.CLOUD_SECRET,
       secure: true,
     });
-
+    
+    console.log(req.body);
     // Vérifier s'il existe déjà une candidature pour cette offre associée à l'utilisateur
     const existingCandidature = await Candidature.findOne({
       offre_id: req.body.data.offer_id,
       email: req.body.data.email,
     });
 
-    if (existingCandidature) {
-      return res
-        .status(400)
-        .json({
-          error: "Vous avez déjà soumis une candidature pour cette offre.",
-        });
-    }
-
+    // if (existingCandidature) {
+    //   return res
+    //     .status(400)
+    //     .json({
+    //       error: "Vous avez déjà soumis une candidature pour cette offre.",
+    //     });
+    // }
     let candidature = {
       qualite: req.body.data.qualite,
       cin: req.body.data.cin,

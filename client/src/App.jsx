@@ -86,7 +86,7 @@ function App() {
          <Route path="/candidature/:id" element={<ApplicantInformation />} />
 
           <Route
-            path="/postuler/:id/:offre"
+            path="/postuler/:offre"
             element={
               <User>
                 <Postuler />
