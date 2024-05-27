@@ -12,7 +12,7 @@ const OffreDescription = () => {
 
   useEffect(() => {
     axiosClient
-      .get(`/offre/get-one?id=${id}`)
+      .get(`/offre/get-offre-quizzes?id=${id}`)
       .then((res) => {
         setOffer(res.data);
       })
@@ -36,7 +36,7 @@ const OffreDescription = () => {
       </p>
       <p className="mb-4">
         <strong>Date limite de soumission de candidature :</strong>{" "}
-        {offer?.dateLimite}
+        {new Date(offer?.dateLimite).toLocaleDateString()}
       </p>
       <h3 className="text-lg font-bold mb-2">Profil :</h3>
       <p className="mb-4">{offer?.profil}</p>

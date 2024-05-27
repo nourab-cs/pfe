@@ -73,9 +73,10 @@
 
 import React, { useEffect, useState } from "react";
 import { getAllUsers } from "../../services/admin.services";
-import UserModal from "../layouts/Modal";
+import UserModal from "../layouts/userModal";
 import { User } from "@nextui-org/react";
-
+import { axiosClient } from "../../services/axiosClient";
+import toast from "react-hot-toast";
 function AllUser() {
   const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -89,6 +90,18 @@ function AllUser() {
       })
       .catch((err) => console.log(err));
   }, []);
+  const handleDelete = (id) => {
+    axiosClient
+      .delete(`/admin/delete-user/${id}`,{ withCredentials: true })
+      .then(() => {
+        toast.success("Offre supprimée avec succès");
+        setUsers(users.filter((user) => user._id !== id));
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la suppression de l'offre", err);
+        toast.error("Erreur lors de la suppression de l'offre");
+      });
+  };
 
   const openModal = (user) => {
     setSelectedUser(user);
@@ -121,6 +134,8 @@ function AllUser() {
                 <button
                   className="px-4 py-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-md hover:bg-gray-300"
                   type="button"
+                  onClick={() => handleDelete(user._id)}
+
                 >
                   Supprimer
                 </button>
@@ -129,7 +144,7 @@ function AllUser() {
           ))}
         </div>
       </div>
-      {showModal && <UserModal setOpenModal={setShowModal} user={selectedUser} />} {/* Using selectedUser for the modal */}
+      {showModal && <UserModal setOpenModal={setShowModal} user={selectedUser} />} 
     </div>
   );
 }

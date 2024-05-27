@@ -16,6 +16,7 @@ function CandidatureForm() {
   console.log(location.pathname.split("/")[2]);
   const offre_id = location.pathname.split("/")[3];
   const quiz_id = location.pathname.split("/")[2];
+  
 
   const [data, setData] = useState("");
 

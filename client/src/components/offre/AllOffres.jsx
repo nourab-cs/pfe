@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getAll } from "../../services/offre.service";
 import Pagination from "../layouts/Pagination";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import {Divider,Input,Link,Button} from "@nextui-org/react";
 
+import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/card";
 
 function AllOffres() {
   const [offers, setOffers] = useState([]);
@@ -25,23 +27,52 @@ function AllOffres() {
   };
 
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">From the blog</h2>
+          
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Nos Offres de Stages</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
-            Learn how to grow your business with our expert advice.
+          Découvrez nos opportunités de stages et lancez votre carrière avec nous.
           </p>
+         
         </div>
         
-        <input
+        <Input
+  className="max-w-xs ml-auto"
   type="text"
   placeholder="Rechercher..."
+  label="Search"
+  isClearable
+  radius="lg"
   value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)}
-  className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm 
-             placeholder-gray-400 focus:placeholder-gray-600"
+  classNames={{
+    label: "text-black/50 dark:text-white/90",
+    input: [
+      "bg-transparent",
+      "text-black/90 dark:text-white/90",
+      "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+    ],
+    innerWrapper: "bg-transparent",
+    inputWrapper: [
+      "shadow-xl",
+      "bg-default-200/50",
+      "dark:bg-default/60",
+      "backdrop-blur-xl",
+      "backdrop-saturate-200",
+      "hover:bg-default-200/70",
+      "dark:hover:bg-default/70",
+      "group-data-[focus=true]:bg-default-200/50",
+      "dark:group-data-[focus=true]:bg-default/60",
+      "!cursor-text",
+    ],
+  }}
+
+  
 />
+<Divider className="my-4" />
+
 
 <div className="mx-auto mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
   {offers
@@ -54,7 +85,7 @@ function AllOffres() {
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{offer.titre}</h5>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{offer.domaine}</p>
         </a>
-        <Link
+        {/* <Link
           to={`/description/${offer._id}`}
           className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
         >
@@ -68,7 +99,19 @@ function AllOffres() {
           >
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
           </svg>
-        </Link>
+        </Link> */}
+
+
+        <Button
+         
+          href={`/description/${offer._id}`}
+          as={Link}
+          showAnchorIcon
+
+        >
+          Read more
+          
+        </Button>
       </div>
     ))}
 </div>

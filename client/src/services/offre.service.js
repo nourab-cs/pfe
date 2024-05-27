@@ -16,6 +16,17 @@ export  async function  createOfffre(offre) {
 
 }
 
+export  function  cacheOfffre(offre) {
+    try {
+        localStorage.setItem("cached-offre",JSON.stringify(offre))
+        return JSON.parse(localStorage.getItem("cached-offre"))
+    } catch (error) {
+        console.log(error);
+        
+    }
+
+}
+
 
 
 export  async function  getAll(offre) {

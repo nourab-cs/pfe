@@ -1,9 +1,6 @@
-const Candidature = require("../models/candidature.model")
-
+const Candidature = require("../models/candidature.model");
 
 const cloudinary = require("cloudinary").v2;
-
-
 
 const create = async (req, res) => {
   try {
@@ -16,13 +13,17 @@ const create = async (req, res) => {
     });
 
     // Vérifier s'il existe déjà une candidature pour cette offre associée à l'utilisateur
-    const existingCandidature = await Candidature.findOne({ 
+    const existingCandidature = await Candidature.findOne({
       offre_id: req.body.data.offer_id,
-      email: req.body.data.email
+      email: req.body.data.email,
     });
 
     if (existingCandidature) {
-      return res.status(400).json({ error: "Vous avez déjà soumis une candidature pour cette offre." });
+      return res
+        .status(400)
+        .json({
+          error: "Vous avez déjà soumis une candidature pour cette offre.",
+        });
     }
 
     let candidature = {
@@ -38,7 +39,7 @@ const create = async (req, res) => {
       diplome: req.body.data.diplome,
       universite: req.body.data.universite,
       domaine: req.body.data.domaine,
-      offre_id: req.body.data.offer_id
+      offre_id: req.body.data.offer_id,
     };
 
     const result = await new Promise((resolve, reject) => {
@@ -68,13 +69,13 @@ const create = async (req, res) => {
 const offre_candidates = async (req, res) => {
   try {
     require("../database");
-    const newCandidature = await Candidature.find({ offre_id: req.params.id })
-    res.status(201).json(newCandidature)
+    const newCandidature = await Candidature.find({ offre_id: req.params.id });
+    res.status(201).json(newCandidature);
   } catch (error) {
     console.log(error);
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
+};
 const score = async (req, res) => {
   try {
     require("../database");
@@ -100,73 +101,81 @@ const score = async (req, res) => {
   }
 };
 
-
-
 const all = async (req, res) => {
   try {
     require("../database");
 
-    const Candidatures = await Candidature.find()
-    // { quiz_score: { $gt: 50 } }
-    res.status(201).json({ Candidatures })
+    const Candidatures = await Candidature.find({ quiz_score: { $gt: 50 } });
+    {
+      quiz_score: {
+        $gt: 50;
+      }
+    }
+    res.status(201).json({ Candidatures });
   } catch (error) {
     console.log(error);
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
-
+};
 
 const setCandidature = async (req, res) => {
   try {
     require("../database");
 
-    const candidature = await Candidature.findByIdAndUpdate(req.body.id, { is_accepted: req.body.Status, interview: req.body.date }, { new: true })
-    return res.status(201).json({ candidature })
-
+    const candidature = await Candidature.findByIdAndUpdate(
+      req.body.id,
+      { is_accepted: req.body.Status, interview: req.body.date },
+      { new: true }
+    );
+    return res.status(201).json({ candidature });
   } catch (error) {
     console.log(error);
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
-
-
+};
 
 const GetCandiaturePerUser = async (req, res) => {
   try {
     require("../database");
-    const data = await Candidature.find({ email: req.body.email })
+    const data = await Candidature.find({ email: req.body.email });
     console.log(data);
-    res.status(201).json(data)
+    res.status(201).json(data);
   } catch (error) {
     console.log(error);
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
+};
 
 const GetOne = async (req, res) => {
   try {
     require("../database");
 
-    const candidature = await Candidature.findById(req.params.id)
-    res.status(201).json(candidature)
+    const candidature = await Candidature.findById(req.params.id);
+    res.status(201).json(candidature);
   } catch (error) {
     console.log(error);
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-}
+};
 
-const deleteCandidature =  async(req,res)=>{
+const deleteCandidature = async (req, res) => {
   try {
-      require("../database");
-    const deleted = await Candidature.findByIdAndDelete(req.params.id)
-      res.status(201).json(deleted)
+    require("../database");
+    const deleted = await Candidature.findByIdAndDelete(req.params.id);
+    res.status(201).json(deleted);
   } catch (error) {
-      console.log(error);
-      res.status(500).json(error)
+    console.log(error);
+    res.status(500).json(error);
   }
-}
+};
 
 module.exports = {
   create,
-  offre_candidates, score, all, setCandidature, GetCandiaturePerUser, GetOne,deleteCandidature
-}
+  offre_candidates,
+  score,
+  all,
+  setCandidature,
+  GetCandiaturePerUser,
+  GetOne,
+  deleteCandidature,
+};

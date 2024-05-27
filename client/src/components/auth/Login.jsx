@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../stores/userStore";
 import { Typography } from "@material-tailwind/react";
-import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 
 function Login() {
   const navigate = useNavigate();
@@ -45,7 +44,7 @@ function Login() {
                 setUser(res?.data?.user)
                 navigate("/");
                 toast.success(
-                  `Welcome back ${res.data.user.username}`
+                  `Bienvenue ${res.data.user.username}`
                 );
               }
             })

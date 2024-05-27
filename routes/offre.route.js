@@ -13,6 +13,7 @@ router.get("/get-quiz" , require('../controllers/offre.controller').getQuizOffre
 router.delete("/delete/:id" , require('../controllers/offre.controller').deleteOffre)
 router.put("/update/:id", require('../controllers/offre.controller').updateOffre);
 
+router.get("/get-offre-quizzes" , require('../controllers/offre.controller').GetOffreQuizzes)
 
 
 

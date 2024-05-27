@@ -39,8 +39,19 @@ const allUsers = async (req, res) => {
     res.status(500).json({ message: "error" });
   }
 };
+
+const deleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error deleting user" });
+  }
+};
 module.exports = {
   allUsers,
   privateAdmin,
-  assignRole
+  assignRole,
+  deleteUser
 };
