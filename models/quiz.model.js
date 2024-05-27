@@ -29,6 +29,10 @@ const quizSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Offre",
       }],
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
 });
 
 // Create a model based on the schema

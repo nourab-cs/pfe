@@ -2,6 +2,9 @@ const Offre = require("../models/offre.model");
 
 const Candidature = require("../models/candidature.model");
 
+const Quiz = require("../models/quiz.model");
+
+
 const create = async (req, res) => {
   try {
     console.log(req.body);
@@ -43,7 +46,7 @@ const GetOffreQuizzes = async (req, res) => {
 
     const offre = await Offre.findById(req.query.id);
     console.log(offre);
-    const Quiz = require("../models/quiz.model");
+    // const Quiz = require("../models/quiz.model");
     const found = await Quiz.find({ _id: { $in: offre.quizzes_id } });
     res.status(201).json(found);
   } catch (error) {
@@ -69,7 +72,6 @@ const addQuiz = async (req, res) => {
     // Ajouter les nouveaux quiz à l'offre
     offre.quizzes_id.push(...quiz_ids); // Modification ici pour utiliser le champ quizzes_id
     const updatedOffre = await offre.save();
-    const Quiz = require("../models/quiz.model");
     const found = await Quiz.updateMany(
       { _id: { $in: offre.quizzes_id } },
       { $push: { offres_id:offre_id } }
@@ -139,6 +141,12 @@ const deleteOffre = async (req, res) => {
 
     // Suppression de l'offre
     const deleted = await Offre.findByIdAndDelete(req.params.id);
+
+    // Mettre à jour les quizzes qui référencent l'offre supprimée
+    await Quiz.updateMany(
+        { offres_id: req.params.id },
+        { $pull: { offres_id: req.params.id } }
+      );
     res.status(201).json(deleted);
   } catch (error) {
     console.log(error);

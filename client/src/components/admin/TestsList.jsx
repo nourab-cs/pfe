@@ -93,7 +93,12 @@ function TestsList() {
           <TableHeader>
             <TableColumn>Nom</TableColumn>
 
+            <TableColumn>Date de création</TableColumn>
+
             <TableColumn>Questions</TableColumn>
+
+            <TableColumn>Offres</TableColumn>
+
 
            <TableColumn>Actions</TableColumn>
 
@@ -103,7 +108,9 @@ function TestsList() {
             {quizzes.reverse().map((quiz) => (
               <TableRow key={quiz._id}>
                 <TableCell>{quiz.name}</TableCell>
+                <TableCell>{new Date(quiz.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>{quiz.questions.length}</TableCell> 
+                <TableCell>{quiz.offres_id.length}</TableCell> 
 
                 <TableCell>
                   {/* <Button
@@ -131,14 +138,29 @@ function TestsList() {
                         <EditIcon />
                       </span>
                     </Tooltip>
-                    <Tooltip color="danger" content="Supprimer">
+                    {/* <Tooltip color="danger" content="Supprimer">
                       <span
                         className="text-lg text-danger cursor-pointer active:opacity-50"
-                        onClick={() => handleDelete(quiz._id)}
+                        onClick={() => {
+                          if (quiz.offres_id.length === 0) handleDelete(quiz._id);
+                        }}
                         >
                         <DeleteIcon />
                       </span>
-                    </Tooltip>
+                    </Tooltip> */}
+                    <Tooltip
+                        color={quiz.offres_id.length > 0 ? "default" : "danger"}
+                        content={quiz.offres_id.length > 0 ? "Ce quiz est associé à une offre et ne peut pas être supprimé" : "Supprimer"}
+                      >
+                        <span
+                          className={`text-lg cursor-pointer active:opacity-50 ${quiz.offres_id.length > 0 ? 'text-default cursor-not-allowed' : 'text-danger'}`}
+                          onClick={() => {
+                            if (quiz.offres_id.length === 0) handleDelete(quiz._id);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </span>
+                      </Tooltip>
                   </div>
                 </TableCell>
               </TableRow>

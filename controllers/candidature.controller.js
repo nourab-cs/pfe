@@ -19,13 +19,13 @@ const create = async (req, res) => {
       email: req.body.data.email,
     });
 
-    // if (existingCandidature) {
-    //   return res
-    //     .status(400)
-    //     .json({
-    //       error: "Vous avez déjà soumis une candidature pour cette offre.",
-    //     });
-    // }
+    if (existingCandidature) {
+      return res
+        .status(400)
+        .json({
+          error: "Vous avez déjà soumis une candidature pour cette offre.",
+        });
+    }
     let candidature = {
       qualite: req.body.data.qualite,
       cin: req.body.data.cin,

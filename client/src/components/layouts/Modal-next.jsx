@@ -35,14 +35,14 @@ export default function ModalNext({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Pick a Date
+                Choisir une date
               </ModalHeader>
               <ModalBody>
                 <Picker setDate={setDate} />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                  fermer
                 </Button>
                 <Button
                   color="primary"
@@ -57,7 +57,7 @@ export default function ModalNext({
                     re(!refetch)
                   }}
                 >
-                  Save
+                  Enregistrer
                 </Button>
               </ModalFooter>
             </>

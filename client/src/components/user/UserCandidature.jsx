@@ -20,7 +20,7 @@ function UserCandidature() {
           setData(res.data);
           console.log(Offre,"effect")
           const x = Offre.find((e)=>{
-            return e._id == "664f52510224a49218579228"
+            return e._id == "66654e372a4c2afc73346dfeb"
           })
           console.log(x);
         })
