@@ -177,10 +177,12 @@ import UpdateOffreModal from "../offre/UpdateOffreModal";
 import { useOffre } from "../../stores/offreStore";
 
 const AllOffres = () => {
-  const [setOffre] = useOffre((state) => [state.setOffre]);
+  const [o,setOffre] = useOffre((state) => [state.Offre,state.setOffre]);
   const [offers, setOffers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [i, setI] = useState(0);
+
   const itemsPerPage = 6;
   const [selectedOffre, setSelectedOffre] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -191,7 +193,7 @@ const AllOffres = () => {
         setOffre(res.data);
         setTotalPages(Math.ceil(res.data.length / itemsPerPage));
         setOffers(
-          res.data.slice(
+          res.data.reverse().slice(
             (currentPage - 1) * itemsPerPage,
             currentPage * itemsPerPage
           )
@@ -217,8 +219,9 @@ const AllOffres = () => {
       });
   };
 
-  const handleEdit = (offer) => {
+  const handleEdit = (offer,index) => {
     setSelectedOffre(offer);
+  setI(index)
     onOpen();
   };
 
@@ -255,7 +258,7 @@ const AllOffres = () => {
             <TableColumn>Actions</TableColumn>
           </TableHeader>
           <TableBody>
-            {offers.reverse().map((offer, index) => (
+            {o?.map((offer, index) => (
               <TableRow key={index}>
                 <TableCell>{offer.titre}</TableCell>
                 <TableCell>{offer.domaine}</TableCell>
@@ -281,7 +284,7 @@ const AllOffres = () => {
                     <Tooltip content="Modifier">
                       <span
                         className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                        onClick={() => handleEdit(offer)}
+                        onClick={() => handleEdit(offer ,index)}
                       >
                         <EditIcon />
                       </span>
@@ -310,6 +313,8 @@ const AllOffres = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         offer={selectedOffre}
+        set={setSelectedOffre}
+        i={i}
       />
     </div>
   );

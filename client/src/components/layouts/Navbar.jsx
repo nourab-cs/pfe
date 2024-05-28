@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <nav className="relative px-4 py-4 flex justify-between items-center bg-gray-100">
       <Link className="text-3xl font-bold leading-none" to="/">
-        <img className="h-10" src="images/ooredoo.png" alt="Ooredoo Logo" />
+        <img className="h-10" src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Ooredoo_logo.svg" alt="Ooredoo Logo" />
       </Link>
 
       <div className="lg:hidden">

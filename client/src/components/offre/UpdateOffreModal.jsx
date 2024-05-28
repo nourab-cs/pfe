@@ -228,6 +228,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { updateOffre } from '../../services/offre.service';
 import toast from 'react-hot-toast';
+import { useOffre } from '../../stores/offreStore';
 
 const validationSchema = Yup.object().shape({
   titre: Yup.string().required('Le titre est requis'),
@@ -241,7 +242,8 @@ const validationSchema = Yup.object().shape({
   domaine: Yup.string().required('Le domaine est requis'),
 });
 
-function UpdateOffreModal({ isOpen, onOpenChange, offer }) {
+function UpdateOffreModal({ isOpen, onOpenChange, offer,set,i }) {
+  const [offres,setOffres]=useOffre((state)=>[state.Offre,state.setOffre])
     return (
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
         <ModalContent >
@@ -263,8 +265,14 @@ function UpdateOffreModal({ isOpen, onOpenChange, offer }) {
                   validationSchema={validationSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     updateOffre(offer._id, values)
-                      .then(() => {
+                      .then((res) => {
+                        console.log(res);
+                          let aux = offres
+                          
+                          aux.splice(i,1,res.data)
+                          setOffres(aux)
                         toast.success("Offre mise à jour avec succès");
+                        set(res.data)
                         onClose();
                       })
                       .catch((err) => {

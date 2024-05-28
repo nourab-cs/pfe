@@ -5,6 +5,7 @@ import Pagination from "../layouts/Pagination";
 import {Divider,Input,Link,Button} from "@nextui-org/react";
 
 import {Card, CardHeader, CardBody, CardFooter} from "@nextui-org/card";
+import { useOffre } from "../../stores/offreStore";
 
 function AllOffres() {
   const [offers, setOffers] = useState([]);
@@ -12,12 +13,14 @@ function AllOffres() {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState('');
+  const [setOffer] = useOffre((state)=>[state.setOffre])
 
   useEffect(() => {
     getAll()
       .then((res) => {
         setTotalPages(Math.ceil(res.data.length / itemsPerPage));
         setOffers(res.data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+        setOffer(res.data)
       })
       .catch((err) => console.log(err));
   }, [currentPage]);

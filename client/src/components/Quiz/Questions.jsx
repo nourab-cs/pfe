@@ -32,7 +32,7 @@ const Questions = ({ questions,
                                 key={index}
                                 className={`border border-gray-300 rounded p-2 transition-colors duration-200 
                                             ${selectedOption === option ? 'bg-blue-100' : 'bg-white'}`}
-                                onClick={() => handleOptionClick(option)}
+                                onClick={() => {handleOptionClick(option); handleNextQuestion() }}
                             >
                                 {optionIds[index]}{')'} {option}
                             </button>
@@ -43,11 +43,7 @@ const Questions = ({ questions,
                     <p className="text-sm">
                         Question {currentQuestion + 1} of {questions.length}
                     </p>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={handleNextQuestion}
-                    >
-                        { isLastq ? 'Submit' : 'Next Question' }
-                    </button>
+                 
                 </div>
             </div>
         </div>

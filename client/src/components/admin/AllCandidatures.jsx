@@ -66,7 +66,6 @@
 //   const handlePageChange = (page) => {
 //     setCurrentPage(page);
 //   };
-  
 
 //   const handleDelete = (id) => {
 //     deleteCandidature()
@@ -82,8 +81,6 @@
 //         toast.error("Erreur lors de la suppression de la candidature");
 //       });
 //   };
- 
-  
 
 //   return (
 //     <div className="container mx-auto px-4 py-8">
@@ -142,8 +139,7 @@
 //       value={candidate?.quiz_score}
 //       showValueLabel={true}
 //     />
-                  
-                  
+
 //                   </TableCell>
 
 //                   <TableCell>
@@ -236,8 +232,6 @@
 
 // export default AllCandidatures;
 
-
-
 import React, { useState, useEffect } from "react";
 import { getall, deleteCandidature } from "../../services/candidature.service";
 import Pagination from "../layouts/Pagination";
@@ -253,7 +247,7 @@ import {
   ButtonGroup,
   Progress,
   Select,
-  SelectItem
+  SelectItem,
 } from "@nextui-org/react";
 import { DeleteIcon, EyeIcon } from "./Icons";
 import Modal from "../layouts/Modal-next";
@@ -282,7 +276,7 @@ function AllCandidatures() {
         {
           id,
           Status,
-          date
+          date,
         },
         { withCredentials: true }
       );
@@ -310,14 +304,27 @@ function AllCandidatures() {
   const filterCandidates = (candidatures, status, page) => {
     let filteredCandidates = candidatures;
     if (status) {
-      if (status === "pending") {
-        filteredCandidates = candidatures.filter(candidate => candidate.is_accepted === "" || !candidate.is_accepted);
+      console.log(status,"here");
+      if(status == "rejetée"){
+        filteredCandidates = candidatures.filter(
+          (candidate) => candidate.is_accepted == "rejetée"
+        );
+      }
+      else if (status === "pending") {
+        filteredCandidates = candidatures.filter(
+          (candidate) => candidate.is_accepted == ""
+        );
+      } else if (status == "acceptée") {
+        filteredCandidates = candidatures.filter(
+          (candidate) => candidate.is_accepted === "acceptée"
+        );
       } else {
-        filteredCandidates = candidatures.filter(candidate => candidate.is_accepted === status);
       }
     }
     console.log("Filtered Candidates: ", filteredCandidates);
-    setCandidates(filteredCandidates.slice((page - 1) * itemsPerPage, page * itemsPerPage));
+    setCandidates(
+      filteredCandidates.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+    );
     setTotalPages(Math.ceil(filteredCandidates.length / itemsPerPage));
   };
 
@@ -329,7 +336,9 @@ function AllCandidatures() {
     deleteCandidature()
       .then(() => {
         toast.success("Candidature supprimée avec succès");
-        const updatedCandidates = allCandidates.filter((candidate) => candidate._id !== id);
+        const updatedCandidates = allCandidates.filter(
+          (candidate) => candidate._id !== id
+        );
         setAllCandidates(updatedCandidates);
         filterCandidates(updatedCandidates, selectedStatus, currentPage);
       })
@@ -341,9 +350,9 @@ function AllCandidatures() {
 
   const statusOptions = [
     { value: "", label: "Tous les statuts" },
-    { value: "yes", label: "Acceptée" },
-    { value: "no", label: "Rejetée" },
-    { value: "pending", label: "En attente" }
+    { value: "acceptée", label: "Acceptée" },
+    { value: "rejetée", label: "Rejetée" },
+    { value: "pending", label: "En attente" },
   ];
 
   return (
@@ -352,7 +361,8 @@ function AllCandidatures() {
         <div>
           <h1 className="text-3xl mt-2">Toutes les candidatures</h1>
           <p className="text-gray-600 mt-2">
-            Une liste de toutes les candidatures disponibles sur notre plateforme.
+            Une liste de toutes les candidatures disponibles sur notre
+            plateforme.
           </p>
         </div>
         <Select
@@ -440,18 +450,18 @@ function AllCandidatures() {
                     )}
                   </TableCell>
                   <TableCell>
-                    {candidate.is_accepted === "acceptée" && candidate.interview ? (
-                      new Date(candidate.interview).toLocaleString()
-                    ) : (
-                      "Non planifiée"
-                    )}
+                    {candidate.is_accepted === "acceptée" && candidate.interview
+                      ? new Date(candidate.interview).toLocaleString()
+                      : "Non planifiée"}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <Tooltip content="Voir détails">
                         <span
                           className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                          onClick={() => (window.location.href = `/candidature/${candidate._id}`)}
+                          onClick={() =>
+                            (window.location.href = `/candidature/${candidate._id}`)
+                          }
                         >
                           <EyeIcon />
                         </span>
@@ -492,6 +502,3 @@ function AllCandidatures() {
 }
 
 export default AllCandidatures;
-
-
-

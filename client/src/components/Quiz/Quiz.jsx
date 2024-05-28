@@ -10,6 +10,8 @@ const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+  const [displayScore, setDisplayScore] = useState(0);
+
   // set time for each question
   const [timer, setTimer] = useState(10);
   const [quizStarted, setQuizStarted] = useState(false);
@@ -22,42 +24,48 @@ const Quiz = () => {
   useEffect(() => {
     if (localStorage?.getItem("quiz-done"))
       window.location.href = "http://localhost:5173";
-    axiosClient
-      .get("/offre/get-quiz?id=" + id)
-      .then((res) => setQuestions(res.data.questions));
+    axiosClient.get("/offre/get-quiz?id=" + id).then((res) => {
+      let q = [];
+      res.data.forEach((element) => {
+        element.questions.forEach((e) => {
+          q.push(e);
+        });
+      });
+      setQuestions(q);
+    });
   }, []);
 
   useEffect(() => {
     if (isLastq) {
       setLoading(true);
       localStorage.setItem("quiz-done", true);
-      setTimeout(() => {
-        const final = (100 / questions.length) * score;
-        const cand_id = localStorage.getItem("cand_id");
-        axiosClient
-          .put(
-            "/postuler/score/" + cand_id,
-            { score: final },
-            { withCredentials: true }
-          )
-          .then((res) => {
-            if (res.data?.message == "succeded") {
-              console.log(
-                "here===========================================================>"
-              );
+      const final = (100 / questions.length) * score;
+      console.log(questions.length);
+      setDisplayScore(final);
+      const cand_id = localStorage.getItem("cand_id");
+      axiosClient
+        .put(
+          "/postuler/score/" + cand_id,
+          { score: final },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          console.log(res.data);
+          if (res.data?.message == "Succeeded") {
+            console.log(
+              "here===========================================================>"
+            );
 
-              console.log(res.data);
-              //create a state to save the candidature
-              console.log(
-                "here===========================================================>"
-              );
+            //create a state to save the candidature
+            console.log(
+              "here===========================================================>"
+            );
 
-              setValidated(true);
-            } else setValidated(false);
-          })
-          .catch((err) => console.log(err));
-        setLoading(false);
-      }, 3000);
+            setValidated(true);
+          } else setValidated(false);
+        })
+        .catch((err) => console.log(err));
+      setLoading(false);
     }
   }, [isLastq]);
 
@@ -125,8 +133,8 @@ const Quiz = () => {
       ) : loading ? (
         <Loader />
       ) : (
-        // pass candidature data as props to the modal 
-        <Modal result={validated} />
+        // pass candidature data as props to the modal
+        <Modal validated={validated} score={displayScore} />
       )}
     </div>
   );

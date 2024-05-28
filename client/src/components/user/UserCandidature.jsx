@@ -7,7 +7,7 @@ function UserCandidature() {
   const [data, setData] = useState([]);
   const [user] = useUser((state) => [state.user]);
   const [id, setId] = useState("");
-  const [Offre] = useOffre((state) => [state.Offre]);
+  const [offre_Candidature] = useOffre((state) => [state.Offre]);
   useEffect(() => {
     if (user.email) {
       axiosClient
@@ -18,11 +18,6 @@ function UserCandidature() {
         )
         .then((res) => {
           setData(res.data);
-          console.log(Offre,"effect")
-          const x = Offre.find((e)=>{
-            return e._id == "66654e372a4c2afc73346dfeb"
-          })
-          console.log(x);
         })
         .catch((error) => {
           console.error("Error fetching user candidatures", error);
@@ -53,17 +48,25 @@ function UserCandidature() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {data.map((candidature) => {
-                const OffreName = Offre.find((e) => {
-                  return candidature.offre_id == e._id;
-                });
+                // console.log(Offre);
+                const Offre = offre_Candidature.find(
+                  (e) => candidature.offre_id == e._id
+                );
+                console.log(candidature);
 
                 return (
                   <tr key={candidature._id} className="hover:bg-gray-50">
                     <td className="py-3 px-4 text-sm text-gray-900">
-                      {OffreName?.titre}
+                      {Offre?.titre}
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-900">
-                      {candidature.is_accepted}
+                      {candidature?.quiz_score >= 50
+                        ? candidature.is_accepted == ""
+                          ? "pending"
+                          : candidature.is_accepted
+                        : candidature?.quiz_score == -1
+                        ? "rejected : test not passed"
+                        : "rejected  :failed in test "}
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-900">
                       {candidature.interview
