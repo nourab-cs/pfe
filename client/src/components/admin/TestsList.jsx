@@ -87,12 +87,12 @@ function TestsList() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h1 className="text-3xl mt-2">Tous les tests</h1>
+         {!show && <><h1 className="text-3xl mt-2">Tous les tests</h1>
           <p className="text-gray-600 mt-2">
             Une liste de tous les tests disponibles sur notre plateforme.
-          </p>
+          </p></> }
         </div>
-        <div className="ml-auto">
+        <div  className={show ? "hidden" : "ml-auto"}>
           <Button
             color="primary"
             onClick={() => {
@@ -100,7 +100,7 @@ function TestsList() {
             }}
             ghost={!show}
           >
-            {show ? "Annuler" : "Ajouter un nouveau test"}
+            {show ? "" : "Ajouter un nouveau test"}
           </Button>
         </div>
       </div>

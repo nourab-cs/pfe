@@ -340,11 +340,11 @@ function UpdateOffreModal({ isOpen, onOpenChange, offer,set,i }) {
                 </Formik>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Fermer
-                </Button>
                 <Button color="primary" form="formik-form" type="submit">
                   Enregistrer
+                </Button>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Fermer
                 </Button>
               </ModalFooter>
             </>

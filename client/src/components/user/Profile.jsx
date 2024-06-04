@@ -49,15 +49,6 @@ function Profile() {
             <h2 className="text-base font-semibold leading-7 text-gray-900">
               Profile
             </h2>
-            <button
-              onClick={() => {
-                setUpDate(!upDate);
-              }}
-              type="button"
-              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              {upDate ? "cancel" : "edit"}
-            </button>
 
             <p className="mt-1 text-sm leading-6 text-gray-600">
               This information will be displayed publicly so be careful what you
@@ -77,7 +68,7 @@ function Profile() {
                     <img
                       className="h-12 w-12 text-gray-300"
                       aria-hidden="true"
-                      src={user?.avatar?.url || "/logo.png"}
+                      src={user?.avatar?.url || "/images/default-avatar.gif"}
                       alt={"user name"}
                       style={{ borderRadius: "30%" }}
                     />
@@ -86,7 +77,7 @@ function Profile() {
                       className="h-12 w-12 text-gray-300"
                       style={{ borderRadius: "30%" }}
                       width={200}
-                      src={data || "/logo.png"}
+                      src={data || "/images/default-avatar.gif"}
                     ></img>
                   )}
                   {upDate && (
@@ -155,13 +146,24 @@ function Profile() {
           </div>
         </div>
         <div className="mt-6 flex items-center justify-end gap-x-6">
+              <button
+                onClick={() => {
+                  setUpDate(!upDate);
+                }}
+                type="button"
+                className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              >
+                {upDate ? "cancel" : "edit"}
+              </button>
           {upDate && (
-            <button
-              type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Mettre a jour
-            </button>
+            <>
+              <button
+                type="submit"
+                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Mettre a jour
+              </button>
+            </>
           )}
         </div>
       </form>

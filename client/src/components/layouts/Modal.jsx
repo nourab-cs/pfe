@@ -148,8 +148,9 @@ export default function StagiaireModal({ setOpenModal, stagiaire }) {
                                                 <div className="text-red-500 text-sm">{errors.universite}</div>
                                             ) : null}
                                         </div>
+                                      
                                         <div className="mb-2">
-                                            <label
+                                        <label
                                                 htmlFor="dateDebut"
                                                 className="block text-sm font-semibold text-gray-800"
                                             >
@@ -163,8 +164,6 @@ export default function StagiaireModal({ setOpenModal, stagiaire }) {
                                             {errors.dateDebut && touched.dateDebut ? (
                                                 <div className="text-red-500 text-sm">{errors.dateDebut}</div>
                                             ) : null}
-                                        </div>
-                                        <div className="mb-2">
                                             <label
                                                 htmlFor="dateFin"
                                                 className="block text-sm font-semibold text-gray-800"

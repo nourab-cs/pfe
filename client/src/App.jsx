@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Home from "./components/layouts/Home";
 import Login from "./components/auth/Login";
 import Navbarr from "./components/layouts/Navbar";
@@ -22,8 +22,16 @@ import Auth from "./components/auth/Auth";
 import Footer from "./components/layouts/Footer";
 import Quiz from "./components/Quiz/Quiz";
 import UserCandidature from "./components/user/UserCandidature";
+import { useEffect } from "react";
+import { useUser } from "./stores/userStore";
 
 function App() {
+  const [user]  = useUser((state)=>[state.user]);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(user.role && user.role =="admin") navigate("/admin/dashbord")
+  }, []);
   return (
     <div className="flex flex-col min-h-screen ">
       <Navbarr />
@@ -81,9 +89,9 @@ function App() {
               </Admin>
             }
           />
-          
-         <Route path="/description/:id" element={<OffreDescription />} />
-         <Route path="/candidature/:id" element={<ApplicantInformation />} />
+
+          <Route path="/description/:id" element={<OffreDescription />} />
+          <Route path="/candidature/:id" element={<ApplicantInformation />} />
 
           <Route
             path="/postuler/:offre"
@@ -93,7 +101,7 @@ function App() {
               </User>
             }
           />
-           <Route
+          <Route
             path="/mescandidatures"
             element={
               <User>

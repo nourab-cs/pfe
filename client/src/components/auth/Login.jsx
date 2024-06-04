@@ -43,9 +43,11 @@ function Login() {
           module
             .login(email, password)
             .then((res) => {
-              if (res && res?.data?.user) {
+              if (res?.data?.user) {
+
                 setUser(res?.data?.user)
-                navigate("/");
+                console.log(res.data);
+              
                 toast.success(
                   `Bienvenue ${res.data.user.username}`
                 );
