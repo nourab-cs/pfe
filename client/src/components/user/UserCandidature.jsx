@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { axiosClient } from "../../services/axiosClient";
 import { useUser } from "../../stores/userStore";
 import { useOffre } from "../../stores/offreStore";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
 
 function UserCandidature() {
   const [data, setData] = useState([]);
@@ -32,52 +33,47 @@ function UserCandidature() {
       </h2>
       {data.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
-                  Titre de l'offre
-                </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
-                  Statut
-                </th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
-                  Date d'entretien
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
+          <Table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+            <TableHeader className="bg-gray-100">
+              <TableColumn className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
+                Titre de l'offre
+              </TableColumn >
+              <TableColumn className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
+                Statut
+              </TableColumn >
+              <TableColumn className="py-3 px-4 text-left text-sm font-semibold text-gray-700">
+                Date d'entretien
+              </TableColumn >
+            </TableHeader>
+            <TableBody className="divide-y divide-gray-200">
               {data.map((candidature) => {
-                // console.log(Offre);
                 const Offre = offre_Candidature.find(
                   (e) => candidature.offre_id == e._id
                 );
-                console.log(candidature);
-
                 return (
-                  <tr key={candidature._id} className="hover:bg-gray-50">
-                    <td className="py-3 px-4 text-sm text-gray-900">
+                  <TableRow key={candidature._id} className="hover:bg-gray-50">
+                    <TableCell className="py-3 px-4 text-sm text-gray-900">
                       {Offre?.titre}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-900">
+                    </TableCell >
+                    <TableCell className="py-3 px-4 text-sm text-gray-900">
                       {candidature?.quiz_score >= 50
                         ? candidature.is_accepted == ""
-                          ? "pending"
+                          ? "en attente"
                           : candidature.is_accepted
                         : candidature?.quiz_score == -1
-                        ? "rejected : test not passed"
-                        : "rejected  :failed in test "}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-900">
+                        ? "refusée : Vous n'avez pas passer le test"
+                        : "refusée  :échec au test "}
+                    </TableCell >
+                    <TableCell className="py-3 px-4 text-sm text-gray-900">
                       {candidature.interview
                         ? new Date(candidature.interview).toLocaleString()
                         : "Non planifiée"}
-                    </td>
-                  </tr>
+                    </TableCell >
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       ) : (
         <p className="text-gray-600">Aucune candidature trouvée</p>

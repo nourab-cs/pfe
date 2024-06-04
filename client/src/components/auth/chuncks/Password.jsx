@@ -60,7 +60,7 @@ function Password({ username, email }) {
                 variant="small"
                 className="mb-2 block font-medium text-gray-900"
               >
-                Password
+                Mot de passe
               </Typography>
               </label>
               <Field
@@ -79,7 +79,7 @@ function Password({ username, email }) {
                   <Typography
                 variant="small"
                 className="mb-2 block font-medium text-gray-900"
-              >Confirm
+              >Confirmer
               </Typography>
               </label>
               <Field
@@ -99,7 +99,7 @@ function Password({ username, email }) {
                   "w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
                 }
               >
-                Register
+                S'inscrire
               </button>
             </div>
           </Form>

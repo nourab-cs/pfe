@@ -10,7 +10,7 @@ function Admin() {
         
       </div>
       <ul className="space-y-2">
-        <li>
+        {/* <li>
           <Link
             to="/admin/all-users"
             className="block px-3 py-2 text-gray-800 hover:bg-gray-200 rounded-md transition-colors duration-300"
@@ -25,7 +25,7 @@ function Admin() {
           >
             ajouter une offre
           </Link>
-        </li>
+        </li> */}
         
         <li>
           <Link

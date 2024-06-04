@@ -47,7 +47,7 @@ export default function Picker({ setDate }) {
   return (
     <div className="w-full max-w-xl flex flex-row gap-4">
       <DatePicker
-        label="Event Date"
+        label="Date de l'entretien"
         variant="bordered"
         hideTimeZone
         showMonthAndYearPickers
@@ -75,10 +75,18 @@ export default function Picker({ setDate }) {
 
           // Create an ISODate object in MongoDB
           const mongoDate = new Date(isoDateString);
+             // Check if picked date is greater than current date
+             const pickedDate = new Date(isoDateString);
+             const currentDate = new Date();
+   
+             if (pickedDate > currentDate) {
+               setDate(isoDateString);
+               console.log("Picked date is valid:", mongoDate);
+             } else {
+              setDate(null)
+               console.log("Picked date must be greater than current date.");
+             }
 
-          setDate(isoDateString);
-
-          console.log(mongoDate);
         }}
       />
     </div>

@@ -41,9 +41,7 @@ export default function ModalNext({
                 <Picker setDate={setDate} />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  fermer
-                </Button>
+                
                 <Button
                   color="primary"
                   onPress={() => {

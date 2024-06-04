@@ -12,7 +12,15 @@ module.exports = withMT({
 
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        black: "#000000",
+
+        primary:"#ED1C24",
+        // default:"#71717A"
+      }
+    },
+
   },
   darkMode: "class",
   plugins: [nextui()]

@@ -46,19 +46,19 @@ function Register() {
     <section className="grid text-center h-screen items-center p-8">
       <div>
       <Typography variant="h3" color="blue-gray" className="mb-2">
-          Sign Up
+          Inscription
         </Typography>
        
 
       <Email iscode={iscode} email={email} username={username} />
       <p className="mt-8 text-xs font-light text-center text-gray-700">
         {" "}
-        Already registred?{" "}
+        Déjà membre?{" "}
         <Link
           to="/login"
           className="font-medium text-red-600 hover:underline"
         >
-          Log in
+          Se connecter
         </Link>
       </p>
     </div>

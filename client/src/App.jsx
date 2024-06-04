@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./components/layouts/Home";
 import Login from "./components/auth/Login";
-import Navbar from "./components/layouts/Navbar";
+import Navbarr from "./components/layouts/Navbar";
 import Register from "./components/auth/Register";
 import Profile from "./components/user/Profile";
 import { Public } from "./components/HOC/Public";
@@ -25,8 +25,8 @@ import UserCandidature from "./components/user/UserCandidature";
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <Navbar />
+    <div className="flex flex-col min-h-screen ">
+      <Navbarr />
 
       <div className="flex-grow">
         <Routes>

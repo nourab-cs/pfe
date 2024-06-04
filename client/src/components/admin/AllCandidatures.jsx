@@ -271,6 +271,12 @@ function AllCandidatures() {
 
   const setCandidature = async (id, Status, date) => {
     try {
+      if (date == null && Status == "acceptée") {
+        toast.error("Saisir une date valide");
+
+        return;
+      }
+
       await axiosClient.post(
         "/postuler/set-candidature",
         {
@@ -280,6 +286,7 @@ function AllCandidatures() {
         },
         { withCredentials: true }
       );
+
     } catch (error) {
       console.log(error);
     }
@@ -295,7 +302,10 @@ function AllCandidatures() {
         filterCandidates(candidatures, selectedStatus, currentPage);
       })
       .catch((err) => console.log(err));
+     
   }, [refetch]);
+
+  
 
   useEffect(() => {
     filterCandidates(allCandidates, selectedStatus, currentPage);
@@ -304,13 +314,12 @@ function AllCandidatures() {
   const filterCandidates = (candidatures, status, page) => {
     let filteredCandidates = candidatures;
     if (status) {
-      console.log(status,"here");
-      if(status == "rejetée"){
+      console.log(status, "here");
+      if (status == "rejetée") {
         filteredCandidates = candidatures.filter(
           (candidate) => candidate.is_accepted == "rejetée"
         );
-      }
-      else if (status === "pending") {
+      } else if (status === "pending") {
         filteredCandidates = candidatures.filter(
           (candidate) => candidate.is_accepted == ""
         );

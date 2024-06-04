@@ -12,9 +12,20 @@ const CreerOffre = () => {
     { id: 'site3', nom: 'Site 3' },
   ];
   const domainesDisponible = [
-    { id: 'domaine1', nom: 'Domaine 1' },
-    { id: 'domaine2', nom: 'Domaine 2' },
-    { id: 'domaine3', nom: 'Domaine 3' },
+    { id: 'domaine1', nom: 'IA' },
+    { id: 'domaine2', nom: '5G' },
+    { id: 'domaine3', nom: 'Cybersécurité' },
+    { id: 'domaine4', nom: 'Développement' },
+    { id: 'domaine5', nom: 'Cloud' },
+    { id: 'domaine6', nom: 'Réseau' },
+    { id: 'domaine7', nom: 'SDN' },
+    { id: 'domaine8', nom: 'Relation client BTC' },
+    { id: 'domaine9', nom: 'Wholesale' },
+    { id: 'domaine10', nom: 'Data' },
+    { id: 'domaine11', nom: 'IoT' },
+    { id: 'domaine12', nom: 'Relation client BTB' },
+    { id: 'domaine13', nom: 'marketing' },
+
   ];
   const validationSchema = Yup.object().shape({
     lieu: Yup.string().required('Le lieu est requis'),

@@ -41,11 +41,12 @@ function AllOffres() {
          
         </div>
         
+        
         <Input
   className="max-w-xs ml-auto"
   type="text"
   placeholder="Rechercher..."
-  label="Search"
+  label="Recherche"
   isClearable
   radius="lg"
   value={searchTerm}
@@ -112,7 +113,7 @@ function AllOffres() {
           showAnchorIcon
 
         >
-          Read more
+          Voir plus
           
         </Button>
       </div>

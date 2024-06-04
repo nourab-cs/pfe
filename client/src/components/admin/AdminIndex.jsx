@@ -13,8 +13,8 @@ function AdminIndex() {
   return (
     <Routes>
       <Route path="/dashbord" element={<Admin />} />
-      <Route path="/all-users" element={<AllUser />} />
-      <Route path="/create-offre" element={<CreateOffre />} />
+      {/* <Route path="/all-users" element={<AllUser />} />
+      <Route path="/create-offre" element={<CreateOffre />} /> */}
       <Route path="/offres-list" element={<OffresList />} />
       <Route path="/stagiaires-list" element={<StagiaireList />} />
       <Route path="/candidates_per_offre/:id" element={<CandidatePerOffre />} />

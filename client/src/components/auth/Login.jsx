@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../stores/userStore";
 import { Typography } from "@material-tailwind/react";
 
+import {Input} from "@nextui-org/react";
+   
+
 function Login() {
   const navigate = useNavigate();
   const [user, setUser] = useUser((state) => [state.user, state.setUser]);
@@ -61,11 +64,11 @@ function Login() {
     <section className="grid text-center h-screen items-center p-8">
       <div>
         <Typography variant="h3" color="blue-gray" className="mb-2 ">
-          Sign In
+          Se connecter
         </Typography>
-        <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
-          Enter your email and password to sign in
-        </Typography>
+        {/* <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
+        Saisissez votre adresse e-mail et votre mot de passe pour vous connecter
+        </Typography> */}
 
         <Formik
           initialValues={{
@@ -85,13 +88,13 @@ function Login() {
                     variant="small"
                     className="mb-2 block font-medium text-gray-900"
                   >
-                    Your Email
+                     Email
                   </Typography>
                 </label>
                 <Field
                   className=" block w-full px-4 py-2 mt-2  placeholder:opacity-100  rounded-md focus:border-t-primary border-t-blue-gray-200 "
                   name="email"
-                  placeholder="name@mail.com"
+                  placeholder="xyz@mail.com"
 
                 />
                 {errors.email && touched.email ? <div>{errors.email}</div> : null}
@@ -102,12 +105,11 @@ function Login() {
                     variant="small"
                     className="mb-2 block font-medium text-gray-900"
                   >
-                    Password
+                    Mot de passe
                   </Typography>
                 </label>
                 <Field
                   placeholder="********"
-
                   className=" block w-full px-4 py-2 mt-2 bg-white border rounded-md focus:border-black "
                   name="password"
                   labelProps={{
@@ -118,7 +120,7 @@ function Login() {
                 />
                 {errors.password && touched.password ? <div>{errors.password}</div> : null}
               </div>
-              <Link to="/forgot-password" className="mt-8 text-s font-light text-center text-gray-700 hover:underline">Forgot Password</Link>
+              <Link to="/forgot-password" className="mt-8 text-s font-light text-center text-gray-700 hover:underline">Mot de passe oublié</Link>
               <div className="mt-3">
                 <button
                   type="submit"
@@ -126,13 +128,22 @@ function Login() {
                   className="w-full px-4 py-2 tracking-wide text-white font-light transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"            >
 
 
-                  Log in
+                  Connexion
 
                 </button>
               </div>
+              <div>
+              <Typography
+                    variant="small"
+                    className="mb-2 block font-medium text-gray-900 text-center mt-3"
+                  >
+                    ou <br></br>
+                    Se connecter avec
+                  </Typography>
               <div className="mt-3">
-
                 <button
+      className="w-full px-4 py-2 tracking-wide text-black font-light transition-colors duration-200 transform "            
+
                   type="button"
                   onClick={() => {
                     import("../../services/aut.services").then(module => module.google().then(
@@ -142,23 +153,25 @@ function Login() {
                       }
                     ).catch());
                   }}
-                  className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-red-700 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"            >
+                   >
                   <img
                     src={`https://www.material-tailwind.com/logos/logo-google.png`}
                     alt="google"
                     className="h-6 w-6 inline-block"
                   />
-                  <span className="ml-2 font-light">Sign in with Google</span>
+              <span className="ml-2 ">Google </span>
+
                 </button>
+              </div>
               </div>
             </Form>
           )}
         </Formik>
 
         <p className="mt-8 text-xs font-light text-center text-gray-700">
-          Don't have an account?{" "}
+          Vous n'avez pas de compte ?{" "}
           <Link to="/register" className="font-medium text-red-600 hover:underline">
-            Sign up
+            S'inscrire
           </Link>
         </p>
       </div>
