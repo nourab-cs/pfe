@@ -13,3 +13,8 @@ export const useUser = create(
     }
   )
 );
+
+export const useShow = create((set, get) => ({
+  show: false,
+  setUser: () => set({ show: !show }),
+}));

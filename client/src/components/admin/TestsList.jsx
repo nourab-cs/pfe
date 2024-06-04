@@ -3,25 +3,37 @@ import React, { useEffect, useState } from "react";
 import { axiosClient } from "../../services/axiosClient";
 import QuizForm from "../Quiz/CreateQuiz";
 import Pagination from "../layouts/Pagination";
-import { getAll } from '../../services/quiz.services';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,Tooltip ,useDisclosure} from "@nextui-org/react";
+import { getAll } from "../../services/quiz.services";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Tooltip,
+  useDisclosure,
+} from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { Link, Button } from "@nextui-org/react";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import UpdateQuizModal from "../Quiz/UpdateQuizModal";
-import {  EditIcon, DeleteIcon } from "../layouts/icons";
+import { EditIcon, DeleteIcon } from "../layouts/icons";
+import { useShow } from "../../stores/userStore";
+import DeleteModal from "../layouts/DeleteModal";
 
 function TestsList() {
+  
+  const [confirmDelete,setconfirmDelete]=useState(false)
+  const [show,setShow]=useState(false)
   const [quizzes, setQuizzes] = useState([]);
-  const [show, setShow] = useState(false);
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 6;
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   useEffect(() => {
     axiosClient
       .get("/quiz/all")
@@ -38,7 +50,12 @@ function TestsList() {
     getAll()
       .then((res) => {
         setTotalPages(Math.ceil(res.data.length / itemsPerPage));
-        setQuizzes(res.data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
+        setQuizzes(
+          res.data.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage
+          )
+        );
       })
       .catch((err) => console.log(err));
   }, [currentPage]);
@@ -48,7 +65,9 @@ function TestsList() {
   };
 
   const handleDelete = (id) => {
-    axiosClient.delete(`/quiz/delete/${id}`)
+    console.log(id);
+    axiosClient
+      .delete(`/quiz/delete/${id}`)
       .then(() => {
         toast.success("Quiz supprimé avec succès");
         setQuizzes(quizzes.filter((quiz) => quiz._id !== id));
@@ -61,7 +80,8 @@ function TestsList() {
 
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
-    onOpen();  };
+    onOpen();
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -69,51 +89,49 @@ function TestsList() {
         <div>
           <h1 className="text-3xl mt-2">Tous les tests</h1>
           <p className="text-gray-600 mt-2">
-            Une liste de tous les tests disponibles sur notre
-            plateforme.
+            Une liste de tous les tests disponibles sur notre plateforme.
           </p>
         </div>
         <div className="ml-auto">
-      <Button
-      color="primary"
-        onClick={() => {
-          setShow(!show);
-        }}
-        ghost={!show}
-      >
-        {show ? "Annuler" : "Ajouter un nouveau test"}
-      </Button>
-      </div>
+          <Button
+            color="primary"
+            onClick={() => {
+              setShow(!show);
+            }}
+            ghost={!show}
+          >
+            {show ? "Annuler" : "Ajouter un nouveau test"}
+          </Button>
+        </div>
       </div>
       {show ? (
         <QuizForm />
       ) : (
         <div className="overflow-x-auto">
-        <Table aria-label="Example static collection table">
-          <TableHeader>
-            <TableColumn>Nom</TableColumn>
+          <Table aria-label="Example static collection table">
+            <TableHeader>
+              <TableColumn>Nom</TableColumn>
 
-            <TableColumn>Date de création</TableColumn>
+              <TableColumn>Date de création</TableColumn>
 
-            <TableColumn>Questions</TableColumn>
+              <TableColumn>Questions</TableColumn>
 
-            <TableColumn>Offres</TableColumn>
+              <TableColumn>Offres</TableColumn>
 
+              <TableColumn>Actions</TableColumn>
+            </TableHeader>
+            <TableBody>
+              {quizzes.reverse().map((quiz) => (
+                <TableRow key={quiz._id}>
+                  <TableCell>{quiz.name}</TableCell>
+                  <TableCell>
+                    {new Date(quiz.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{quiz.questions.length}</TableCell>
+                  <TableCell>{quiz.offres_id.length}</TableCell>
 
-           <TableColumn>Actions</TableColumn>
-
-
-          </TableHeader>
-          <TableBody>
-            {quizzes.reverse().map((quiz) => (
-              <TableRow key={quiz._id}>
-                <TableCell>{quiz.name}</TableCell>
-                <TableCell>{new Date(quiz.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell>{quiz.questions.length}</TableCell> 
-                <TableCell>{quiz.offres_id.length}</TableCell> 
-
-                <TableCell>
-                  {/* <Button
+                  <TableCell>
+                    {/* <Button
                     size="sm"
                     variant="text"
                     className="flex items-center gap-2"
@@ -129,16 +147,16 @@ function TestsList() {
                   >
                     Supprimer
                   </Button>  */}
-                  <div className="flex items-center gap-2">
-                    
-                    <Tooltip content="Modifier">
-                      <span
-                        className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                        onClick={() => handleEdit(quiz)}                      >
-                        <EditIcon />
-                      </span>
-                    </Tooltip>
-                    {/* <Tooltip color="danger" content="Supprimer">
+                    <div className="flex items-center gap-2">
+                      <Tooltip content="Modifier">
+                        <span
+                          className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                          onClick={() => handleEdit(quiz)}
+                        >
+                          <EditIcon />
+                        </span>
+                      </Tooltip>
+                      {/* <Tooltip color="danger" content="Supprimer">
                       <span
                         className="text-lg text-danger cursor-pointer active:opacity-50"
                         onClick={() => {
@@ -148,25 +166,35 @@ function TestsList() {
                         <DeleteIcon />
                       </span>
                     </Tooltip> */}
-                    <Tooltip
+                      <Tooltip
                         color={quiz.offres_id.length > 0 ? "default" : "danger"}
-                        content={quiz.offres_id.length > 0 ? "Ce quiz est associé à une offre et ne peut pas être supprimé" : "Supprimer"}
+                        content={
+                          quiz.offres_id.length > 0
+                            ? "Ce quiz est associé à une offre et ne peut pas être supprimé"
+                            : "Supprimer"
+                        }
                       >
                         <span
-                          className={`text-lg cursor-pointer active:opacity-50 ${quiz.offres_id.length > 0 ? 'text-default cursor-not-allowed' : 'text-danger'}`}
+                          className={`text-lg cursor-pointer active:opacity-50 ${
+                            quiz.offres_id.length > 0
+                              ? "text-default cursor-not-allowed"
+                              : "text-danger"
+                          }`}
                           onClick={() => {
-                            if (quiz.offres_id.length === 0) handleDelete(quiz._id);
+                           setconfirmDelete(true)
+                     
                           }}
                         >
+                        {confirmDelete &&  <DeleteModal quiz={quiz} set={setconfirmDelete} c={confirmDelete} f={handleDelete}/>}
                           <DeleteIcon />
                         </span>
                       </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       )}
       <Pagination
@@ -174,14 +202,12 @@ function TestsList() {
         totalPages={totalPages}
         onPageChange={handlePageChange}
       />
-      
-  <UpdateQuizModal
-isOpen={isOpen}
-onOpenChange={onOpenChange} 
-  quiz={selectedQuiz}
-  />
 
-
+      <UpdateQuizModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        quiz={selectedQuiz}
+      />
     </div>
   );
 }

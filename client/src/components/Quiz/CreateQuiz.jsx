@@ -113,7 +113,7 @@
 // //   onClick={() => remove(index)}
 // //   className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition ease-in-out duration-150"
 // // >
-  
+
 // //   Remove Question
 // // </button>
 // //                     </div>
@@ -141,7 +141,7 @@
 // //             >
 // //               Submit
 // //             </button>
-            
+
 // //           </Form>
 // //         )}
 // //       </Formik>
@@ -299,7 +299,7 @@
 //             >
 //               Submit
 //             </Button>
-            
+
 //           </Form>
 //         )}
 //       </Formik>
@@ -312,11 +312,20 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import { axiosClient } from "../../services/axiosClient";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useShow } from "../../stores/userStore";
+import { Modal  } from "@nextui-org/react";
+
 
 const QuizForm = () => {
+  const  {show,setShow} = useShow()
+
+
+  const navigate = useNavigate()
   const initialValues = {
     name: "",
     questions: [
@@ -345,7 +354,9 @@ const QuizForm = () => {
     axiosClient
       .post("/quiz/create", values)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data,"here");
+        toast.success("test " + res.data.name + " ajouter  ");
+        navigate("/admin/tests-list")
       })
       .catch((err) => {
         console.log(err);
@@ -392,7 +403,10 @@ const QuizForm = () => {
                         {({ push: pushOptions }) => (
                           <div>
                             {question.options.map((option, optionIndex) => (
-                              <div key={optionIndex} className="flex items-center mb-2">
+                              <div
+                                key={optionIndex}
+                                className="flex items-center mb-2"
+                              >
                                 <Field
                                   as={Input}
                                   type="text"
@@ -428,14 +442,18 @@ const QuizForm = () => {
                       />
 
                       <Button
-color="danger" variant="solid"                        onClick={() => remove(index)}
+                        color="danger"
+                        variant="solid"
+                        onClick={() => remove(index)}
                       >
                         Supprimer la question
                       </Button>
                     </div>
                   ))}
                   <Button
-color="primary" variant="solid"                    onClick={() =>
+                    color="primary"
+                    variant="solid"
+                    onClick={() =>
                       push({
                         question: "",
                         options: ["", "", "", ""],
@@ -450,13 +468,9 @@ color="primary" variant="solid"                    onClick={() =>
               )}
             </FieldArray>
 
-            <Button
-            color="primary" variant="solid"
-              type="submit"
-            >
+            <Button color="primary" variant="solid" type="submit">
               Soumettre
             </Button>
-            
           </Form>
         )}
       </Formik>
@@ -465,4 +479,3 @@ color="primary" variant="solid"                    onClick={() =>
 };
 
 export default QuizForm;
-
