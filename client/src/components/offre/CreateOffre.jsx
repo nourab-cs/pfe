@@ -44,9 +44,10 @@ const CreerOffre = () => {
   return (
 
 
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg" style={{height:"auto"}}>
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Créer une nouvelle offre</h2>
       <Formik
+      
         initialValues={{
           lieu: '',
           titre: '',
@@ -77,7 +78,7 @@ const CreerOffre = () => {
       >
         {({ errors, touched }) => (
           <Form>
-            <div className="mb-4">
+            <div className="">
               <label htmlFor="titre" className="block text-sm font-medium text-gray-700">
                 Titre
               </label>
@@ -203,14 +204,17 @@ const CreerOffre = () => {
               />
               <ErrorMessage name="dateLimite" component="div" className="text-red-600 text-sm" />
             </div>
+            <div className="mb-4 flex jsutify-center">
+             
             <button
               type="submit"
               name="submit"
 
-              className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+              className=" w-[75%]  px-4  py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-700 ml-14 mt-14 "
             >
               Créer
             </button>
+            </div>
           </Form>
         )}
       </Formik>
