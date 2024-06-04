@@ -90,8 +90,9 @@ function CandidatureForm() {
                 navigate("/quiz/" + offre_id);
               })
               .catch((error) => {
-                console.log(error);
-                toast.error("Error");
+                console.log(error ,"here");
+
+                toast.error("Error :" + error.response.data.error);
               });
           }}
         >

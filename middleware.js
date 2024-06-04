@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
  async  function checkAdmin(req, res, next) {
   try {
-    console.log(req.headers.cookie);
     const token = req.headers.cookie.split("=")[1];
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     if (decoded && decoded["role"] !== "admin" ) {

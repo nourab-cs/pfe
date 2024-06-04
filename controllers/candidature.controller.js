@@ -12,7 +12,6 @@ const create = async (req, res) => {
       secure: true,
     });
     
-    console.log(req.body);
     // Vérifier s'il existe déjà une candidature pour cette offre associée à l'utilisateur
     const existingCandidature = await Candidature.findOne({
       offre_id: req.body.data.offer_id,
@@ -52,7 +51,6 @@ const create = async (req, res) => {
             reject(error);
             return res.status(500).json({ error: error });
           }
-          console.log(result);
           candidature.cv = result.secure_url;
           resolve(result);
           const newCandidature = await Candidature.create(candidature);
@@ -79,7 +77,6 @@ const offre_candidates = async (req, res) => {
 const score = async (req, res) => {
   try {
     require("../database");
-    console.log(req.body);
 
     // Vérifier si le score est inférieur à 50
     if (req.body.score < 50) {
@@ -140,7 +137,6 @@ const GetCandiaturePerUser = async (req, res) => {
   try {
     require("../database");
     const data = await Candidature.find({ email: req.body.email });
-    console.log(data);
     res.status(201).json(data);
   } catch (error) {
     console.log(error);
