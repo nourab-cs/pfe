@@ -12,7 +12,6 @@ import {
 import React from "react";
 
 function DeleteModal({ f, set ,quiz  ,c}) {
-    console.log(quiz);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -22,29 +21,14 @@ function DeleteModal({ f, set ,quiz  ,c}) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Supprimer test 
               </ModalHeader>
               <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
+              êtes-vous sûr de vouloir supprimer le test  suivant ? 
               </ModalBody>
               <ModalFooter>
+              
+                
                 <Button
                   
                   Hand
@@ -55,8 +39,11 @@ function DeleteModal({ f, set ,quiz  ,c}) {
                     f(quiz._id)
                   }}
                 >
-                  Action
+                  Supprimer
                 </Button>
+                <Button color="default" variant="flat" onPress={onClose}>
+            Annuler 
+          </Button>
               </ModalFooter>
             </>
           )}

@@ -2,7 +2,8 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
 import { axiosClient } from "../../services/axiosClient";
-import { Button, Modal, ModalContent } from "@nextui-org/react";
+import { Button, ButtonGroup, Modal, ModalContent,Input,ModalHeader,ModalFooter } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/select";
 import toast from "react-hot-toast";
 
 // Validation schema
@@ -19,11 +20,14 @@ const validationSchema = Yup.object().shape({
 });
 
 function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
+
+
+
   const handleSubmit = (values, { setSubmitting }) => {
     axiosClient
       .put(`/quiz/update/${quiz._id}/questions`, values)
       .then((res) => {
-        toast.success("Quiz updated successfully");
+        toast.success("Le test est modifié avec succés");
         onOpenChange(false);
       })
       .catch((err) => {
@@ -34,8 +38,13 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
+    <div className="max-w-lg mx-auto mt-8 p-8 bg-white rounded-lg shadow-lg">
+
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}     size="xl">
       <ModalContent>
+      <ModalHeader className="flex flex-col gap-1">
+                Modifier le test 
+              </ModalHeader>
         {quiz ? (
           <Formik
             initialValues={quiz}
@@ -51,6 +60,7 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
                       {values.questions.map((question, index) => (
                         <div key={index} className="mb-6">
                           <Field
+                          as={Input}
                             type="text"
                             name={`questions.${index}.question`}
                             placeholder="Question"
@@ -59,7 +69,7 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
                           <ErrorMessage
                             name={`questions.${index}.question`}
                             component="div"
-                            className="text-danger"
+                            className="text-primary"
                           />
 
                           <FieldArray name={`questions.${index}.options`}>
@@ -68,6 +78,7 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
                                 {question.options.map((option, optionIndex) => (
                                   <div key={optionIndex} className="mb-2">
                                     <Field
+                                     as={Input}
                                       type="text"
                                       name={`questions.${index}.options.${optionIndex}`}
                                       placeholder={`Option ${optionIndex + 1}`}
@@ -80,17 +91,20 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
                           </FieldArray>
 
                           <Field
-                            as="select"
+
+                            as={Select}
                             name={`questions.${index}.answer`}
                             className="form-control mb-2"
+                            aria-label="Sélectionner la bonne réponse"
+                        placeholder="Sélectionner la bonne réponse"
                           >
-                            <option value="" disabled>
-                              Select the correct answer
-                            </option>
+                            <SelectItem value="" disabled selected>
+                          Sélectionner la bonne réponse
+                        </SelectItem>
                             {question.options.map((option, optionIndex) => (
-                              <option key={optionIndex} value={option}>
+                              <SelectItem key={optionIndex} value={option}>
                                 {option}
-                              </option>
+                              </SelectItem>
                             ))}
                           </Field>
                           <ErrorMessage
@@ -98,18 +112,17 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
                             component="div"
                             className="text-danger"
                           />
-
+<ButtonGroup>
                           <Button
-                            variant="danger"
+                           
                             onClick={() => remove(index)}
-                            className="mb-2"
+                            
                           >
-                            Remove Question
+                            Supprimer la question
                           </Button>
-                        </div>
-                      ))}
+                      
                       <Button
-                        variant="primary"
+                       
                         onClick={() =>
                           push({
                             question: "",
@@ -118,14 +131,22 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
                           })
                         }
                       >
-                        Add Question
+                        Ajouter une question
                       </Button>
+                      </ButtonGroup>
+                      </div>
+                      ))}
                     </div>
                   )}
                 </FieldArray>
-                <Button type="submit" className="mt-3">
-                  Update Quiz
-                </Button>
+                <ModalFooter>
+                <div className="flex justify-end mt-3">
+        <Button color="primary" variant="solid" type="submit">
+         Modifier
+        </Button>
+
+      </div>
+      </ModalFooter>
               </Form>
             )}
           </Formik>
@@ -134,6 +155,7 @@ function UpdateQuizModal  ({ isOpen, onOpenChange, quiz }) {
         )}
       </ModalContent>
     </Modal>
+    </div>
   );
 }
 

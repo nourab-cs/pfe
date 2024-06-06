@@ -2,6 +2,8 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useUser } from "../../stores/userStore";
 import { axiosClient } from "../../services/axiosClient";
+import { Button } from "@nextui-org/button";
+import {Divider} from "@nextui-org/divider";
 
 function Profile() {
   const [data, setData] = useState("");
@@ -54,6 +56,7 @@ function Profile() {
               This information will be displayed publicly so be careful what you
               share.
             </p>
+            <Divider className="my-4" />
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="col-span-full">
@@ -96,7 +99,7 @@ function Profile() {
                   htmlFor="username"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Username
+                  Identifiant
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
@@ -119,7 +122,7 @@ function Profile() {
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Email address
+                    Adresse Email 
                   </label>
                   <div className="mt-2">
                     <input
@@ -134,35 +137,24 @@ function Profile() {
                   </div>
                 </div>
               </div>
-
-              {/* <div className="col-span-full">
-              <label htmlFor="about" className="block text-sm font-medium leading-6 text-gray-900">
-                About
-              </label>
-            
-              <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
-            </div> */}
             </div>
           </div>
         </div>
+
         <div className="mt-6 flex items-center justify-end gap-x-6">
-              <button
+              <Button
                 onClick={() => {
                   setUpDate(!upDate);
                 }}
                 type="button"
-                className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                {upDate ? "cancel" : "edit"}
-              </button>
+                            >
+                {upDate ? "Annuler" : "Modifier"}
+              </Button>
           {upDate && (
             <>
-              <button
-                type="submit"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Mettre a jour
-              </button>
+               <Button color="primary" variant="solid" type="submit">
+        Mettre à jour
+        </Button>
             </>
           )}
         </div>

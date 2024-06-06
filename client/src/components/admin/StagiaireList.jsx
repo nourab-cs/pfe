@@ -10,13 +10,17 @@ import {
   TableCell,
   Tooltip,
   Button,
-  Link
+  Link,
+  useDisclosure
 } from "@nextui-org/react";
-import { PlusIcon, EditIcon, DeleteIcon, EyeIcon } from "../layouts/icons";
+import { PlusIcon, EditIcon, DeleteIcon } from "../layouts/icons";
 import jsPDF from "jspdf";
 import toast from 'react-hot-toast';
 import { axiosClient } from "../../services/axiosClient";
 import StagiaireModal from "../layouts/Modal"; 
+import DeleteStagiaireModal from '../DeleteStagiaireModal';
+import { FaDownload } from "react-icons/fa";
+
 
 function Billing3() {
     const [stagiaires, setStagiaires] = useState([]);
@@ -25,6 +29,11 @@ function Billing3() {
     const itemsPerPage = 6;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedStagiaire, setSelectedStagiaire] = useState(null);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const [confirmDelete,setconfirmDelete]=useState(false)
+
+
 
     useEffect(() => {
         getAll()
@@ -72,9 +81,13 @@ function Billing3() {
     };
 
     const handleEdit = (stagiaire) => {
-        setSelectedStagiaire(stagiaire);
-        setIsModalOpen(true);
+      setSelectedStagiaire(stagiaire);
+      onOpen();
     };
+
+
+    
+
 
     // Fonction pour déterminer le statut du stage
     const getStatut = (dateDebut, dateFin) => {
@@ -128,7 +141,7 @@ function Billing3() {
                   <TableRow key={index}>
                     <TableCell>
                     <div>
-                      <p>{`${stagiaire.nom} ${stagiaire.prénom}`}</p>
+                      <p>{`${stagiaire.nom} ${stagiaire.prenom}`}</p>
                       <p className="text-gray-600">{stagiaire.email}</p>
                     </div>
                   </TableCell>
@@ -145,7 +158,8 @@ function Billing3() {
                             className="text-lg text-default-400 cursor-pointer active:opacity-50"
                             onClick={() => generatePDF(stagiaire)}
                           >
-                            <EyeIcon />
+                               <FaDownload />
+    
                           </span>
                         </Tooltip>
                         <Tooltip content="Modifier">
@@ -156,12 +170,21 @@ function Billing3() {
                             <EditIcon />
                           </span>
                         </Tooltip>
-                        <Tooltip color="danger" content="Supprimer">
+                        <Tooltip color="primary" content="Supprimer">
                           <span
-                            className="text-lg text-danger cursor-pointer active:opacity-50"
-                            onClick={() => handleDelete(stagiaire._id)}
+                            className="text-lg text-primary cursor-pointer active:opacity-50"
+                            onClick={() => {
+                              setconfirmDelete(true)
+                        
+                             }}
                           >
-                            <DeleteIcon />
+                            {confirmDelete &&  
+                        <DeleteStagiaireModal
+                        stagiaire={stagiaire}
+                          set={setconfirmDelete}
+                           c={confirmDelete} 
+                           f={handleDelete}/>}
+                          <DeleteIcon />
                           </span>
                         </Tooltip>
                       </div>
@@ -176,12 +199,13 @@ function Billing3() {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
-          {isModalOpen && (
+          
             <StagiaireModal
-              setOpenModal={setIsModalOpen}
-              stagiaire={selectedStagiaire}
-            />
-          )}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            stagiaire={selectedStagiaire}
+          />
+         
         </div>
       );
 }

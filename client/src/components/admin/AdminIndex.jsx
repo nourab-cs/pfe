@@ -9,18 +9,26 @@ import AllCandidatures from "./AllCandidatures";
 import AjouterStagiaire from "../AjouterStagiaire";
 import TestsList from "./TestsList";
 import QuizList from "../Quiz/QuizList"
+import QuizForm from "../Quiz/CreateQuiz";
 function AdminIndex() {
   return (
     <Routes>
       <Route path="/dashbord" element={<Admin />} />
-      {/* <Route path="/all-users" element={<AllUser />} />
-      <Route path="/create-offre" element={<CreateOffre />} /> */}
+      <Route path="/all-users" element={<AllUser />} />
+
+      <Route path="/create-offre" element={<CreateOffre />} /> 
       <Route path="/offres-list" element={<OffresList />} />
-      <Route path="/stagiaires-list" element={<StagiaireList />} />
       <Route path="/candidates_per_offre/:id" element={<CandidatePerOffre />} />
-      <Route path="/allcandidatures" element={<AllCandidatures />} />
+
+      <Route path="/stagiaires-list" element={<StagiaireList />} />
       <Route path="/create-stagiaire" element={<AjouterStagiaire />} />
+
+
+      <Route path="/allcandidatures" element={<AllCandidatures />} />
+
       <Route path="/tests-list" element={<TestsList/>} />
+      <Route path="/create-test" element={<QuizForm/>} /> 
+
       <Route path="/all-quizes/:id" element={<QuizList/>} />
 
 

@@ -68,10 +68,7 @@ function Login() {
         <Typography variant="h3" color="blue-gray" className="mb-2 ">
           Se connecter
         </Typography>
-        {/* <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
-        Saisissez votre adresse e-mail et votre mot de passe pour vous connecter
-        </Typography> */}
-
+       
         <Formik
           initialValues={{
             email: "",
@@ -122,7 +119,6 @@ function Login() {
                 />
                 {errors.password && touched.password ? <div>{errors.password}</div> : null}
               </div>
-              <Link to="/forgot-password" className="mt-8 text-s font-light text-center text-gray-700 hover:underline">Mot de passe oublié</Link>
               <div className="mt-3">
                 <button
                   type="submit"

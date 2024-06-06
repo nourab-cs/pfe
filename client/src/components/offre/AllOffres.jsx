@@ -51,7 +51,7 @@ function AllOffres() {
         <Input
           className="max-w-xs ml-auto"
           type="text"
-          placeholder="Rechercher..."
+          placeholder="Rechercher par domaine ..."
           label="Recherche"
           isClearable
           radius="lg"

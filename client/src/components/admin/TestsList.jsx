@@ -18,13 +18,14 @@ import { useLocation } from "react-router-dom";
 import { Link, Button } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import UpdateQuizModal from "../Quiz/UpdateQuizModal";
-import { EditIcon, DeleteIcon } from "../layouts/icons";
+import {PlusIcon, EditIcon, DeleteIcon } from "../layouts/icons";
 import { useShow } from "../../stores/userStore";
 import DeleteModal from "../layouts/DeleteModal";
 
 function TestsList() {
   
   const [confirmDelete,setconfirmDelete]=useState(false)
+  
   const [show,setShow]=useState(false)
   const [quizzes, setQuizzes] = useState([]);
   const location = useLocation();
@@ -34,6 +35,7 @@ function TestsList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  
   useEffect(() => {
     axiosClient
       .get("/quiz/all")
@@ -69,7 +71,7 @@ function TestsList() {
     axiosClient
       .delete(`/quiz/delete/${id}`)
       .then(() => {
-        toast.success("Quiz supprimé avec succès");
+        toast.success("le test  est supprimé avec succès");
         setQuizzes(quizzes.filter((quiz) => quiz._id !== id));
       })
       .catch((err) => {
@@ -77,6 +79,7 @@ function TestsList() {
         toast.error("Erreur lors de la suppression du quiz");
       });
   };
+  
 
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
@@ -87,20 +90,20 @@ function TestsList() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-4">
         <div>
-         {!show && <><h1 className="text-3xl mt-2">Tous les tests</h1>
+         <h1 className="text-3xl mt-2">Tous les tests</h1>
           <p className="text-gray-600 mt-2">
             Une liste de tous les tests disponibles sur notre plateforme.
-          </p></> }
+          </p>
         </div>
         <div  className={show ? "hidden" : "ml-auto"}>
-          <Button
+        <Button
             color="primary"
-            onClick={() => {
-              setShow(!show);
-            }}
-            ghost={!show}
+            endContent={<PlusIcon />}
+            href="/admin/create-test"
+            as={Link}
+
           >
-            {show ? "" : "Ajouter un nouveau test"}
+            Ajouter un nouveau test 
           </Button>
         </div>
       </div>
@@ -131,22 +134,7 @@ function TestsList() {
                   <TableCell>{quiz.offres_id.length}</TableCell>
 
                   <TableCell>
-                    {/* <Button
-                    size="sm"
-                    variant="text"
-                    className="flex items-center gap-2"
-                    onClick={() => handleEdit(quiz)}
-                  >
-                    Modifier
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(quiz._id)}
-                    color="primary"
-                    variant="solid"
-                    
-                  >
-                    Supprimer
-                  </Button>  */}
+                   
                     <div className="flex items-center gap-2">
                       <Tooltip content="Modifier">
                         <span
@@ -167,7 +155,7 @@ function TestsList() {
                       </span>
                     </Tooltip> */}
                       <Tooltip
-                        color={quiz.offres_id.length > 0 ? "default" : "danger"}
+                        color={quiz.offres_id.length > 0 ? "default" : "primary"}
                         content={
                           quiz.offres_id.length > 0
                             ? "Ce quiz est associé à une offre et ne peut pas être supprimé"
@@ -178,14 +166,19 @@ function TestsList() {
                           className={`text-lg cursor-pointer active:opacity-50 ${
                             quiz.offres_id.length > 0
                               ? "text-default cursor-not-allowed"
-                              : "text-danger"
+                              : "text-primary"
                           }`}
                           onClick={() => {
                            setconfirmDelete(true)
                      
                           }}
                         >
-                        {confirmDelete &&  <DeleteModal quiz={quiz} set={setconfirmDelete} c={confirmDelete} f={handleDelete}/>}
+                        {confirmDelete &&  
+                        <DeleteModal
+                         quiz={quiz}
+                          set={setconfirmDelete}
+                           c={confirmDelete} 
+                           f={handleDelete}/>}
                           <DeleteIcon />
                         </span>
                       </Tooltip>
@@ -206,6 +199,7 @@ function TestsList() {
       <UpdateQuizModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+
         quiz={selectedQuiz}
       />
     </div>

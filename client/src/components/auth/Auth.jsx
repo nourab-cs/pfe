@@ -17,8 +17,7 @@ const Auth = function () {
       .then(async (res) => {
         setUser(res.data);
         console.log(res);
-        if (res.data.role == "admin") navigate("/admin/dashbord");
-        else navigate("/");
+        if (res.data.role == "admin") window.location.pathname = ("/admin/dashboard")
       })
       .catch((err) => console.log(err));
   }, []);

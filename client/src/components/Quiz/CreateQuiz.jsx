@@ -312,7 +312,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
 import * as Yup from "yup";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input,ButtonGroup } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import { axiosClient } from "../../services/axiosClient";
 import toast from "react-hot-toast";
@@ -338,13 +338,13 @@ const QuizForm = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Le nom du quiz est requis"),
+    name: Yup.string().required("Le nom du test est requis"),
     questions: Yup.array().of(
       Yup.object().shape({
         question: Yup.string().required("La question est requise"),
         options: Yup.array()
           .of(Yup.string().required("L'option est requise"))
-          .min(3, "Au moins quatre options sont requises"),
+          .min(4, "Au moins quatre options sont requises"),
         answer: Yup.string().required("La réponse est requise"),
       })
     ),
@@ -354,8 +354,8 @@ const QuizForm = () => {
     axiosClient
       .post("/quiz/create", values)
       .then((res) => {
-        console.log(res.data,"here");
-        toast.success("test " + res.data.name + " ajouter  ");
+        // console.log(res.data,"here");
+        toast.success(" le test " + res.data.name + " ajouté avec succés ");
         navigate("/admin/tests-list")
       })
       .catch((err) => {
@@ -373,11 +373,12 @@ const QuizForm = () => {
       >
         {({ values }) => (
           <Form>
+            
             <Field
               as={Input}
               type="text"
               name="name"
-              placeholder="Nom du quiz"
+              placeholder="Nom du test"
               className="w-full mb-4"
             />
             <ErrorMessage name="name" className="text-red-500" />
@@ -427,7 +428,7 @@ const QuizForm = () => {
                         aria-label="Sélectionner la bonne réponse"
                         placeholder="Sélectionner la bonne réponse"
                       >
-                        <SelectItem value="" disabled selected>
+                        <SelectItem   value="" disabled selected>
                           Sélectionner la bonne réponse
                         </SelectItem>
                         {question.options.map((option, optionIndex) => (
@@ -440,19 +441,16 @@ const QuizForm = () => {
                         name={`questions.${index}.answer`}
                         className="text-red-500"
                       />
-
-                      <Button
-                        color="danger"
+                      {/* <Button
+                        color="primary"
                         variant="solid"
                         onClick={() => remove(index)}
                       >
                         Supprimer la question
-                      </Button>
-                    </div>
-                  ))}
-                  <Button
-                    color="primary"
-                    variant="solid"
+                      </Button> */}
+                       <ButtonGroup>
+                       <Button
+                   
                     onClick={() =>
                       push({
                         question: "",
@@ -460,17 +458,28 @@ const QuizForm = () => {
                         answer: "",
                       })
                     }
-                    className="mb-4"
+                    
                   >
                     Ajouter une question
                   </Button>
+                              <Button onClick={() => remove(index)}>
+                                Supprimer la question
+                              </Button>
+                            </ButtonGroup>
+                    </div>
+                  ))}
+                  
+                  
                 </div>
               )}
             </FieldArray>
 
-            <Button color="primary" variant="solid" type="submit">
-              Soumettre
-            </Button>
+      <div className="flex justify-end mt-4">
+        <Button color="primary" variant="solid" type="submit">
+          Soumettre
+        </Button>
+      </div>
+            
           </Form>
         )}
       </Formik>

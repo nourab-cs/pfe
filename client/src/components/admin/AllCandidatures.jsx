@@ -254,6 +254,7 @@ import Modal from "../layouts/Modal-next";
 import { useOffre } from "../../stores/offreStore";
 import toast from "react-hot-toast";
 import { axiosClient } from "../../services/axiosClient";
+import DeleteCandidatureModal from "../DeleteCandidatureModal";
 
 function AllCandidatures() {
   const [candidates, setCandidates] = useState([]);
@@ -266,6 +267,9 @@ function AllCandidatures() {
   const [id, setId] = useState("");
   const [refetch, re] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState("");
+
+  const [confirmDelete,setconfirmDelete]=useState(false)
+
 
   const itemsPerPage = 6;
 
@@ -443,7 +447,7 @@ function AllCandidatures() {
                             Accepter
                           </Button>
                           <Button
-                            color="danger"
+                            color="primary"
                             variant="flat"
                             onClick={() => {
                               setCandidature(candidate._id, "rejetée");
@@ -460,7 +464,13 @@ function AllCandidatures() {
                   </TableCell>
                   <TableCell>
                     {candidate.is_accepted === "acceptée" && candidate.interview
-                      ? new Date(candidate.interview).toLocaleString()
+                      ? new Date(candidate.interview).toLocaleString('fr-FR', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })
                       : "Non planifiée"}
                   </TableCell>
                   <TableCell>
@@ -475,14 +485,23 @@ function AllCandidatures() {
                           <EyeIcon />
                         </span>
                       </Tooltip>
-                      <Tooltip color="danger" content="Supprimer">
-                        <span
-                          className="text-lg text-danger cursor-pointer active:opacity-50"
-                          onClick={() => handleDelete(candidate._id)}
-                        >
+                      <Tooltip color="primary" content="Supprimer">
+                          <span
+                            className="text-lg text-primary cursor-pointer active:opacity-50"
+                            onClick={() => {
+                              setconfirmDelete(true)
+                        
+                             }}
+                          >
+                            {confirmDelete &&  
+                        <DeleteCandidatureModal
+                        candidate={candidate}
+                          set={setconfirmDelete}
+                           c={confirmDelete} 
+                           f={handleDelete}/>}
                           <DeleteIcon />
-                        </span>
-                      </Tooltip>
+                          </span>
+                        </Tooltip>
                     </div>
                   </TableCell>
                 </TableRow>

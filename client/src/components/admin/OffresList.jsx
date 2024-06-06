@@ -241,8 +241,9 @@ const AllOffres = () => {
           <Button
             color="primary"
             endContent={<PlusIcon />}
-            href="/create-offre"
+            href="/admin/create-offre"
             as={Link}
+
           >
             Ajouter une offre
           </Button>
