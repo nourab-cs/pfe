@@ -91,45 +91,7 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="bg-[#ff4d4d] p-4 rounded-full">
-                <SearchIcon className="h-8 w-8" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold">Extensive Search</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Our advanced search algorithms help you find the perfect candidates for your roles.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="bg-[#ff4d4d] p-4 rounded-full">
-                <BriefcaseIcon className="h-8 w-8" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold">Tailored Recommendations</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Our platform provides personalized candidate recommendations based on your needs.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="bg-[#ff4d4d] p-4 rounded-full">
-                <UsersIcon className="h-8 w-8" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold">Diverse Talent Pool</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Our network of top-tier candidates ensures you have access to a diverse talent pool.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+     
     </>
  
   ) 

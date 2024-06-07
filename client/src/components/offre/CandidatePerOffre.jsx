@@ -81,7 +81,7 @@ function CandidatePerOffre() {
                     <span className="font-semibold">CIN:</span> {candidate.cin}
                   </p>
                   <p>
-                    <span className="font-semibold">Date of Birth:</span>{" "}
+                    <span className="font-semibold">Date de naissance:</span>{" "}
                     {candidate.datedenaissance &&
                       new Date(candidate.datedenaissance).toLocaleDateString()}
                   </p>
@@ -90,7 +90,7 @@ function CandidatePerOffre() {
                     {candidate.sexe}
                   </p>
                   <p>
-                    <span className="font-semibold">Telephone:</span>{" "}
+                    <span className="font-semibold">Téléphone:</span>{" "}
                     {candidate.telephone}
                   </p>
                   <p>
@@ -100,22 +100,22 @@ function CandidatePerOffre() {
                 </div>
                 <div>
                   <p>
-                    <span className="font-semibold">Diploma:</span>{" "}
+                    <span className="font-semibold">Diplome:</span>{" "}
                     {candidate.diplome}
                   </p>
                   <p>
-                    <span className="font-semibold">University:</span>{" "}
+                    <span className="font-semibold">Université:</span>{" "}
                     {candidate.universite}
                   </p>
                   <p>
-                    <span className="font-semibold">Domain:</span>{" "}
+                    <span className="font-semibold">Domaine:</span>{" "}
                     {candidate.domaine}
                   </p>
                   <a
                     href={candidate.cv}
                     className="text-blue-500 hover:underline"
                   >
-                    View CV
+                    Voir CV
                   </a>
                   <div></div>
                 </div>
@@ -124,7 +124,7 @@ function CandidatePerOffre() {
             <Divider />
             <CardFooter>
               <p>
-                <span className="font-semibold">Region:</span>{" "}
+                <span className="font-semibold">Région:</span>{" "}
                 {candidate.region}
               </p>
             </CardFooter>

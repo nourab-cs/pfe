@@ -351,6 +351,8 @@ const QuizForm = () => {
   });
 
   const handleSubmit = (values) => {
+    console.log(values);
+
     axiosClient
       .post("/quiz/create", values)
       .then((res) => {
@@ -403,7 +405,7 @@ const QuizForm = () => {
                       <FieldArray name={`questions.${index}.options`}>
                         {({ push: pushOptions }) => (
                           <div>
-                            {question.options.map((option, optionIndex) => (
+                            {question?.options?.map((option, optionIndex) => (
                               <div
                                 key={optionIndex}
                                 className="flex items-center mb-2"
@@ -431,9 +433,10 @@ const QuizForm = () => {
                         <SelectItem   value="" disabled selected>
                           Sélectionner la bonne réponse
                         </SelectItem>
-                        {question.options.map((option, optionIndex) => (
-                          <SelectItem key={optionIndex} value={option}>
+                        {question?.options?.map((option, optionIndex) => (
+                          <SelectItem key={optionIndex} value={question.options[optionIndex+1]}>
                             {option}
+
                           </SelectItem>
                         ))}
                       </Field>

@@ -171,10 +171,11 @@ import {
   Link,
   useDisclosure
 } from "@nextui-org/react";
-import { PlusIcon, EditIcon, DeleteIcon, EyeIcon } from "../layouts/icons";
+import { PlusIcon, EditIcon, DeleteIcon,EyeIcon } from "./Icons";
 import { axiosClient } from "../../services/axiosClient";
 import UpdateOffreModal from "../offre/UpdateOffreModal";
 import { useOffre } from "../../stores/offreStore";
+import DeleteOffreModal from "../offre/DeleteOffreModal";
 
 const AllOffres = () => {
   const [o,setOffre] = useOffre((state) => [state.Offre,state.setOffre]);
@@ -186,6 +187,14 @@ const AllOffres = () => {
   const itemsPerPage = 6;
   const [selectedOffre, setSelectedOffre] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+
+
+
+  const [confirmDelete,setconfirmDelete]=useState(false)
+
+
+
 
   useEffect(() => {
     getAll()
@@ -275,12 +284,26 @@ const AllOffres = () => {
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Tooltip content="Voir détails">
-                      <span
+                      {/* <span
                         className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                        onClick={() => window.location.href = `/description/${offer._id}`}
+                        onClick={() => window.location.href = `/descriptionoffre/${offer._id}`}
                       >
                         <EyeIcon />
-                      </span>
+                      </span> */}
+
+<Link 
+                    href={`/admin/description/${offer._id}`}
+                    color="foreground"
+                  >
+                     <EyeIcon />
+                  </Link>
+
+
+
+ 
+
+
+
                     </Tooltip>
                     <Tooltip content="Modifier">
                       <span
@@ -290,12 +313,22 @@ const AllOffres = () => {
                         <EditIcon />
                       </span>
                     </Tooltip>
-                    <Tooltip color="danger" content="Supprimer">
+                    <Tooltip color="primary" content="Supprimer">
                       <span
-                        className="text-lg text-danger cursor-pointer active:opacity-50"
-                        onClick={() => handleDelete(offer._id)}
+                        className="text-lg text-primary cursor-pointer active:opacity-50"
+                        onClick={() => {
+                          setconfirmDelete(true)
+                    
+                         }}
                       >
-                        <DeleteIcon />
+                        {confirmDelete &&  
+                    <DeleteOffreModal
+                    offer={offer}
+                      set={setconfirmDelete}
+                       c={confirmDelete} 
+                       f={handleDelete}/>}
+                      <DeleteIcon />
+                     
                       </span>
                     </Tooltip>
                   </div>

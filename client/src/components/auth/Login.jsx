@@ -47,7 +47,8 @@ function Login() {
 
                 setUser(res?.data?.user)
                 console.log(res.data);
-              
+                if (res.data.role == "admin") navigate("/admin/dashboard")
+
                 toast.success(
                   `Bienvenue ${res.data.user.username}`
                 );

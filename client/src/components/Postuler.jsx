@@ -42,9 +42,18 @@ function CandidatureForm() {
       ),
     nom: Yup.string().required("Ce champ est requis"),
     prénom: Yup.string().required("Ce champ est requis"),
-    datedenaissance: Yup.date().required("Ce champ est requis"),
-    sexe: Yup.string().required("Ce champ est requis"),
-    telephone: Yup.string().required("Ce champ est requis"),
+    datedenaissance: Yup.date()
+    .max(new Date(), "La date de naissance doit être antérieure ")
+    .required("Ce champ est requis"),
+        sexe: Yup.string().required("Ce champ est requis"),
+    telephone: Yup.number()
+    .typeError("Le numero doit être un nombre")
+    .required("Ce champ est requis")
+    .test(
+      "len",
+      "Le telephone doit avoir exactement 8 chiffres",
+      (val) => val && val.toString().length === 8
+    ),
     region: Yup.string().required("Ce champ est requis"),
     email: Yup.string().email("Email invalide").required("Ce champ est requis"),
     diplome: Yup.string().required("Ce champ est requis"),
@@ -85,14 +94,14 @@ function CandidatureForm() {
               .then((res) => {
                 console.log(res);
                 localStorage.setItem("cand_id", res.data._id);
-                toast.success("Offre created");
+                toast.success("Formulaire rempli avec succés");
                 localStorage.removeItem("quiz-done");
                 navigate("/quiz/" + offre_id);
               })
               .catch((error) => {
                 console.log(error ,"here");
 
-                toast.error("Error :" + error.response.data.error);
+                toast.error("Vous avez déjà soumis une candidature pour cette offre ");
               });
           }}
         >

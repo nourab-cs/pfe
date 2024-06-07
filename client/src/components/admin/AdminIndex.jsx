@@ -10,6 +10,7 @@ import AjouterStagiaire from "../AjouterStagiaire";
 import TestsList from "./TestsList";
 import QuizList from "../Quiz/QuizList"
 import QuizForm from "../Quiz/CreateQuiz";
+import Description from "../offre/Description";
 function AdminIndex() {
   return (
     <Routes>
@@ -19,6 +20,11 @@ function AdminIndex() {
       <Route path="/create-offre" element={<CreateOffre />} /> 
       <Route path="/offres-list" element={<OffresList />} />
       <Route path="/candidates_per_offre/:id" element={<CandidatePerOffre />} />
+
+      <Route path="/description/:id" element={<Description />} />
+
+
+
 
       <Route path="/stagiaires-list" element={<StagiaireList />} />
       <Route path="/create-stagiaire" element={<AjouterStagiaire />} />

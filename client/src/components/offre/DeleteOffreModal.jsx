@@ -1,49 +1,48 @@
-import React from 'react'
- import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
-  import { axiosClient } from "../../services/axiosClient";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 
 
+import React from "react";
 
+function DeleteOffreModal({ f, set ,offer  ,c}) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-
-const DeleteOffreModal = () => {
-
-
-    const handleDelete = (id) => {
-        axiosClient
-          .delete(`/offre/delete/${id}`)
-          .then(() => {
-            onClose()
-            toast.success("Offre supprimée avec succès");
-            setOffers(offers.filter((offer) => offer._id !== id));
-          })
-          .catch((err) => {
-            console.error("Erreur lors de la suppression de l'offre", err);
-            toast.error("Erreur lors de la suppression de l'offre");
-          });
-      };
-
-  return ( 
-
-<>
-
-
-      <Button onPress={onOpen}>Open Modal</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+  return (
+    <>
+      <Modal isOpen={true} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
-        <ModalHeader className="flex flex-col gap-1">Confirmer la suppression</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Supprimer Offre
+              </ModalHeader>
               <ModalBody>
-              <p>Êtes-vous sûr de vouloir supprimer ?</p>
-        
+              êtes-vous sûr de vouloir supprimer cette offre ? 
               </ModalBody>
               <ModalFooter>
-              <Button color="secondary" variant="light" onPress={onClose}>
-            Annuler
-          </Button>
-          <Button color="primary" onPress={() => { handleDelete(offer._id) ; }}>
-            Supprimer
+              
+                
+                <Button
+                  
+                  Hand
+                  color="primary"
+                  onPress={() => {
+                    onClose();
+                    set(!c);
+                    f(offer._id)
+                  }}
+                >
+                  Supprimer
+                </Button>
+                <Button color="default" variant="flat" onPress={onClose}>
+            Annuler 
           </Button>
               </ModalFooter>
             </>
@@ -51,8 +50,7 @@ const DeleteOffreModal = () => {
         </ModalContent>
       </Modal>
     </>
-
-
-   )
+  );
 }
-export default DeleteOffreModal ;
+
+export default DeleteOffreModal;

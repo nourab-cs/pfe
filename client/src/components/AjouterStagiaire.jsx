@@ -10,13 +10,18 @@ const AjouterStagiaire = () => {
   const validationSchema = Yup.object().shape({
     nom: Yup.string().required('Le nom est requis'),
     prenom: Yup.string().required('Le prénom est requis'),
-    email: Yup.string().required('L\'email est requis').email('L\'email n\'est pas valide'),
-    telephone: Yup.string().required('Le téléphone est requis'),
+    email: Yup.string()
+    .matches(/^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Email invalide")
+    .required("L'email est requis"),
+    telephone: Yup.string()
+    .matches(/^\d{8}$/, "Le numéro de téléphone doit contenir 8 chiffres")
+    .required("Le numéro de téléphone est obligatoire"),
     universite: Yup.string().required('L\'université est requise'),
     specialite: Yup.string().required('La spécialité est requise'),
     dateDebut: Yup.date().required('La date de début est requise'),
-    dateFin: Yup.date().required('La date de fin est requise'),
-  });
+    dateFin: Yup.date()
+    .min(Yup.ref("dateDebut"), "La date de fin doit être après la date de début")
+    .required("La date de fin est requise"),  });
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">

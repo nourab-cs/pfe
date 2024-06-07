@@ -223,7 +223,7 @@
 
 
 
-import { Modal, ModalContent,  ModalBody, ModalFooter, Button, Input, Textarea } from '@nextui-org/react';
+import { Modal, ModalContent,  ModalBody, ModalFooter, Button, Input, Textarea, SelectItem } from '@nextui-org/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { updateOffre } from '../../services/offre.service';
@@ -232,18 +232,39 @@ import { useOffre } from '../../stores/offreStore';
 
 const validationSchema = Yup.object().shape({
   titre: Yup.string().required('Le titre est requis'),
-  lieu: Yup.string().required('Le lieu est requis'),
   dureeStage: Yup.number().required("La durée du stage est requise").positive("La durée du stage doit être un nombre positif"),
   nombreStagiaires: Yup.number().required("Le nombre de stagiaires est requis").positive("Le nombre de stagiaires doit être un nombre positif"),
-  dateLimite: Yup.date().required("La date limite est requise"),
+  dateLimite: Yup.date()
+  .min(new Date(), "La date limite doit être ultérieure à la date actuelle")
+  .required("La date limite est requise"),
   profil: Yup.string().required('Le profil est requis'),
-  mission: Yup.array().of(Yup.string().required('La mission est requise')),
-  competences: Yup.array().of(Yup.string().required('La compétence est requise')),
+  mission: Yup.string().required('La mission est requise'),
+  competences: Yup.string().required('La compétence est requise'),
   domaine: Yup.string().required('Le domaine est requis'),
 });
 
 function UpdateOffreModal({ isOpen, onOpenChange, offer,set,i }) {
   const [offres,setOffres]=useOffre((state)=>[state.Offre,state.setOffre])
+
+
+  const domainesDisponible = [
+    { id: 'IA', nom: 'IA' },
+    { id: '5G', nom: '5G' },
+    { id: 'Cybersécurité', nom: 'Cybersécurité' },
+    { id: 'Développement', nom: 'Développement' },
+    { id: 'Cloud', nom: 'Cloud' },
+    { id: 'Réseau', nom: 'Réseau' },
+    { id: 'SDN', nom: 'SDN' },
+    { id: 'Relation client BTC', nom: 'Relation client BTC' },
+    { id: 'Wholesale', nom: 'Wholesale' },
+    { id: 'Data', nom: 'Data' },
+    { id: 'IoT', nom: 'IoT' },
+    { id: 'Relation client BTB', nom: 'Relation client BTB' },
+    { id: 'marketing', nom: 'marketing' },
+
+  ];
+
+
     return (
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
         <ModalContent >
@@ -253,7 +274,6 @@ function UpdateOffreModal({ isOpen, onOpenChange, offer,set,i }) {
                 <Formik
                   initialValues={{
                     titre: offer?.titre || '',
-                    lieu: offer?.lieu || '',
                     dureeStage: offer?.dureeStage || '',
                     nombreStagiaires: offer?.nombreStagiaires || '',
                     dateLimite: offer?.dateLimite ? new Date(offer.dateLimite).toISOString().split('T')[0] : '',
@@ -290,19 +310,15 @@ function UpdateOffreModal({ isOpen, onOpenChange, offer,set,i }) {
                           <Field as={Input} type="text" name="titre" />
                           <ErrorMessage name="titre" component="div" className="text-red-500 text-sm" />
                           <div className="grid grid-cols-3 gap-4">
-                        <div>
-                          <label htmlFor="lieu">Lieu</label>
-                          <Field as={Input} type="text" name="lieu" />
-                          <ErrorMessage name="lieu" component="div" className="text-red-500 text-sm" />
-                        </div>
+                        
                         <div>
                           <label htmlFor="dureeStage">Durée du stage (en mois)</label>
-                          <Field as={Input} type="number" name="dureeStage" />
+                          <Field as={Input} type="number" name="dureeStage"  min="1" max="6"/>
                           <ErrorMessage name="dureeStage" component="div" className="text-red-500 text-sm" />
                         </div>
                         <div>
                           <label htmlFor="nombreStagiaires">Nombre de stagiaires</label>
-                          <Field as={Input} type="number" name="nombreStagiaires" />
+                          <Field as={Input} type="number" name="nombreStagiaires" min="1" max="10"  />
                           <ErrorMessage name="nombreStagiaires" component="div" className="text-red-500 text-sm" />
                         </div>
                         </div>
@@ -312,12 +328,24 @@ function UpdateOffreModal({ isOpen, onOpenChange, offer,set,i }) {
                           <Field as={Input} type="date" name="dateLimite" />
                           <ErrorMessage name="dateLimite" component="div" className="text-red-500 text-sm" />
                         </div>
-                        <div>
-                        <label htmlFor="domaine">Domaine</label>
-                          <Field as={Input} type="text" name="domaine" />
-                          <ErrorMessage name="domaine" component="div" className="text-red-500 text-sm" />
-                          
-                        </div>
+                        <div >
+              <label htmlFor="doamine" className="block text-sm font-medium text-gray-700">
+                Domaine
+              </label>
+              <Field
+                as="select"
+                id="doamine"
+                name="domaine"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+
+              >
+                <option value="">Choisissez le domaine</option>
+                {domainesDisponible.map(domaine => (
+                  <option key={domaine.id} value={domaine.id}>{domaine.nom}</option>
+                ))}
+              </Field>
+              <ErrorMessage name="domaine" component="div" className="text-red-600 text-sm" />
+            </div>
                         </div>
                         <div>
                           <label htmlFor="mission">Mission</label>

@@ -4,9 +4,9 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUser } from "../../stores/userStore";
 
-const OffreDescription = () => {
+const Description = () => {
   const location = useLocation();
-  const id = location.pathname.split("/")[2];
+  const id = location.pathname.split("/")[3];
   const [offer, setOffer] = useState({});
   const [user, setUser] = useUser((state) => [state.user, state.setUser]);
 
@@ -59,4 +59,4 @@ const OffreDescription = () => {
   );
 };
 
-export default OffreDescription;
+export default Description;

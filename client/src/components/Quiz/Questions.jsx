@@ -18,8 +18,8 @@ const Questions = ({ questions,
         <div className="container mt-3 bg-gray-100 p-4">
         <div>
             <div className="p-4">
-                <p className="mt-2 text-yellow-500">
-                    Time remaining: {timer}
+                <p className="mt-2 text-red-500">
+                   Temps Restant: {timer}
                 </p>
                 <h4 className="text-lg font-bold mb-4">
                     { questions[currentQuestion].id}{') '}
@@ -41,7 +41,7 @@ const Questions = ({ questions,
                 </div>
                 <div className="flex justify-between mt-4">
                     <p className="text-sm">
-                        Question {currentQuestion + 1} of {questions.length}
+                        Question {currentQuestion + 1} de {questions.length}
                     </p>
                  
                 </div>

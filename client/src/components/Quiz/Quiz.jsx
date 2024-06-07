@@ -6,6 +6,7 @@ import { axiosClient } from "../../services/axiosClient";
 import { useLocation, redirect } from "react-router-dom";
 import Loader from "../layouts/Loader";
 import Modal from "../layouts/GlobalModal";
+import { Button } from "@nextui-org/button";
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -26,12 +27,14 @@ const Quiz = () => {
       window.location.href = "http://localhost:5173";
     axiosClient.get("/offre/get-quiz?id=" + id).then((res) => {
       let q = [];
-      res.data.forEach((element) => {
-        element.questions.forEach((e) => {
-          q.push(e);
-        });
-      });
-      setQuestions(q);
+      console.log(res);
+      // res.data.forEach((element) => {
+      //   element.questions.forEach((e) => {
+      //     q.push(e);
+      //   });
+      // }); 
+
+      setQuestions(res.data[0].questions);
     });
   }, []);
 
@@ -39,8 +42,11 @@ const Quiz = () => {
     if (isLastq) {
       setLoading(true);
       localStorage.setItem("quiz-done", true);
+      setTimeout(() => {
       const final = (100 / questions.length) * score;
-      console.log(questions.length);
+      console.log("questions length",questions.length);
+    console.log("score",score);
+    console.log("final",final);
       setDisplayScore(final);
       const cand_id = localStorage.getItem("cand_id");
       axiosClient
@@ -52,20 +58,12 @@ const Quiz = () => {
         .then((res) => {
           console.log(res.data);
           if (res.data?.message == "Succeeded") {
-            console.log(
-              "here===========================================================>"
-            );
-
-            //create a state to save the candidature
-            console.log(
-              "here===========================================================>"
-            );
-
             setValidated(true);
           } else setValidated(false);
         })
         .catch((err) => console.log(err));
       setLoading(false);
+    }, 3000);
     }
   }, [isLastq]);
 
@@ -88,14 +86,23 @@ const Quiz = () => {
   }, [currentQuestion, quizStarted]);
 
   const handleAnswerClick = (selectedAnswer) => {
-    if (selectedAnswer === questions[currentQuestion].answer) {
+    console.log("selectedanswer",selectedAnswer,);
+    console.log("questions",questions);
+    console.log(questions[currentQuestion]["options"][questions[currentQuestion]["answer"]],"herrrrre");
+
+    if (selectedAnswer ==questions[currentQuestion]["options"][questions[currentQuestion]["answer"]]) {
+      
+    
+      console.log(questions[currentQuestion]["answer"]);
       setScore((prevScore) => prevScore + 1);
+      console.log("score",score);
     }
   };
 
   const handleNextQuestion = () => {
     if (currentQuestion + 1 === questions.length) {
       setIsLastq(true);
+      console.log(score);
     }
     setCurrentQuestion((prevQuestion) => prevQuestion + 1);
     setTimer(10);
@@ -110,15 +117,29 @@ const Quiz = () => {
       {!quizStarted ? (
         <div>
           {validated == null && (
-            <div className="card-body">
-              <h2 className="text-2xl font-bold">Start Test</h2>
-              <button
+               <div className="flex flex-col items-center justify-center min-h-screen ">
+      <div className="max-w-md p-8 bg-white rounded-lg shadow-lg text-center">
+              <h2 className="text-2xl font-bold">Bienvenue au Test de Compétence</h2>
+
+              <p className="text-gray-700 mb-6">
+          Ce test vous permettra de mesurer vos connaissances et compétences dans
+          le domaine choisi. Prenez votre temps et répondez aux questions avec
+          soin. Bonne chance!
+        </p>
+
+              {/* <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={startQuiz}
               >
-                Start Test
-              </button>
-            </div>
+                Commencer le test
+              </button> */}
+
+
+<Button color="primary"  onClick={startQuiz} >
+          Commencer le test
+        </Button>
+        </div>
+    </div>
           )}
         </div>
       ) : currentQuestion < questions.length ? (

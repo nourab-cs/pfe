@@ -6,10 +6,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  lieu: {
-    type: String,
-    required: true,
-  },
+  
   dureeStage: {
     type: Number,
     required: true,
@@ -27,11 +24,11 @@ const schema = new mongoose.Schema({
     required: true,
   },
   mission: {
-    type: [String],
+    type: String,
     required: true,
   },
   competences: {
-    type: [String],
+    type: String,
     required: true,
   },
   domaine: {

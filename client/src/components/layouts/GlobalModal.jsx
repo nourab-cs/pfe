@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Button } from "@nextui-org/button";
 const Modal = ({ score, validated }) => {
   console.log(validated);
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Modal = ({ score, validated }) => {
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Terms of Service
+                  Résultat 
                 </h3>
                 <button
                   type="button"
@@ -61,20 +61,17 @@ const Modal = ({ score, validated }) => {
               </div>
               <div className="p-4 md:p-5 space-y-4">
                 <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                  result : {validated ? "succeded" : "failed"}
+                Résultat : {validated ? "réussi" : "échoué"}
                 </p>
               </div>
               <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button
-                  data-modal-hide="default-modal"
-                  type="button"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                <Button
                   onClick={() => {
                     toggleModal();
                   }}
                 >
-                  Save
-                </button>
+                 Fermer
+                </Button>
               </div>
             </div>
           </div>
