@@ -26,9 +26,15 @@ import { useEffect } from "react";
 import { useUser } from "./stores/userStore";
 
 function App() {
-  const [user]  = useUser((state)=>[state.user]);
-  const navigate = useNavigate()
-
+  const [user] = useUser((state) => [state.user]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    !window.location.pathname.split("/").includes("admin")
+      ? user?.role == "admin"
+        ? navigate("/Admin/dashbord")
+        : ""
+      : "";
+  }, [user]);
 
   return (
     <div className="flex flex-col min-h-screen ">
@@ -108,6 +114,9 @@ function App() {
             }
           />
 
+          <Route />
+          <Route path="/quiz/:offre" element={<Quiz />} />
+
           <Route
             path="/admin/*"
             element={
@@ -116,9 +125,6 @@ function App() {
               </Admin>
             }
           />
-
-          <Route />
-          <Route path="/quiz/:offre" element={<Quiz />} />
         </Routes>
       </div>
       <Footer />
