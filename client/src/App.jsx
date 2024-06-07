@@ -29,9 +29,7 @@ function App() {
   const [user]  = useUser((state)=>[state.user]);
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if(user.role && user.role =="admin") navigate("/admin/dashbord")
-  }, []);
+
   return (
     <div className="flex flex-col min-h-screen ">
       <Navbarr />
